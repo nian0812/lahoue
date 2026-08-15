@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "entries": {
+	"chicken": {
+	  "required_level": 1,
+	  "purchase_price": 30000,
+	  "lifespan_days": 10,
+	  "daily_product": {
+		"item_id": "egg",
+		"amount": 1,
+		"collect_exp": 5
+	  },
+	  "end_of_life_product": {
+		"item_id": "chicken_meat",
+		"amount": 10,
+		"collect_exp": 15
+	  }
+	},
+	"cow": {
+	  "required_level": 2,
+	  "purchase_price": 150000,
+	  "lifespan_days": null,
+	  "daily_product": null,
+	  "primary_product": "beef"
+	},
+	"dairy_cow": {
+	  "required_level": 2,
+	  "purchase_price": 200000,
+	  "lifespan_days": null,
+	  "daily_product": {
+		"item_id": "cow_milk",
+		"amount": null,
+		"collect_exp": 8
+	  },
+	  "primary_product": "cow_milk"
+	}
+  }
+}

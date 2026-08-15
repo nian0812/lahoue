@@ -1,0 +1,459 @@
+{
+  "schema_version": 1,
+  "entries": {
+    "garlic_egg_rice": {
+      "name": "cơm tỏi trứng",
+      "category": "rice",
+      "required_level": null,
+      "ingredients": {
+        "rice": 1,
+        "egg": 1
+      },
+      "cooking_time": null,
+      "selling_price": 79000,
+      "exp": null,
+      "icon": ""
+    },
+    "chicken_rice": {
+      "name": "cơm gà",
+      "category": "rice",
+      "required_level": null,
+      "ingredients": {
+        "rice_processed": 1,
+        "chicken_meat": 1
+      },
+      "cooking_time": null,
+      "selling_price": 79000,
+      "exp": null,
+      "icon": ""
+    },
+    "fish_rice": {
+      "name": "cơm cá",
+      "category": "rice",
+      "required_level": null,
+      "ingredients": {
+        "rice_processed": 1,
+        "fish": 1
+      },
+      "cooking_time": null,
+      "selling_price": 89000,
+      "exp": null,
+      "icon": ""
+    },
+    "beef_rice": {
+      "name": "cơm bò",
+      "category": "rice",
+      "required_level": null,
+      "ingredients": {
+        "rice_processed": 1,
+        "beef": 1
+      },
+      "cooking_time": null,
+      "selling_price": 109000,
+      "exp": null,
+      "icon": ""
+    },
+    "shrimp_rice": {
+      "name": "cơm tôm",
+      "category": "rice",
+      "required_level": null,
+      "ingredients": {
+        "rice_processed": 1,
+        "shrimp": 1
+      },
+      "cooking_time": null,
+      "selling_price": 109000,
+      "exp": null,
+      "icon": ""
+    },
+    "seafood_rice": {
+      "name": "cơm hải sản",
+      "category": "rice",
+      "required_level": null,
+      "ingredients": {
+        "rice_processed": 1,
+        "shrimp": 1,
+        "squid": 1
+      },
+      "cooking_time": null,
+      "selling_price": 129000,
+      "exp": null,
+      "icon": ""
+    },
+    "crab_rice": {
+      "name": "cơm cua",
+      "category": "rice",
+      "required_level": null,
+      "ingredients": {
+        "rice_processed": 1,
+        "crab": 1
+      },
+      "cooking_time": null,
+      "selling_price": 139000,
+      "exp": null,
+      "icon": ""
+    },
+    "octopus_rice": {
+      "name": "cơm bạch tuộc",
+      "category": "rice",
+      "required_level": null,
+      "ingredients": {
+        "rice_processed": 1,
+        "octopus": 1
+      },
+      "cooking_time": null,
+      "selling_price": 149000,
+      "exp": null,
+      "icon": ""
+    },
+    "vegetable_fried_noodle": {
+      "name": "mì xào rau",
+      "category": "noodle",
+      "required_level": null,
+      "ingredients": {
+        "noodle": 1,
+        "vegetables": 1
+      },
+      "cooking_time": null,
+      "selling_price": 59000,
+      "exp": null,
+      "icon": ""
+    },
+    "egg_fried_noodle": {
+      "name": "mì xào trứng",
+      "category": "noodle",
+      "required_level": null,
+      "ingredients": {
+        "noodle": 1,
+        "egg": 1
+      },
+      "cooking_time": null,
+      "selling_price": 69000,
+      "exp": null,
+      "icon": ""
+    },
+    "chicken_fried_noodle": {
+      "name": "mì xào gà",
+      "category": "noodle",
+      "required_level": null,
+      "ingredients": {
+        "noodle": 1,
+        "chicken_meat": 1
+      },
+      "cooking_time": null,
+      "selling_price": 89000,
+      "exp": null,
+      "icon": ""
+    },
+    "beef_fried_noodle": {
+      "name": "mì xào bò",
+      "category": "noodle",
+      "required_level": 3,
+      "ingredients": {
+        "noodle": 1,
+        "beef": 1
+      },
+      "cooking_time": null,
+      "selling_price": 99000,
+      "exp": null,
+      "icon": ""
+    },
+    "shrimp_fried_noodle": {
+      "name": "mì xào tôm",
+      "category": "noodle",
+      "required_level": null,
+      "ingredients": {
+        "noodle": 1,
+        "shrimp": 1
+      },
+      "cooking_time": null,
+      "selling_price": 109000,
+      "exp": null,
+      "icon": ""
+    },
+    "squid_fried_noodle": {
+      "name": "mì xào mực",
+      "category": "noodle",
+      "required_level": null,
+      "ingredients": {
+        "noodle": 1,
+        "squid": 1
+      },
+      "cooking_time": null,
+      "selling_price": 119000,
+      "exp": null,
+      "icon": ""
+    },
+    "crab_fried_noodle": {
+      "name": "mì xào cua",
+      "category": "noodle",
+      "required_level": null,
+      "ingredients": {
+        "noodle": 1,
+        "crab": 1
+      },
+      "cooking_time": null,
+      "selling_price": 129000,
+      "exp": null,
+      "icon": ""
+    },
+    "octopus_fried_noodle": {
+      "name": "mì xào bạch tuộc",
+      "category": "noodle",
+      "required_level": null,
+      "ingredients": {
+        "noodle": 1,
+        "octopus": 1
+      },
+      "cooking_time": null,
+      "selling_price": 139000,
+      "exp": null,
+      "icon": ""
+    },
+    "seafood_fried_noodle": {
+      "name": "mì xào hải sản",
+      "category": "noodle",
+      "required_level": null,
+      "ingredients": {
+        "noodle": 1,
+        "shrimp": 1,
+        "squid": 1,
+        "octopus": 1
+      },
+      "cooking_time": null,
+      "selling_price": 149000,
+      "exp": null,
+      "icon": ""
+    },
+    "fried_fish": {
+      "name": "cá chiên",
+      "category": "seafood",
+      "required_level": null,
+      "ingredients": null,
+      "cooking_time": null,
+      "selling_price": 69000,
+      "exp": null,
+      "icon": ""
+    },
+    "grilled_fish": {
+      "name": "cá nướng",
+      "category": "seafood",
+      "required_level": null,
+      "ingredients": null,
+      "cooking_time": null,
+      "selling_price": 89000,
+      "exp": null,
+      "icon": ""
+    },
+    "fried_shrimp": {
+      "name": "tôm chiên",
+      "category": "seafood",
+      "required_level": null,
+      "ingredients": null,
+      "cooking_time": null,
+      "selling_price": 89000,
+      "exp": null,
+      "icon": ""
+    },
+    "grilled_shrimp": {
+      "name": "tôm nướng",
+      "category": "seafood",
+      "required_level": null,
+      "ingredients": null,
+      "cooking_time": null,
+      "selling_price": 109000,
+      "exp": null,
+      "icon": ""
+    },
+    "steamed_crab": {
+      "name": "cua hấp",
+      "category": "seafood",
+      "required_level": null,
+      "ingredients": null,
+      "cooking_time": null,
+      "selling_price": 129000,
+      "exp": null,
+      "icon": ""
+    },
+    "grilled_crab": {
+      "name": "cua nướng",
+      "category": "seafood",
+      "required_level": null,
+      "ingredients": null,
+      "cooking_time": null,
+      "selling_price": 149000,
+      "exp": null,
+      "icon": ""
+    },
+    "stir_fried_squid": {
+      "name": "mực xào",
+      "category": "seafood",
+      "required_level": null,
+      "ingredients": null,
+      "cooking_time": null,
+      "selling_price": 99000,
+      "exp": null,
+      "icon": ""
+    },
+    "grilled_squid": {
+      "name": "mực nướng",
+      "category": "seafood",
+      "required_level": null,
+      "ingredients": null,
+      "cooking_time": null,
+      "selling_price": 119000,
+      "exp": null,
+      "icon": ""
+    },
+    "grilled_octopus": {
+      "name": "bạch tuộc nướng",
+      "category": "seafood",
+      "required_level": null,
+      "ingredients": null,
+      "cooking_time": null,
+      "selling_price": 139000,
+      "exp": null,
+      "icon": ""
+    },
+    "grilled_seafood": {
+      "name": "hải sản nướng",
+      "category": "seafood",
+      "required_level": null,
+      "ingredients": null,
+      "cooking_time": null,
+      "selling_price": 169000,
+      "exp": null,
+      "icon": ""
+    },
+    "hot_tea": {
+      "name": "trà nóng",
+      "category": "drink",
+      "required_level": null,
+      "ingredients": null,
+      "cooking_time": null,
+      "selling_price": 25000,
+      "exp": null,
+      "icon": ""
+    },
+    "lemon_tea": {
+      "name": "trà chanh",
+      "category": "drink",
+      "required_level": null,
+      "ingredients": null,
+      "cooking_time": null,
+      "selling_price": 35000,
+      "exp": null,
+      "icon": ""
+    },
+    "milk_tea": {
+      "name": "trà sữa",
+      "category": "drink",
+      "required_level": null,
+      "ingredients": null,
+      "cooking_time": null,
+      "selling_price": 45000,
+      "exp": null,
+      "icon": ""
+    },
+    "black_coffee": {
+      "name": "cà phê đen",
+      "category": "drink",
+      "required_level": null,
+      "ingredients": null,
+      "cooking_time": null,
+      "selling_price": 30000,
+      "exp": null,
+      "icon": ""
+    },
+    "milk_coffee": {
+      "name": "cà phê sữa",
+      "category": "drink",
+      "required_level": null,
+      "ingredients": null,
+      "cooking_time": null,
+      "selling_price": 40000,
+      "exp": null,
+      "icon": ""
+    },
+    "fresh_milk": {
+      "name": "sữa tươi",
+      "category": "drink",
+      "required_level": null,
+      "ingredients": null,
+      "cooking_time": null,
+      "selling_price": 30000,
+      "exp": null,
+      "icon": ""
+    },
+    "special_coffee": {
+      "name": "cà phê đặc biệt",
+      "category": "drink",
+      "required_level": null,
+      "ingredients": null,
+      "cooking_time": null,
+      "selling_price": 55000,
+      "exp": null,
+      "icon": ""
+    },
+    "special_tea": {
+      "name": "trà đặc biệt",
+      "category": "drink",
+      "required_level": null,
+      "ingredients": null,
+      "cooking_time": null,
+      "selling_price": 50000,
+      "exp": null,
+      "icon": ""
+    },
+    "wagyu_steak": {
+      "name": "wagyu steak",
+      "category": "premium",
+      "required_level": 9,
+      "ingredients": null,
+      "cooking_time": null,
+      "selling_price": 599000,
+      "exp": null,
+      "icon": ""
+    },
+    "wagyu_rice": {
+      "name": "wagyu rice",
+      "category": "premium",
+      "required_level": 9,
+      "ingredients": null,
+      "cooking_time": null,
+      "selling_price": 499000,
+      "exp": null,
+      "icon": ""
+    },
+    "salmon_steak": {
+      "name": "salmon steak",
+      "category": "premium",
+      "required_level": 9,
+      "ingredients": null,
+      "cooking_time": null,
+      "selling_price": 399000,
+      "exp": null,
+      "icon": ""
+    },
+    "salmon_rice": {
+      "name": "salmon rice",
+      "category": "premium",
+      "required_level": 9,
+      "ingredients": null,
+      "cooking_time": null,
+      "selling_price": 349000,
+      "exp": null,
+      "icon": ""
+    },
+    "lobster_grill": {
+      "name": "lobster grill",
+      "category": "premium",
+      "required_level": 9,
+      "ingredients": null,
+      "cooking_time": null,
+      "selling_price": 699000,
+      "exp": null,
+      "icon": ""
+    }
+  }
+}

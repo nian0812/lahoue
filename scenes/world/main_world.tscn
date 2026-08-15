@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/main_world.gd" id="1_main"]
+
+[node name="main_world" type="Node2D"]
+script = ExtResource("1_main")
+
+[node name="hub" type="Node2D" parent="."]
+
+[node name="farm" type="Node2D" parent="."]
+
+[node name="restaurant" type="Node2D" parent="."]
+visible = false
+
+[node name="player" type="CharacterBody2D" parent="."]
+
+[node name="camera" type="Camera2D" parent="."]
+enabled = true
+
+[node name="ui" type="CanvasLayer" parent="."]

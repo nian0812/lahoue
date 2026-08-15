@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "entries": {
+    "rice_seed": {
+      "category": "seed",
+      "buy_price": 2000,
+      "sell_price": null
+    },
+    "corn_seed": {
+      "category": "seed",
+      "buy_price": 3000,
+      "sell_price": null
+    },
+    "tomato_seed": {
+      "category": "seed",
+      "buy_price": 2500,
+      "sell_price": null
+    },
+    "cabbage_seed": {
+      "category": "seed",
+      "buy_price": 3000,
+      "sell_price": null
+    },
+    "wheat_seed": {
+      "category": "seed",
+      "buy_price": 2500,
+      "sell_price": null
+    },
+    "tea_seed": {
+      "category": "seed",
+      "buy_price": 4000,
+      "sell_price": null
+    },
+    "coffee_seed": {
+      "category": "seed",
+      "buy_price": 5000,
+      "sell_price": null
+    },
+    "rice": {
+      "category": "farm",
+      "buy_price": null,
+      "sell_price": 4000
+    },
+    "corn": {
+      "category": "farm",
+      "buy_price": null,
+      "sell_price": 6000
+    },
+    "tomato": {
+      "category": "farm",
+      "buy_price": null,
+      "sell_price": 5000
+    },
+    "cabbage": {
+      "category": "farm",
+      "buy_price": null,
+      "sell_price": 6000
+    },
+    "wheat": {
+      "category": "farm",
+      "buy_price": null,
+      "sell_price": 5000
+    },
+    "tea_leaf": {
+      "category": "farm",
+      "buy_price": null,
+      "sell_price": 8000
+    },
+    "coffee_bean": {
+      "category": "farm",
+      "buy_price": null,
+      "sell_price": 10000
+    },
+    "egg": {
+      "category": "animal_products",
+      "buy_price": null,
+      "sell_price": 7000
+    },
+    "chicken_meat": {
+      "category": "animal_products",
+      "buy_price": null,
+      "sell_price": 10000
+    },
+    "cow_milk": {
+      "category": "animal_products",
+      "buy_price": null,
+      "sell_price": 12000
+    },
+    "beef": {
+      "category": "animal_products",
+      "buy_price": null,
+      "sell_price": 45000
+    },
+    "fish": {
+      "category": "seafood",
+      "buy_price": null,
+      "sell_price": 20000
+    },
+    "shrimp": {
+      "category": "seafood",
+      "buy_price": null,
+      "sell_price": 30000
+    },
+    "crab": {
+      "category": "seafood",
+      "buy_price": null,
+      "sell_price": 40000
+    },
+    "squid": {
+      "category": "seafood",
+      "buy_price": null,
+      "sell_price": 45000
+    },
+    "octopus": {
+      "category": "seafood",
+      "buy_price": null,
+      "sell_price": 55000
+    },
+    "wagyu": {
+      "category": "import",
+      "buy_price": 500000,
+      "sell_price": null
+    },
+    "salmon": {
+      "category": "import",
+      "buy_price": 300000,
+      "sell_price": null
+    },
+    "lobster": {
+      "category": "import",
+      "buy_price": 450000,
+      "sell_price": null
+    },
+    "cheese": {
+      "category": "import",
+      "buy_price": 100000,
+      "sell_price": null
+    },
+    "butter": {
+      "category": "import",
+      "buy_price": 80000,
+      "sell_price": null
+    },
+    "noodle": {
+      "category": "processed",
+      "buy_price": null,
+      "sell_price": null
+    },
+    "rice_processed": {
+      "category": "processed",
+      "buy_price": null,
+      "sell_price": null
+    },
+    "vegetables": {
+      "category": "processed",
+      "buy_price": null,
+      "sell_price": null
+    }
+  }
+}

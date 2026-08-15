@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "starting_money": null,
+  "day_duration_seconds": 240,
+  "level_exp": {
+    "1": 100,
+    "2": 150,
+    "3": 250,
+    "4": 300,
+    "5": 350,
+    "6": 400,
+    "7": 500,
+    "8": 650,
+    "9": 800,
+    "10": 1000
+  },
+  "warehouse": {
+    "levels": {
+      "1": {
+        "capacity": 100,
+        "upgrade_cost": null
+      },
+      "2": {
+        "capacity": 150,
+        "upgrade_cost": 50000
+      },
+      "3": {
+        "capacity": 250,
+        "upgrade_cost": 120000
+      },
+      "4": {
+        "capacity": 300,
+        "upgrade_cost": 250000
+      },
+      "5": {
+        "capacity": 350,
+        "upgrade_cost": 500000
+      },
+      "6": {
+        "capacity": 400,
+        "upgrade_cost": 900000
+      },
+      "7": {
+        "capacity": 500,
+        "upgrade_cost": 1500000
+      },
+      "8": {
+        "capacity": 650,
+        "upgrade_cost": 2500000
+      },
+      "9": {
+        "capacity": 800,
+        "upgrade_cost": 4000000
+      },
+      "10": {
+        "capacity": 1000,
+        "upgrade_cost": 7000000
+      }
+    }
+  },
+  "coop": {
+    "levels": {
+      "1": {
+        "capacity": 5,
+        "upgrade_cost": null
+      },
+      "2": {
+        "capacity": 10,
+        "upgrade_cost": 80000
+      },
+      "3": {
+        "capacity": 20,
+        "upgrade_cost": 200000
+      },
+      "4": {
+        "capacity": 30,
+        "upgrade_cost": 500000
+      },
+      "5": {
+        "capacity": 50,
+        "upgrade_cost": 1000000
+      }
+    }
+  },
+  "cow_barn": {
+    "levels": {
+      "1": {
+        "capacity": 2,
+        "upgrade_cost": 200000
+      },
+      "2": {
+        "capacity": 4,
+        "upgrade_cost": 500000
+      },
+      "3": {
+        "capacity": 8,
+        "upgrade_cost": 1200000
+      },
+      "4": {
+        "capacity": 12,
+        "upgrade_cost": 2500000
+      },
+      "5": {
+        "capacity": 20,
+        "upgrade_cost": 5000000
+      }
+    }
+  },
+  "aquaculture": {
+    "levels": {
+      "1": {
+        "areas": 1,
+        "upgrade_cost": 150000
+      },
+      "2": {
+        "areas": 2,
+        "upgrade_cost": 400000
+      },
+      "3": {
+        "areas": 4,
+        "upgrade_cost": 1000000
+      },
+      "4": {
+        "areas": 6,
+        "upgrade_cost": 2000000
+      }
+    }
+  },
+  "restaurant": {
+    "unlock_level": 4,
+    "levels": {
+      "1": {
+        "tables": 3,
+        "upgrade_cost": null
+      },
+      "2": {
+        "tables": 5,
+        "upgrade_cost": 500000
+      },
+      "3": {
+        "tables": 8,
+        "upgrade_cost": 1500000
+      },
+      "4": {
+        "tables": 12,
+        "upgrade_cost": 4000000
+      },
+      "5": {
+        "tables": 20,
+        "upgrade_cost": 10000000
+      }
+    }
+  },
+  "kitchen": {
+    "levels": {
+      "1": {
+        "cooking_slots": 1,
+        "speed_percent": 100,
+        "upgrade_cost": null
+      },
+      "2": {
+        "cooking_slots": 2,
+        "speed_percent": 85,
+        "upgrade_cost": 800000
+      },
+      "3": {
+        "cooking_slots": 3,
+        "speed_percent": 70,
+        "upgrade_cost": 2000000
+      }
+    }
+  },
+  "staff_salary": {
+    "waiter": 40000,
+    "chef": 80000,
+    "barista": 160000,
+    "manager": 320000
+  }
+}

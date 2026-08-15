@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "entries": {
+    "rice": {
+      "required_level": 1,
+      "seed_item": "rice_seed",
+      "harvest_item": "rice",
+      "growth_time": 30.0,
+      "yield": 3,
+      "exp": 8
+    },
+    "corn": {
+      "required_level": 1,
+      "seed_item": "corn_seed",
+      "harvest_item": "corn",
+      "growth_time": 35.0,
+      "yield": 3,
+      "exp": 9
+    },
+    "tomato": {
+      "required_level": 1,
+      "seed_item": "tomato_seed",
+      "harvest_item": "tomato",
+      "growth_time": 30.0,
+      "yield": 3,
+      "exp": 8
+    },
+    "cabbage": {
+      "required_level": 1,
+      "seed_item": "cabbage_seed",
+      "harvest_item": "cabbage",
+      "growth_time": 35.0,
+      "yield": 2,
+      "exp": 9
+    },
+    "wheat": {
+      "required_level": 2,
+      "seed_item": "wheat_seed",
+      "harvest_item": "wheat",
+      "growth_time": 30.0,
+      "yield": 3,
+      "exp": 10
+    },
+    "tea": {
+      "required_level": 2,
+      "seed_item": "tea_seed",
+      "harvest_item": "tea_leaf",
+      "growth_time": 45.0,
+      "yield": 2,
+      "exp": 12
+    },
+    "coffee": {
+      "required_level": 2,
+      "seed_item": "coffee_seed",
+      "harvest_item": "coffee_bean",
+      "growth_time": 60.0,
+      "yield": 2,
+      "exp": 15
+    }
+  }
+}

@@ -1,9 +1,27 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scripts/world/main_world.gd" id="1_main"]
+[ext_resource type="Script" path="res://scripts/player/player.gd" id="2_player"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_player"]
+radius = 18.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_interaction"]
+radius = 42.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_horizontal_boundary"]
+size = Vector2(1984, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vertical_boundary"]
+size = Vector2(64, 1080)
 
 [node name="main_world" type="Node2D"]
 script = ExtResource("1_main")
+
+[node name="ground" type="Polygon2D" parent="."]
+z_index = -10
+polygon = PackedVector2Array(0, 0, 1920, 0, 1920, 1080, 0, 1080)
+color = Color(0.184, 0.31, 0.184, 1)
 
 [node name="hub" type="Node2D" parent="."]
 
@@ -13,8 +31,53 @@ script = ExtResource("1_main")
 visible = false
 
 [node name="player" type="CharacterBody2D" parent="."]
+position = Vector2(640, 360)
+collision_mask = 2
+script = ExtResource("2_player")
 
-[node name="camera" type="Camera2D" parent="."]
+[node name="body" type="Polygon2D" parent="player"]
+polygon = PackedVector2Array(0, -24, 18, -12, 18, 18, 0, 26, -18, 18, -18, -12)
+color = Color(0.95, 0.78, 0.24, 1)
+
+[node name="collision_shape" type="CollisionShape2D" parent="player"]
+shape = SubResource("CircleShape2D_player")
+
+[node name="interaction_area" type="Area2D" parent="player"]
+position = Vector2(0, 32)
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+
+[node name="collision_shape" type="CollisionShape2D" parent="player/interaction_area"]
+shape = SubResource("CircleShape2D_interaction")
+
+[node name="camera" type="Camera2D" parent="player"]
 enabled = true
+limit_left = 0
+limit_top = 0
+limit_right = 1920
+limit_bottom = 1080
+position_smoothing_enabled = true
+position_smoothing_speed = 8.0
+
+[node name="world_boundaries" type="StaticBody2D" parent="."]
+collision_layer = 2
+collision_mask = 1
+
+[node name="top" type="CollisionShape2D" parent="world_boundaries"]
+position = Vector2(960, -32)
+shape = SubResource("RectangleShape2D_horizontal_boundary")
+
+[node name="bottom" type="CollisionShape2D" parent="world_boundaries"]
+position = Vector2(960, 1112)
+shape = SubResource("RectangleShape2D_horizontal_boundary")
+
+[node name="left" type="CollisionShape2D" parent="world_boundaries"]
+position = Vector2(-32, 540)
+shape = SubResource("RectangleShape2D_vertical_boundary")
+
+[node name="right" type="CollisionShape2D" parent="world_boundaries"]
+position = Vector2(1952, 540)
+shape = SubResource("RectangleShape2D_vertical_boundary")
 
 [node name="ui" type="CanvasLayer" parent="."]

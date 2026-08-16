@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://scripts/world/main_world.gd" id="1_main"]
 [ext_resource type="Script" path="res://scripts/player/player.gd" id="2_player"]
 [ext_resource type="PackedScene" path="res://scenes/farming/farm_tile.tscn" id="3_farm_tile"]
+[ext_resource type="PackedScene" path="res://scenes/animals/animal.tscn" id="4_animal"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_player"]
 radius = 18.0
@@ -51,6 +52,14 @@ tile_id = "farm_05"
 [node name="tile_06" parent="farm" instance=ExtResource("3_farm_tile")]
 position = Vector2(904, 396)
 tile_id = "farm_06"
+
+[node name="animals" type="Node2D" parent="."]
+
+[node name="chicken_01" parent="animals" instance=ExtResource("4_animal")]
+position = Vector2(1080, 320)
+animal_instance_id = "chicken_01"
+animal_id = "chicken"
+animal_color = Color(0.94, 0.84, 0.55, 1)
 
 [node name="restaurant" type="Node2D" parent="."]
 visible = false

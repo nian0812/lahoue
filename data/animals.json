@@ -2,9 +2,12 @@
   "schema_version": 1,
   "entries": {
 	"chicken": {
+	  "animal_id": "chicken",
+	  "housing": "coop",
 	  "required_level": 1,
 	  "purchase_price": 30000,
 	  "lifespan_days": 10,
+	  "production_interval_days": 1,
 	  "daily_product": {
 		"item_id": "egg",
 		"amount": 1,
@@ -17,21 +20,33 @@
 	  }
 	},
 	"cow": {
+	  "animal_id": "cow",
+	  "housing": "cow_barn",
 	  "required_level": 2,
 	  "purchase_price": 150000,
-	  "lifespan_days": null,
+	  "lifespan_days": 10,
+	  "production_interval_days": null,
 	  "daily_product": null,
+	  "end_of_life_product": {
+		"item_id": "beef",
+		"amount": 1,
+		"collect_exp": 15
+	  },
 	  "primary_product": "beef"
 	},
 	"dairy_cow": {
+	  "animal_id": "dairy_cow",
+	  "housing": "cow_barn",
 	  "required_level": 2,
 	  "purchase_price": 200000,
 	  "lifespan_days": null,
+	  "production_interval_days": 1,
 	  "daily_product": {
 		"item_id": "cow_milk",
-		"amount": null,
+		"amount": 1,
 		"collect_exp": 8
 	  },
+	  "end_of_life_product": null,
 	  "primary_product": "cow_milk"
 	}
   }

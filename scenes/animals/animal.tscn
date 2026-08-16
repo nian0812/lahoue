@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/animals/animal.gd" id="1_animal"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_animal"]
+radius = 28.0
+
+[node name="animal" type="Area2D"]
+collision_layer = 4
+collision_mask = 0
+monitoring = false
+script = ExtResource("1_animal")
+
+[node name="body" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-28, -18, 18, -22, 30, -5, 24, 20, -20, 22, -32, 4)
+color = Color(0.92, 0.82, 0.58, 1)
+
+[node name="product_indicator" type="Polygon2D" parent="."]
+visible = false
+position = Vector2(0, -36)
+polygon = PackedVector2Array(0, -8, 8, 0, 0, 8, -8, 0)
+color = Color(1, 0.9, 0.25, 1)
+
+[node name="collision_shape" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_animal")

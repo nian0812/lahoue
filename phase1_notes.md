@@ -16,17 +16,27 @@ This package contains only the agreed phase 1 bootstrap:
 
 No polished UI, final assets, crop scene, animal scene, restaurant gameplay, customer logic, or cooking logic is included yet.
 
-## unresolved design values
+## remaining unresolved design values
 
 The source specification does not define these values, so they are deliberately left unresolved rather than invented:
 
 - starting money: `null` in `progression.json`; technical new-game state currently starts at `0`
-- dairy cow daily milk amount: `null`
 - recipe cooking times: `null`
 - recipe EXP: `null`
 - several seafood/drink/premium recipe ingredient lists: `null`
 
 Before those systems become active, these values should be confirmed and then filled in data.
+
+## phase 4 animal data defaults
+
+The animal foundation keeps livestock balance in `data/animals.json`. Because the
+original cow values were unresolved, Phase 4 uses conservative functional defaults:
+
+- dairy cow: 1 milk per day
+- beef cow: 10-day lifecycle and 1 beef at end of life
+
+These values are gameplay data and can be balanced later without changing the animal
+state machine or save format.
 
 ## test
 

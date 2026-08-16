@@ -183,3 +183,23 @@ func get_warehouse_capacity(level: int) -> int:
 
 	var level_data: Dictionary = level_data_value as Dictionary
 	return int(level_data.get("capacity", 0))
+
+
+func get_animal_housing_capacity(housing_id: String, level: int = 1) -> int:
+	var progression: Dictionary = get_dataset("progression")
+	if progression.is_empty():
+		return 0
+
+	var housing_value: Variant = progression.get(housing_id, {})
+	if typeof(housing_value) != TYPE_DICTIONARY:
+		return 0
+
+	var levels_value: Variant = (housing_value as Dictionary).get("levels", {})
+	if typeof(levels_value) != TYPE_DICTIONARY:
+		return 0
+
+	var level_value: Variant = (levels_value as Dictionary).get(str(level), {})
+	if typeof(level_value) != TYPE_DICTIONARY:
+		return 0
+
+	return int((level_value as Dictionary).get("capacity", 0))

@@ -11,6 +11,7 @@ const backup_path: String = "user://savegame.backup.json"
 const temporary_save_path: String = "user://savegame.tmp.json"
 const save_version: int = 1
 const max_safe_json_integer: int = 9007199254740991
+const animal_script: Script = preload("res://scripts/animals/animal.gd")
 
 
 func has_save() -> bool:
@@ -248,9 +249,16 @@ func _validate_save_state(state: Dictionary) -> Dictionary:
 	if not farming_error.is_empty():
 		return _validation_error(farming_error)
 
+	var animals_initialized_value: Variant = state.get("animals_initialized", false)
+	if typeof(animals_initialized_value) != TYPE_BOOL:
+		return _validation_error("field 'animals_initialized' must be a boolean")
+	normalized_state["animals_initialized"] = bool(animals_initialized_value)
+
+	var animal_error: String = _validate_animal_state(state, normalized_state)
+	if not animal_error.is_empty():
+		return _validation_error(animal_error)
+
 	var dictionary_fields: Array[String] = [
-		"animals",
-		"animal_age",
 		"aquaculture",
 		"staff"
 	]
@@ -350,6 +358,380 @@ func _validate_farming_state(state: Dictionary, normalized_state: Dictionary) ->
 	normalized_state["crops"] = normalized_crops
 	normalized_state["crop_growth"] = normalized_growth
 	return ""
+
+
+func _validate_animal_state(state: Dictionary, normalized_state: Dictionary) -> String:
+	var animals_value: Variant = state.get("animals")
+	var age_value: Variant = state.get("animal_age")
+	if typeof(animals_value) != TYPE_DICTIONARY:
+		return "field 'animals' must be a dictionary"
+	if typeof(age_value) != TYPE_DICTIONARY:
+		return "field 'animal_age' must be a dictionary"
+
+	var animals: Dictionary = animals_value as Dictionary
+	var animal_age: Dictionary = age_value as Dictionary
+	var normalized_animals: Dictionary = {}
+	var normalized_age: Dictionary = {}
+	var saved_day: int = int(normalized_state.get("day", 1))
+
+	for instance_id_value: Variant in animals:
+		if typeof(instance_id_value) != TYPE_STRING:
+			return "animal instance ids must be strings"
+
+		var instance_id: String = String(instance_id_value)
+		if (
+			instance_id.is_empty()
+			or instance_id != instance_id.to_lower()
+			or not instance_id.is_valid_identifier()
+		):
+			return "animal instance id '%s' is invalid" % instance_id
+		if not animal_age.has(instance_id):
+			return "missing animal_age for '%s'" % instance_id
+
+		var saved_animal_value: Variant = animals[instance_id_value]
+		if typeof(saved_animal_value) != TYPE_DICTIONARY:
+			return "animal state for '%s' must be a dictionary" % instance_id
+
+		var saved_animal: Dictionary = saved_animal_value as Dictionary
+		var animal_id_value: Variant = saved_animal.get("animal_id")
+		if typeof(animal_id_value) != TYPE_STRING or String(animal_id_value).is_empty():
+			return "animal_id for '%s' must be a non-empty string" % instance_id
+
+		var animal_id: String = String(animal_id_value)
+		var animal_data_value: Variant = data_manager.get_entry("animals", animal_id)
+		if typeof(animal_data_value) != TYPE_DICTIONARY:
+			return "animal '%s' references unknown animal_id '%s'" % [instance_id, animal_id]
+
+		var animal_data: Dictionary = animal_data_value as Dictionary
+		var definition_error: String = _validate_animal_definition(animal_id, animal_data)
+		if not definition_error.is_empty():
+			return definition_error
+
+		var age_result: Dictionary = _read_integer_value(
+			animal_age[instance_id],
+			"age for animal '%s'" % instance_id,
+			0
+		)
+		if not bool(age_result.get("ok", false)):
+			return String(age_result.get("error", "invalid animal age"))
+		var age_days: int = int(age_result.get("value", 0))
+
+		var lifespan_days: int = 0
+		var lifespan_value: Variant = animal_data.get("lifespan_days")
+		if lifespan_value != null:
+			lifespan_days = int(lifespan_value)
+			if age_days > lifespan_days:
+				return "age for animal '%s' exceeds its lifespan" % instance_id
+
+		var position_value: Variant = saved_animal.get("position")
+		if typeof(position_value) != TYPE_DICTIONARY:
+			return "position for animal '%s' must be a dictionary" % instance_id
+		var saved_position: Dictionary = position_value as Dictionary
+		var position_result: Dictionary = _validate_animal_position(saved_position, instance_id)
+		if not bool(position_result.get("ok", false)):
+			return String(position_result.get("error", "invalid animal position"))
+
+		var state_value: Variant = saved_animal.get("state")
+		if typeof(state_value) != TYPE_STRING:
+			return "state for animal '%s' must be a string" % instance_id
+		var animal_state: String = String(state_value)
+		if not animal_script.is_valid_state(animal_state):
+			return "state for animal '%s' is invalid" % instance_id
+
+		var timer_value: Variant = saved_animal.get("production_timer")
+		if typeof(timer_value) != TYPE_INT and typeof(timer_value) != TYPE_FLOAT:
+			return "production_timer for animal '%s' must be a number" % instance_id
+		var production_timer: float = float(timer_value)
+		if not is_finite(production_timer) or production_timer < 0.0:
+			return "production_timer for animal '%s' is invalid" % instance_id
+
+		var collected_value: Variant = saved_animal.get("product_collected")
+		var end_created_value: Variant = saved_animal.get("end_product_created")
+		if typeof(collected_value) != TYPE_BOOL:
+			return "product_collected for animal '%s' must be a boolean" % instance_id
+		if typeof(end_created_value) != TYPE_BOOL:
+			return "end_product_created for animal '%s' must be a boolean" % instance_id
+
+		var processed_result: Dictionary = _read_integer_value(
+			saved_animal.get("last_processed_day"),
+			"last_processed_day for animal '%s'" % instance_id,
+			0
+		)
+		if not bool(processed_result.get("ok", false)):
+			return String(processed_result.get("error", "invalid last_processed_day"))
+		var last_processed_day: int = int(processed_result.get("value", 0))
+		if last_processed_day > saved_day:
+			return "last_processed_day for animal '%s' exceeds the saved day" % instance_id
+		if age_days > last_processed_day:
+			return "age for animal '%s' exceeds its processed-day count" % instance_id
+
+		var daily_product_value: Variant = animal_data.get("daily_product")
+		if typeof(daily_product_value) == TYPE_DICTIONARY:
+			var interval_value: Variant = animal_data.get("production_interval_days")
+			var production_interval: float = float(interval_value)
+			if production_timer >= production_interval:
+				return "production_timer for animal '%s' reached an unprocessed cycle" % instance_id
+		elif not is_zero_approx(production_timer):
+			return "animal '%s' has a production timer without a daily product" % instance_id
+
+		var pending_value: Variant = saved_animal.get("pending_products")
+		if typeof(pending_value) != TYPE_ARRAY:
+			return "pending_products for animal '%s' must be an array" % instance_id
+		var pending_products: Array = pending_value as Array
+		if pending_products.size() > 2:
+			return "animal '%s' has too many pending products" % instance_id
+
+		var normalized_pending: Array = []
+		var product_kinds_seen: Dictionary = {}
+		for product_value: Variant in pending_products:
+			var product_result: Dictionary = _validate_pending_animal_product(
+				product_value,
+				animal_data,
+				instance_id,
+				last_processed_day
+			)
+			if not bool(product_result.get("ok", false)):
+				return String(product_result.get("error", "invalid pending animal product"))
+
+			var normalized_product: Dictionary = product_result.get("value", {}) as Dictionary
+			var product_kind: String = String(normalized_product.get("kind", ""))
+			if product_kinds_seen.has(product_kind):
+				return "animal '%s' has duplicate pending '%s' products" % [
+					instance_id,
+					product_kind
+				]
+			product_kinds_seen[product_kind] = true
+			normalized_pending.append(normalized_product)
+
+		var product_collected: bool = bool(collected_value)
+		if product_collected != normalized_pending.is_empty():
+			return "product_collected for animal '%s' does not match pending products" % instance_id
+
+		var lifecycle_complete: bool = lifespan_days > 0 and age_days >= lifespan_days
+		var end_product_created: bool = bool(end_created_value)
+		if lifecycle_complete != end_product_created:
+			return "end-of-life status for animal '%s' is inconsistent" % instance_id
+		if product_kinds_seen.has(animal_script.product_kind_end_of_life) and not lifecycle_complete:
+			return "animal '%s' has an end-of-life product before its lifecycle completed" % instance_id
+		if (
+			lifecycle_complete
+			and product_kinds_seen.has(animal_script.product_kind_daily)
+			and not product_kinds_seen.has(animal_script.product_kind_end_of_life)
+		):
+			return "animal '%s' lost its pending end-of-life product" % instance_id
+
+		var expected_state: String = animal_script.state_active
+		if lifecycle_complete:
+			expected_state = (
+				animal_script.state_completed
+				if normalized_pending.is_empty()
+				else animal_script.state_end_of_life
+			)
+		elif not normalized_pending.is_empty():
+			expected_state = animal_script.state_product_ready
+		if animal_state != expected_state:
+			return "state for animal '%s' is inconsistent with its lifecycle" % instance_id
+
+		normalized_animals[instance_id] = {
+			"animal_id": animal_id,
+			"position": position_result.get("value", {}),
+			"state": animal_state,
+			"production_timer": production_timer,
+			"product_collected": product_collected,
+			"last_processed_day": last_processed_day,
+			"pending_products": normalized_pending,
+			"end_product_created": end_product_created
+		}
+		normalized_age[instance_id] = age_days
+
+	for instance_id_value: Variant in animal_age:
+		if typeof(instance_id_value) != TYPE_STRING or not animals.has(String(instance_id_value)):
+			return "animal_age contains an orphan entry"
+
+	normalized_state["animals"] = normalized_animals
+	normalized_state["animal_age"] = normalized_age
+	return ""
+
+
+func _validate_animal_definition(animal_id: String, animal_data: Dictionary) -> String:
+	if String(animal_data.get("animal_id", "")) != animal_id:
+		return "animal data for '%s' has a mismatched animal_id" % animal_id
+
+	var level_result: Dictionary = _read_integer_value(
+		animal_data.get("required_level"),
+		"required_level for animal '%s'" % animal_id,
+		1
+	)
+	if not bool(level_result.get("ok", false)):
+		return String(level_result.get("error", "invalid animal required_level"))
+
+	var price_result: Dictionary = _read_integer_value(
+		animal_data.get("purchase_price"),
+		"purchase_price for animal '%s'" % animal_id,
+		0
+	)
+	if not bool(price_result.get("ok", false)):
+		return String(price_result.get("error", "invalid animal purchase_price"))
+
+	var lifespan_value: Variant = animal_data.get("lifespan_days")
+	if lifespan_value != null:
+		var lifespan_result: Dictionary = _read_integer_value(
+			lifespan_value,
+			"lifespan_days for animal '%s'" % animal_id,
+			1
+		)
+		if not bool(lifespan_result.get("ok", false)):
+			return String(lifespan_result.get("error", "invalid animal lifespan"))
+
+	var daily_product_value: Variant = animal_data.get("daily_product")
+	var end_product_value: Variant = animal_data.get("end_of_life_product")
+	if daily_product_value != null:
+		var daily_error: String = _validate_animal_product_definition(
+			daily_product_value,
+			"daily_product for animal '%s'" % animal_id
+		)
+		if not daily_error.is_empty():
+			return daily_error
+
+		var interval_value: Variant = animal_data.get("production_interval_days")
+		if typeof(interval_value) != TYPE_INT and typeof(interval_value) != TYPE_FLOAT:
+			return "production_interval_days for animal '%s' must be a number" % animal_id
+		var production_interval: float = float(interval_value)
+		if not is_finite(production_interval) or production_interval <= 0.0:
+			return "production_interval_days for animal '%s' must be greater than zero" % animal_id
+
+	if end_product_value != null:
+		var end_error: String = _validate_animal_product_definition(
+			end_product_value,
+			"end_of_life_product for animal '%s'" % animal_id
+		)
+		if not end_error.is_empty():
+			return end_error
+	if lifespan_value != null and end_product_value == null:
+		return "finite-lifespan animal '%s' has no end_of_life_product" % animal_id
+	if daily_product_value == null and end_product_value == null:
+		return "animal '%s' has no configured product" % animal_id
+
+	return ""
+
+
+func _validate_animal_product_definition(product_value: Variant, label: String) -> String:
+	if typeof(product_value) != TYPE_DICTIONARY:
+		return "%s must be a dictionary" % label
+
+	var product: Dictionary = product_value as Dictionary
+	var item_id_value: Variant = product.get("item_id")
+	if typeof(item_id_value) != TYPE_STRING or String(item_id_value).is_empty():
+		return "%s has an invalid item_id" % label
+	if data_manager.get_entry("items", String(item_id_value)) == null:
+		return "%s references an unknown item" % label
+
+	var amount_result: Dictionary = _read_integer_value(
+		product.get("amount"),
+		"amount in %s" % label,
+		1
+	)
+	if not bool(amount_result.get("ok", false)):
+		return String(amount_result.get("error", "invalid animal product amount"))
+
+	var exp_result: Dictionary = _read_integer_value(
+		product.get("collect_exp"),
+		"collect_exp in %s" % label,
+		0
+	)
+	if not bool(exp_result.get("ok", false)):
+		return String(exp_result.get("error", "invalid animal product EXP"))
+
+	return ""
+
+
+func _validate_animal_position(position: Dictionary, instance_id: String) -> Dictionary:
+	var normalized_position: Dictionary = {}
+	for axis: String in ["x", "y"]:
+		var axis_value: Variant = position.get(axis)
+		if typeof(axis_value) != TYPE_INT and typeof(axis_value) != TYPE_FLOAT:
+			return _value_error("position.%s for animal '%s' must be a number" % [axis, instance_id])
+		var axis_number: float = float(axis_value)
+		if not is_finite(axis_number):
+			return _value_error("position.%s for animal '%s' must be finite" % [axis, instance_id])
+		normalized_position[axis] = axis_number
+
+	return {
+		"ok": true,
+		"value": normalized_position,
+		"error": ""
+	}
+
+
+func _validate_pending_animal_product(
+	product_value: Variant,
+	animal_data: Dictionary,
+	instance_id: String,
+	last_processed_day: int
+) -> Dictionary:
+	if typeof(product_value) != TYPE_DICTIONARY:
+		return _value_error("pending product for animal '%s' must be a dictionary" % instance_id)
+
+	var product: Dictionary = product_value as Dictionary
+	var kind_value: Variant = product.get("kind")
+	if typeof(kind_value) != TYPE_STRING:
+		return _value_error("pending product kind for animal '%s' must be a string" % instance_id)
+	var kind: String = String(kind_value)
+	if not animal_script.is_valid_product_kind(kind):
+		return _value_error("pending product kind for animal '%s' is invalid" % instance_id)
+
+	var definition_field: String = (
+		"daily_product"
+		if kind == animal_script.product_kind_daily
+		else "end_of_life_product"
+	)
+	var definition_value: Variant = animal_data.get(definition_field)
+	if typeof(definition_value) != TYPE_DICTIONARY:
+		return _value_error("animal '%s' has no configured '%s' product" % [instance_id, kind])
+	var definition: Dictionary = definition_value as Dictionary
+
+	var item_id_value: Variant = product.get("item_id")
+	if typeof(item_id_value) != TYPE_STRING or String(item_id_value) != String(definition.get("item_id", "")):
+		return _value_error("pending product item for animal '%s' does not match data" % instance_id)
+
+	var amount_result: Dictionary = _read_integer_value(
+		product.get("amount"),
+		"pending product amount for animal '%s'" % instance_id,
+		1
+	)
+	if not bool(amount_result.get("ok", false)):
+		return amount_result
+
+	var exp_result: Dictionary = _read_integer_value(
+		product.get("collect_exp"),
+		"pending product EXP for animal '%s'" % instance_id,
+		0
+	)
+	if not bool(exp_result.get("ok", false)):
+		return exp_result
+
+	var produced_result: Dictionary = _read_integer_value(
+		product.get("produced_day"),
+		"produced_day for animal '%s'" % instance_id,
+		1
+	)
+	if not bool(produced_result.get("ok", false)):
+		return produced_result
+	var produced_day: int = int(produced_result.get("value", 0))
+	if produced_day > last_processed_day:
+		return _value_error("pending product for animal '%s' was produced after its processed day" % instance_id)
+
+	return {
+		"ok": true,
+		"value": {
+			"item_id": String(item_id_value),
+			"amount": int(amount_result.get("value", 0)),
+			"collect_exp": int(exp_result.get("value", 0)),
+			"kind": kind,
+			"produced_day": produced_day
+		},
+		"error": ""
+	}
 
 
 func _read_integer_field(state: Dictionary, field: String, minimum: int) -> Dictionary:
@@ -511,8 +893,20 @@ func _build_save_state() -> Dictionary:
 		if typeof(growth_value) == TYPE_DICTIONARY
 		else growth_value
 	)
-	state["animals"] = {}
-	state["animal_age"] = {}
+	var animal_state: Dictionary = _get_animal_save_state()
+	var animals_value: Variant = animal_state.get("animals", {})
+	var animal_age_value: Variant = animal_state.get("animal_age", {})
+	state["animals"] = (
+		(animals_value as Dictionary).duplicate(true)
+		if typeof(animals_value) == TYPE_DICTIONARY
+		else animals_value
+	)
+	state["animal_age"] = (
+		(animal_age_value as Dictionary).duplicate(true)
+		if typeof(animal_age_value) == TYPE_DICTIONARY
+		else animal_age_value
+	)
+	state["animals_initialized"] = true
 	state["aquaculture"] = {}
 	state["coop_level"] = 1
 	state["cow_barn_level"] = 1
@@ -531,6 +925,7 @@ func _apply_save_state(state: Dictionary) -> void:
 	game_manager.apply_save_state(state)
 	inventory_manager.apply_save_state(state)
 	_apply_farming_save_state(state)
+	_apply_animal_save_state(state)
 
 
 func create_new_game() -> void:
@@ -547,6 +942,11 @@ func create_new_game() -> void:
 	_apply_farming_save_state({
 		"crops": {},
 		"crop_growth": {}
+	})
+	_apply_animal_save_state({
+		"animals": {},
+		"animal_age": {},
+		"animals_initialized": false
 	})
 
 
@@ -572,6 +972,30 @@ func _apply_farming_save_state(state: Dictionary) -> void:
 	var current_scene: Node = get_tree().current_scene
 	if current_scene != null and current_scene.has_method("apply_farming_save_state"):
 		current_scene.call("apply_farming_save_state", state)
+
+
+func _get_animal_save_state() -> Dictionary:
+	var current_scene: Node = get_tree().current_scene
+	if current_scene == null or not current_scene.has_method("get_animal_save_state"):
+		return {
+			"animals": {},
+			"animal_age": {}
+		}
+
+	var animal_state_value: Variant = current_scene.call("get_animal_save_state")
+	if typeof(animal_state_value) != TYPE_DICTIONARY:
+		return {
+			"animals": {},
+			"animal_age": {}
+		}
+
+	return animal_state_value as Dictionary
+
+
+func _apply_animal_save_state(state: Dictionary) -> void:
+	var current_scene: Node = get_tree().current_scene
+	if current_scene != null and current_scene.has_method("apply_animal_save_state"):
+		current_scene.call("apply_animal_save_state", state)
 
 
 func _fail_save(reason: String) -> bool:

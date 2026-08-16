@@ -60,6 +60,14 @@ validated ingredient data. Recipes with unresolved ingredients remain unavailabl
 This is a technical gameplay default, not final balance, and can be changed in
 `data/recipes.json` without changing the cooking state machine or save format.
 
+## phase 10 staff data defaults
+
+The source specification defines the waiter salary but does not define movement or
+table-cleaning timing. Phase 10 reuses `progression.staff_salary.waiter` as the
+one-time foundation hiring cost and stores temporary movement and cleaning values in
+`data/staff.json`. These values can be rebalanced without changing staff jobs or the
+save format; recurring payroll remains a later design dependency.
+
 ## test
 
 1. Open `project.godot` in Godot 4.x.

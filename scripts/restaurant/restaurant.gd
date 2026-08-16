@@ -10,6 +10,9 @@ signal food_ready(customer_id: String, recipe_id: String)
 signal order_served(customer_id: String, recipe_id: String)
 signal payment_collected(customer_id: String, recipe_id: String, total_revenue: int)
 signal cooking_canceled(customer_id: String, recipe_id: String)
+signal staff_hired(staff_id: String, staff_type_id: String, cost: int)
+signal staff_job_assigned(staff_id: String, job_type: String, target_id: String)
+signal staff_job_released(staff_id: String, job_type: String, target_id: String, succeeded: bool)
 
 const state_locked: String = "locked"
 const state_available: String = "available"
@@ -24,13 +27,16 @@ const valid_cooking_states: Array[String] = [
 	cooking_state_paid,
 ]
 const customer_scene: PackedScene = preload("res://scenes/restaurant/customer.tscn")
+const staff_scene: PackedScene = preload("res://scenes/restaurant/staff.tscn")
 const customer_script: Script = preload("res://scripts/restaurant/customer.gd")
 const restaurant_table_script: Script = preload("res://scripts/restaurant/restaurant_table.gd")
+const staff_script: Script = preload("res://scripts/restaurant/staff.gd")
 
 @onready var building_visual: Polygon2D = $building_visual
 @onready var interaction_area: Area2D = $interaction_area
 @onready var tables: Node2D = $tables
 @onready var customers: Node2D = $customers
+@onready var staffs: Node2D = $staffs
 
 var current_state: String = state_locked
 var restaurant_level: int = 0
@@ -38,6 +44,8 @@ var kitchen_level: int = 0
 var tables_by_id: Dictionary = {}
 var customers_by_id: Dictionary = {}
 var cooking_jobs: Dictionary = {}
+var staffs_by_id: Dictionary = {}
+var staff_job_claims: Dictionary = {}
 var menu_entries: Dictionary = {}
 var is_configured: bool = false
 var customer_sequence: int = 0
@@ -56,6 +64,7 @@ func _process(delta: float) -> void:
 	if not is_available() or not game_manager.gameplay_active or get_tree().paused:
 		return
 	advance_cooking(delta)
+	advance_staff(delta)
 	var settings: Dictionary = data_manager.get_customer_settings()
 	var spawn_interval: float = float(settings.get("spawn_interval_seconds", 0.0))
 	if spawn_interval <= 0.0:
@@ -91,6 +100,7 @@ func refresh_availability() -> void:
 		kitchen_level = 0
 		current_state = state_locked
 		menu_entries.clear()
+		_clear_staff()
 		_clear_customers()
 		cooking_jobs.clear()
 		customer_spawn_elapsed = 0.0
@@ -222,7 +232,8 @@ func finish_customer_meal(customer_id: String) -> bool:
 		return false
 	job["state"] = cooking_state_paid
 	job["payment_collected"] = true
-	if not bool(customer.call("finish_eating")):
+	var requires_cleanup: bool = _has_cleanup_staff()
+	if not bool(customer.call("finish_eating", requires_cleanup)):
 		job["state"] = cooking_state_served
 		job["payment_collected"] = false
 		return false
@@ -240,6 +251,129 @@ func get_cooking_job(customer_id: String) -> Dictionary:
 	if typeof(job_value) != TYPE_DICTIONARY:
 		return {}
 	return (job_value as Dictionary).duplicate(true)
+
+
+func hire_staff(new_staff_id: String, staff_type_id: String = "") -> Node:
+	if not is_available() or not staff_script.is_valid_staff_id(new_staff_id) or staffs_by_id.has(new_staff_id):
+		return null
+	if staff_type_id.is_empty():
+		staff_type_id = String(data_manager.get_staff_settings().get("default_staff_type", ""))
+	var staff_data: Dictionary = data_manager.get_staff_type(staff_type_id)
+	if staff_data.is_empty() or game_manager.level < int(staff_data.get("unlock_level", 0)):
+		return null
+	var hire_cost: int = int(staff_data.get("hire_cost", 0))
+	if hire_cost <= 0 or not game_manager.spend_money(hire_cost):
+		return null
+	var staff: Node = staff_scene.instantiate()
+	staff.name = new_staff_id
+	if not bool(staff.call("configure", new_staff_id, staff_type_id, self, $staff_home_marker.position)):
+		staff.free()
+		game_manager.add_money(hire_cost)
+		return null
+	staff.position = $staff_home_marker.position
+	staffs.add_child(staff)
+	staffs_by_id[new_staff_id] = staff
+	staff_hired.emit(new_staff_id, staff_type_id, hire_cost)
+	return staff
+
+
+func assign_staff_job(staff_id: String, job_type: String, target_id: String) -> bool:
+	var staff: Node = get_staff(staff_id)
+	if staff == null or not staff_script.is_valid_job_type(job_type):
+		return false
+	if not bool(staff.call("can_accept_job", job_type)) or not _is_staff_job_valid(job_type, target_id):
+		return false
+	var job_key: String = _get_staff_job_key(job_type, target_id)
+	if staff_job_claims.has(job_key):
+		return false
+	var destination: Vector2 = _get_staff_job_destination(job_type, target_id)
+	staff_job_claims[job_key] = staff_id
+	if not bool(staff.call("assign_job", {"job_type": job_type, "target_id": target_id}, destination)):
+		staff_job_claims.erase(job_key)
+		return false
+	staff_job_assigned.emit(staff_id, job_type, target_id)
+	return true
+
+
+func execute_staff_job(staff_id: String) -> bool:
+	var staff: Node = get_staff(staff_id)
+	if staff == null or not [
+		staff_script.state_moving,
+		staff_script.state_handling_order,
+		staff_script.state_delivering_food,
+	].has(String(staff.get("current_state"))):
+		return false
+	var job: Dictionary = staff.get("active_job") as Dictionary
+	var job_type: String = String(job.get("job_type", ""))
+	var target_id: String = String(job.get("target_id", ""))
+	var job_key: String = _get_staff_job_key(job_type, target_id)
+	if String(staff_job_claims.get(job_key, "")) != staff_id:
+		_release_staff_job(staff, false)
+		return false
+	if String(staff.get("current_state")) == staff_script.state_moving and not bool(staff.call("begin_current_job")):
+		_release_staff_job(staff, false)
+		return false
+	if not _is_staff_job_valid(job_type, target_id):
+		_release_staff_job(staff, false)
+		return false
+	var succeeded: bool = false
+	match job_type:
+		staff_script.job_cook:
+			succeeded = start_cooking(target_id)
+		staff_script.job_serve:
+			succeeded = serve_order(target_id)
+		staff_script.job_payment:
+			succeeded = finish_customer_meal(target_id)
+		staff_script.job_clean:
+			return true
+		_:
+			succeeded = false
+	_release_staff_job(staff, succeeded)
+	return succeeded
+
+
+func complete_staff_cleaning(staff_id: String) -> bool:
+	var staff: Node = get_staff(staff_id)
+	if staff == null or String(staff.get("current_state")) != staff_script.state_cleaning_table:
+		return false
+	var job: Dictionary = staff.get("active_job") as Dictionary
+	var target_id: String = String(job.get("target_id", ""))
+	var job_key: String = _get_staff_job_key(staff_script.job_clean, target_id)
+	if String(staff_job_claims.get(job_key, "")) != staff_id:
+		_release_staff_job(staff, false)
+		return false
+	var table: Node = tables_by_id.get(target_id) as Node
+	var succeeded: bool = (
+		table != null
+		and String(table.get("current_state")) == restaurant_table_script.state_needs_cleanup
+		and bool(table.call("release_table"))
+	)
+	_release_staff_job(staff, succeeded)
+	return succeeded
+
+
+func advance_staff(delta: float) -> bool:
+	if not is_available() or not is_finite(delta) or delta <= 0.0:
+		return false
+	var advanced: bool = false
+	for staff_value: Variant in staffs_by_id.values():
+		advanced = bool(staff_value.call("advance", delta)) or advanced
+	return advanced
+
+
+func get_staff(staff_id: String) -> Node:
+	return staffs_by_id.get(staff_id) as Node
+
+
+func has_staff(staff_id: String) -> bool:
+	return staffs_by_id.has(staff_id)
+
+
+func mark_customer_table_for_cleanup(customer_id: String, table_id: String) -> bool:
+	var table: Node = tables_by_id.get(table_id) as Node
+	if table == null or String(table.get("occupant_id")) != customer_id:
+		return false
+	return bool(table.call("mark_needs_cleanup"))
 
 
 static func is_valid_cooking_state(value: String) -> bool:
@@ -290,6 +424,7 @@ func remove_customer(customer_id: String) -> bool:
 	var customer: Node = customers_by_id.get(customer_id) as Node
 	if customer == null:
 		return false
+	_cancel_staff_jobs_for_target(customer_id)
 	var assigned_table_id: String = String(customer.get("table_id"))
 	if not assigned_table_id.is_empty():
 		release_customer_table(customer_id, assigned_table_id)
@@ -328,6 +463,10 @@ func get_save_state() -> Dictionary:
 	for customer_id_value: Variant in customers_by_id:
 		var customer_id: String = String(customer_id_value)
 		customer_states[customer_id] = customers_by_id[customer_id].call("get_save_state")
+	var staff_states: Dictionary = {}
+	for staff_id_value: Variant in staffs_by_id:
+		var staff_id: String = String(staff_id_value)
+		staff_states[staff_id] = staffs_by_id[staff_id].call("get_save_state")
 	return {
 		"restaurant_level": restaurant_level,
 		"kitchen_level": kitchen_level,
@@ -336,12 +475,14 @@ func get_save_state() -> Dictionary:
 		"restaurant_customer_sequence": customer_sequence,
 		"restaurant_spawn_elapsed": customer_spawn_elapsed,
 		"restaurant_cooking": cooking_jobs.duplicate(true),
+		"staff": staff_states,
 	}
 
 
 func apply_save_state(saved_state: Dictionary) -> void:
 	restaurant_level = int(saved_state.get("restaurant_level", 0))
 	kitchen_level = int(saved_state.get("kitchen_level", 0))
+	_clear_staff()
 	_clear_customers()
 	cooking_jobs.clear()
 	_reset_tables()
@@ -389,6 +530,7 @@ func apply_save_state(saved_state: Dictionary) -> void:
 			var job_value: Variant = (saved_cooking_value as Dictionary)[customer_id_value]
 			if typeof(job_value) == TYPE_DICTIONARY:
 				cooking_jobs[customer_id] = (job_value as Dictionary).duplicate(true)
+	_restore_staff(saved_state.get("staff", {}) as Dictionary)
 
 
 func has_table(table_id: String) -> bool:
@@ -417,6 +559,7 @@ func _validate_configuration() -> bool:
 		and not data_manager.get_customer_settings().is_empty()
 		and data_manager.get_kitchen_cooking_slots(1) > 0
 		and data_manager.get_kitchen_speed_percent(1) > 0
+		and not data_manager.get_staff_settings().is_empty()
 	)
 
 
@@ -514,6 +657,100 @@ func _get_active_cooking_count() -> int:
 	return count
 
 
+func _is_staff_job_valid(job_type: String, target_id: String) -> bool:
+	if target_id.is_empty():
+		return false
+	if job_type == staff_script.job_clean:
+		var table: Node = tables_by_id.get(target_id) as Node
+		return table != null and String(table.get("current_state")) == restaurant_table_script.state_needs_cleanup
+	var customer: Node = get_customer(target_id)
+	if customer == null:
+		return false
+	var customer_state: String = String(customer.get("current_state"))
+	var order: Dictionary = customer.get("order") as Dictionary
+	var cooking_job: Dictionary = cooking_jobs.get(target_id, {}) as Dictionary
+	match job_type:
+		staff_script.job_cook:
+			return (
+				customer_state == customer_script.state_waiting_food
+				and String(order.get("state", "")) == customer_script.order_state_pending
+				and cooking_job.is_empty()
+			)
+		staff_script.job_serve:
+			return String(cooking_job.get("state", "")) == cooking_state_ready
+		staff_script.job_payment:
+			return (
+				customer_state == customer_script.state_eating
+				and String(cooking_job.get("state", "")) == cooking_state_served
+				and not bool(cooking_job.get("payment_collected", false))
+			)
+	return false
+
+
+func _get_staff_job_destination(job_type: String, target_id: String) -> Vector2:
+	if job_type == staff_script.job_cook:
+		return $kitchen_station_marker.position
+	if job_type == staff_script.job_clean:
+		var clean_table: Node = tables_by_id.get(target_id) as Node
+		return clean_table.position if clean_table != null else $staff_home_marker.position
+	var customer: Node = get_customer(target_id)
+	if customer == null:
+		return $staff_home_marker.position
+	var table: Node = tables_by_id.get(String(customer.get("table_id"))) as Node
+	return table.position if table != null else customer.position
+
+
+func _get_staff_job_key(job_type: String, target_id: String) -> String:
+	return "%s:%s" % [job_type, target_id]
+
+
+func _release_staff_job(staff: Node, succeeded: bool) -> void:
+	if staff == null:
+		return
+	var job: Dictionary = (staff.get("active_job") as Dictionary).duplicate(true)
+	var staff_id: String = String(staff.get("staff_id"))
+	var job_type: String = String(job.get("job_type", ""))
+	var target_id: String = String(job.get("target_id", ""))
+	staff_job_claims.erase(_get_staff_job_key(job_type, target_id))
+	staff.call("finish_current_job", succeeded)
+	staff_job_released.emit(staff_id, job_type, target_id, succeeded)
+
+
+func _has_cleanup_staff() -> bool:
+	for staff_value: Variant in staffs_by_id.values():
+		if (staff_value.get("allowed_jobs") as Array).has(staff_script.job_clean):
+			return true
+	return false
+
+
+func _restore_staff(saved_staff: Dictionary) -> void:
+	for staff_id_value: Variant in saved_staff:
+		var staff_id: String = String(staff_id_value)
+		var staff_state_value: Variant = saved_staff[staff_id_value]
+		if typeof(staff_state_value) != TYPE_DICTIONARY:
+			continue
+		var staff_state: Dictionary = staff_state_value as Dictionary
+		var staff: Node = staff_scene.instantiate()
+		staff.name = staff_id
+		staff.set("staff_id", staff_id)
+		staffs.add_child(staff)
+		var active_job: Dictionary = staff_state.get("active_job", {}) as Dictionary
+		var destination: Vector2 = $staff_home_marker.position
+		if not active_job.is_empty():
+			destination = _get_staff_job_destination(
+				String(active_job.get("job_type", "")),
+				String(active_job.get("target_id", ""))
+			)
+		if not bool(staff.call("restore_saved_state", staff_state, self, destination)):
+			staff.free()
+			continue
+		staffs_by_id[staff_id] = staff
+		if not active_job.is_empty():
+			var job_type: String = String(active_job.get("job_type", ""))
+			var target_id: String = String(active_job.get("target_id", ""))
+			staff_job_claims[_get_staff_job_key(job_type, target_id)] = staff_id
+
+
 func _connect_customer_signals(customer: Node) -> void:
 	var callback: Callable = _on_customer_order_failed
 	if not customer.is_connected("order_failed", callback):
@@ -521,6 +758,7 @@ func _connect_customer_signals(customer: Node) -> void:
 
 
 func _on_customer_order_failed(customer_id: String, order: Dictionary, _reason: String) -> void:
+	_cancel_staff_jobs_for_target(customer_id)
 	var job: Dictionary = cooking_jobs.get(customer_id, {}) as Dictionary
 	if job.is_empty():
 		return
@@ -528,6 +766,13 @@ func _on_customer_order_failed(customer_id: String, order: Dictionary, _reason: 
 		return
 	cooking_jobs.erase(customer_id)
 	cooking_canceled.emit(customer_id, String(job.get("recipe_id", "")))
+
+
+func _cancel_staff_jobs_for_target(target_id: String) -> void:
+	for staff_value: Variant in staffs_by_id.values():
+		var active_job: Dictionary = staff_value.get("active_job") as Dictionary
+		if String(active_job.get("target_id", "")) == target_id:
+			_release_staff_job(staff_value as Node, false)
 
 
 func _find_available_table() -> Node:
@@ -554,6 +799,14 @@ func _clear_customers() -> void:
 		if customer_value != null and is_instance_valid(customer_value):
 			customer_value.free()
 	customers_by_id.clear()
+
+
+func _clear_staff() -> void:
+	for staff_value: Variant in staffs_by_id.values():
+		if staff_value != null and is_instance_valid(staff_value):
+			staff_value.free()
+	staffs_by_id.clear()
+	staff_job_claims.clear()
 
 
 func _on_level_changed(_level: int) -> void:

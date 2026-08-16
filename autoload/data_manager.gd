@@ -10,6 +10,7 @@ const data_paths: Dictionary = {
 	"aquaculture": "res://data/aquaculture.json",
 	"recipes": "res://data/recipes.json",
 	"customers": "res://data/customers.json",
+	"staff": "res://data/staff.json",
 	"progression": "res://data/progression.json"
 }
 
@@ -288,6 +289,57 @@ func get_customer_type(customer_type_id: String) -> Dictionary:
 		"order_quantity": order_quantity,
 		"timeout_reputation_change": reputation_change,
 	}
+
+
+func get_staff_settings() -> Dictionary:
+	var staff: Dictionary = get_dataset("staff")
+	var settings_value: Variant = staff.get("settings", {})
+	if typeof(settings_value) != TYPE_DICTIONARY:
+		return {}
+	var default_staff_type: String = String((settings_value as Dictionary).get("default_staff_type", ""))
+	if get_staff_type(default_staff_type).is_empty():
+		return {}
+	return {"default_staff_type": default_staff_type}
+
+
+func get_staff_type(staff_type_id: String) -> Dictionary:
+	var staff_value: Variant = get_entry("staff", staff_type_id)
+	if typeof(staff_value) != TYPE_DICTIONARY:
+		return {}
+	var staff_data: Dictionary = staff_value as Dictionary
+	var unlock_level: int = _read_positive_integer(staff_data.get("unlock_level"))
+	var movement_speed: float = _read_positive_number(staff_data.get("movement_speed"))
+	var cleaning_time: float = _read_positive_number(staff_data.get("cleaning_time_seconds"))
+	var jobs_value: Variant = staff_data.get("allowed_jobs")
+	var hire_cost: int = get_staff_hire_cost(staff_type_id)
+	if unlock_level <= 0 or movement_speed <= 0.0 or cleaning_time <= 0.0 or hire_cost <= 0:
+		return {}
+	if typeof(jobs_value) != TYPE_ARRAY or (jobs_value as Array).is_empty():
+		return {}
+	var allowed_jobs: Array[String] = []
+	for job_value: Variant in jobs_value as Array:
+		if typeof(job_value) != TYPE_STRING:
+			return {}
+		var job_type: String = String(job_value)
+		if not ["cook", "serve", "payment", "clean"].has(job_type) or allowed_jobs.has(job_type):
+			return {}
+		allowed_jobs.append(job_type)
+	return {
+		"staff_type_id": staff_type_id,
+		"unlock_level": unlock_level,
+		"movement_speed": movement_speed,
+		"cleaning_time_seconds": cleaning_time,
+		"allowed_jobs": allowed_jobs,
+		"hire_cost": hire_cost,
+	}
+
+
+func get_staff_hire_cost(staff_type_id: String) -> int:
+	var progression: Dictionary = get_dataset("progression")
+	var salaries_value: Variant = progression.get("staff_salary", {})
+	if typeof(salaries_value) != TYPE_DICTIONARY:
+		return 0
+	return _read_positive_integer((salaries_value as Dictionary).get(staff_type_id))
 
 
 func get_level_exp(level: int) -> int:

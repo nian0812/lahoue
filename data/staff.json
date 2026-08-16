@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "settings": {
+    "default_staff_type": "waiter"
+  },
+  "entries": {
+    "waiter": {
+      "unlock_level": 4,
+      "movement_speed": 180,
+      "cleaning_time_seconds": 2,
+      "allowed_jobs": [
+        "cook",
+        "serve",
+        "payment",
+        "clean"
+      ]
+    }
+  }
+}

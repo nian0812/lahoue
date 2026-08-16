@@ -16,6 +16,7 @@ const aquaculture_container_script: Script = preload("res://scripts/aquaculture/
 const restaurant_table_script: Script = preload("res://scripts/restaurant/restaurant_table.gd")
 const customer_script: Script = preload("res://scripts/restaurant/customer.gd")
 const restaurant_script: Script = preload("res://scripts/restaurant/restaurant.gd")
+const staff_script: Script = preload("res://scripts/restaurant/staff.gd")
 
 
 func has_save() -> bool:
@@ -269,13 +270,6 @@ func _validate_save_state(state: Dictionary) -> Dictionary:
 	var restaurant_error: String = _validate_restaurant_state(state, normalized_state)
 	if not restaurant_error.is_empty():
 		return _validation_error(restaurant_error)
-
-	var dictionary_fields: Array[String] = [
-		"staff"
-	]
-	for field: String in dictionary_fields:
-		if typeof(state.get(field)) != TYPE_DICTIONARY:
-			return _validation_error("field '%s' must be a dictionary" % field)
 
 	var array_fields: Array[String] = [
 		"unlocked_recipes",
@@ -1045,7 +1039,171 @@ func _validate_restaurant_state(state: Dictionary, normalized_state: Dictionary)
 	if active_cooking_count > cooking_slots:
 		return "active cooking jobs exceed kitchen capacity"
 	normalized_state["restaurant_cooking"] = normalized_cooking
+	var staff_error: String = _validate_restaurant_staff(
+		state,
+		normalized_state,
+		normalized_tables,
+		normalized_customers,
+		normalized_cooking
+	)
+	if not staff_error.is_empty():
+		return staff_error
 	return ""
+
+
+func _validate_restaurant_staff(
+	state: Dictionary,
+	normalized_state: Dictionary,
+	normalized_tables: Dictionary,
+	normalized_customers: Dictionary,
+	normalized_cooking: Dictionary
+) -> String:
+	var staff_value: Variant = state.get("staff", {})
+	if typeof(staff_value) != TYPE_DICTIONARY:
+		return "field 'staff' must be a dictionary"
+	var saved_staff: Dictionary = staff_value as Dictionary
+	if int(normalized_state.get("restaurant_level", 0)) == 0 and not saved_staff.is_empty():
+		return "locked restaurant contains staff"
+	var player_level: int = int(normalized_state.get("level", 1))
+	var normalized_staff: Dictionary = {}
+	var claimed_jobs: Dictionary = {}
+	for staff_id_value: Variant in saved_staff:
+		if typeof(staff_id_value) != TYPE_STRING:
+			return "staff ids must be strings"
+		var staff_id: String = String(staff_id_value)
+		if not staff_script.is_valid_staff_id(staff_id):
+			return "staff id '%s' is invalid" % staff_id
+		var saved_staff_value: Variant = saved_staff[staff_id_value]
+		if typeof(saved_staff_value) != TYPE_DICTIONARY:
+			return "staff state for '%s' must be a dictionary" % staff_id
+		var saved_entry: Dictionary = saved_staff_value as Dictionary
+		var staff_type_value: Variant = saved_entry.get("staff_type_id")
+		var state_value: Variant = saved_entry.get("state")
+		if typeof(staff_type_value) != TYPE_STRING or typeof(state_value) != TYPE_STRING:
+			return "staff '%s' has invalid identity or state" % staff_id
+		var staff_type_id: String = String(staff_type_value)
+		var staff_data: Dictionary = data_manager.get_staff_type(staff_type_id)
+		if staff_data.is_empty():
+			return "staff '%s' has unknown type '%s'" % [staff_id, staff_type_id]
+		if player_level < int(staff_data.get("unlock_level", 0)):
+			return "staff '%s' is locked at the saved player level" % staff_id
+		var staff_state: String = String(state_value)
+		if not staff_script.is_valid_state(staff_state):
+			return "staff '%s' has invalid state '%s'" % [staff_id, staff_state]
+		var position_result: Dictionary = _validate_staff_position(saved_entry.get("position"), staff_id)
+		if not bool(position_result.get("ok", false)):
+			return String(position_result.get("error", "invalid staff position"))
+		var active_job_value: Variant = saved_entry.get("active_job", {})
+		if typeof(active_job_value) != TYPE_DICTIONARY:
+			return "staff '%s' active_job must be a dictionary" % staff_id
+		var active_job: Dictionary = active_job_value as Dictionary
+		if staff_state == staff_script.state_idle or staff_state == staff_script.state_returning:
+			if not active_job.is_empty():
+				return "staff '%s' has a job while idle or returning" % staff_id
+		else:
+			var job_result: Dictionary = _validate_staff_job(
+				staff_id,
+				staff_state,
+				active_job,
+				staff_data,
+				normalized_tables,
+				normalized_customers,
+				normalized_cooking,
+				claimed_jobs
+			)
+			if not bool(job_result.get("ok", false)):
+				return String(job_result.get("error", "invalid staff job"))
+			active_job = job_result.get("value", {}) as Dictionary
+		normalized_staff[staff_id] = {
+			"staff_type_id": staff_type_id,
+			"position": position_result.get("value", {}),
+			"state": staff_state,
+			"active_job": active_job.duplicate(true),
+		}
+	normalized_state["staff"] = normalized_staff
+	return ""
+
+
+func _validate_staff_job(
+	staff_id: String,
+	staff_state: String,
+	active_job: Dictionary,
+	staff_data: Dictionary,
+	tables: Dictionary,
+	customers: Dictionary,
+	cooking: Dictionary,
+	claimed_jobs: Dictionary
+) -> Dictionary:
+	var job_type_value: Variant = active_job.get("job_type")
+	var target_id_value: Variant = active_job.get("target_id")
+	if typeof(job_type_value) != TYPE_STRING or typeof(target_id_value) != TYPE_STRING:
+		return _value_error("staff '%s' job identity is invalid" % staff_id)
+	var job_type: String = String(job_type_value)
+	var target_id: String = String(target_id_value)
+	if not staff_script.is_valid_job_type(job_type) or not (staff_data.get("allowed_jobs", []) as Array).has(job_type):
+		return _value_error("staff '%s' cannot perform job '%s'" % [staff_id, job_type])
+	if target_id.is_empty():
+		return _value_error("staff '%s' job target is empty" % staff_id)
+	var elapsed_value: Variant = active_job.get("elapsed", 0.0)
+	if typeof(elapsed_value) != TYPE_INT and typeof(elapsed_value) != TYPE_FLOAT:
+		return _value_error("staff '%s' job timer must be a number" % staff_id)
+	var elapsed: float = float(elapsed_value)
+	if not is_finite(elapsed) or elapsed < 0.0:
+		return _value_error("staff '%s' job timer is invalid" % staff_id)
+	if job_type == staff_script.job_clean:
+		if elapsed > float(staff_data.get("cleaning_time_seconds", 0.0)):
+			return _value_error("staff '%s' cleaning timer exceeds its duration" % staff_id)
+		if staff_state != staff_script.state_moving and staff_state != staff_script.state_cleaning_table:
+			return _value_error("staff '%s' cleaning job has an inconsistent state" % staff_id)
+		var table: Dictionary = tables.get(target_id, {}) as Dictionary
+		if String(table.get("state", "")) != restaurant_table_script.state_needs_cleanup:
+			return _value_error("staff '%s' cleaning job references a clean table" % staff_id)
+	else:
+		if elapsed != 0.0:
+			return _value_error("staff '%s' non-cleaning job has an invalid timer" % staff_id)
+		var customer: Dictionary = customers.get(target_id, {}) as Dictionary
+		if customer.is_empty():
+			return _value_error("staff '%s' job references unknown customer '%s'" % [staff_id, target_id])
+		var customer_state: String = String(customer.get("state", ""))
+		var order: Dictionary = customer.get("order", {}) as Dictionary
+		var cooking_job: Dictionary = cooking.get(target_id, {}) as Dictionary
+		if job_type == staff_script.job_cook:
+			if staff_state != staff_script.state_moving and staff_state != staff_script.state_handling_order:
+				return _value_error("staff '%s' cook job has an inconsistent state" % staff_id)
+			if customer_state != customer_script.state_waiting_food or String(order.get("state", "")) != customer_script.order_state_pending or not cooking_job.is_empty():
+				return _value_error("staff '%s' cook job target is not waiting for cooking" % staff_id)
+		elif job_type == staff_script.job_serve:
+			if staff_state != staff_script.state_moving and staff_state != staff_script.state_delivering_food:
+				return _value_error("staff '%s' serve job has an inconsistent state" % staff_id)
+			if String(cooking_job.get("state", "")) != restaurant_script.cooking_state_ready:
+				return _value_error("staff '%s' serve job target has no ready food" % staff_id)
+		elif job_type == staff_script.job_payment:
+			if staff_state != staff_script.state_moving and staff_state != staff_script.state_handling_order:
+				return _value_error("staff '%s' payment job has an inconsistent state" % staff_id)
+			if customer_state != customer_script.state_eating or String(cooking_job.get("state", "")) != restaurant_script.cooking_state_served or bool(cooking_job.get("payment_collected", false)):
+				return _value_error("staff '%s' payment job target is not awaiting payment" % staff_id)
+	var job_key: String = "%s:%s" % [job_type, target_id]
+	if claimed_jobs.has(job_key):
+		return _value_error("staff job '%s' is claimed more than once" % job_key)
+	claimed_jobs[job_key] = staff_id
+	return {"ok": true, "value": {"job_type": job_type, "target_id": target_id, "elapsed": elapsed}, "error": ""}
+
+
+func _validate_staff_position(position_value: Variant, staff_id: String) -> Dictionary:
+	if typeof(position_value) != TYPE_DICTIONARY:
+		return _value_error("staff '%s' position must be a dictionary" % staff_id)
+	var position: Dictionary = position_value as Dictionary
+	if not position.has("x") or not position.has("y"):
+		return _value_error("staff '%s' position is incomplete" % staff_id)
+	var x_value: Variant = position.get("x")
+	var y_value: Variant = position.get("y")
+	if (typeof(x_value) != TYPE_INT and typeof(x_value) != TYPE_FLOAT) or (typeof(y_value) != TYPE_INT and typeof(y_value) != TYPE_FLOAT):
+		return _value_error("staff '%s' position must contain numbers" % staff_id)
+	var x: float = float(x_value)
+	var y: float = float(y_value)
+	if not is_finite(x) or not is_finite(y):
+		return _value_error("staff '%s' position must be finite" % staff_id)
+	return {"ok": true, "value": {"x": x, "y": y}, "error": ""}
 
 
 func _validate_restaurant_cooking_job(
@@ -1469,6 +1627,7 @@ func _build_save_state() -> Dictionary:
 	var restaurant_tables_value: Variant = restaurant_state.get("restaurant_tables", {})
 	var restaurant_customers_value: Variant = restaurant_state.get("restaurant_customers", {})
 	var restaurant_cooking_value: Variant = restaurant_state.get("restaurant_cooking", {})
+	var staff_value: Variant = restaurant_state.get("staff", {})
 	state["restaurant_level"] = restaurant_level_value
 	state["kitchen_level"] = restaurant_state.get("kitchen_level", 0)
 	state["restaurant_tables"] = (
@@ -1488,10 +1647,14 @@ func _build_save_state() -> Dictionary:
 		if typeof(restaurant_cooking_value) == TYPE_DICTIONARY
 		else restaurant_cooking_value
 	)
+	state["staff"] = (
+		(staff_value as Dictionary).duplicate(true)
+		if typeof(staff_value) == TYPE_DICTIONARY
+		else staff_value
+	)
 	state["coop_level"] = 1
 	state["cow_barn_level"] = 1
 	state["beverage_counter"] = 0
-	state["staff"] = {}
 	state["unlocked_recipes"] = []
 	state["unlocked_items"] = []
 	state["achievements"] = []
@@ -1537,6 +1700,7 @@ func create_new_game() -> void:
 		"restaurant_customer_sequence": 0,
 		"restaurant_spawn_elapsed": 0.0,
 		"restaurant_cooking": {},
+		"staff": {},
 	})
 
 
@@ -1617,6 +1781,7 @@ func _get_restaurant_save_state() -> Dictionary:
 			"restaurant_customer_sequence": 0,
 			"restaurant_spawn_elapsed": 0.0,
 			"restaurant_cooking": {},
+			"staff": {},
 		}
 	var restaurant_state_value: Variant = current_scene.call("get_restaurant_save_state")
 	if typeof(restaurant_state_value) != TYPE_DICTIONARY:
@@ -1629,6 +1794,7 @@ func _get_restaurant_save_state() -> Dictionary:
 			"restaurant_customer_sequence": 0,
 			"restaurant_spawn_elapsed": 0.0,
 			"restaurant_cooking": {},
+			"staff": {},
 		}
 	return restaurant_state_value as Dictionary
 

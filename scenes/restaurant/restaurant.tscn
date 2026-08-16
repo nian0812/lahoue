@@ -38,7 +38,12 @@ position = Vector2(105, -70)
 [node name="serving_counter_marker" type="Marker2D" parent="."]
 position = Vector2(0, -70)
 
+[node name="staff_home_marker" type="Marker2D" parent="."]
+position = Vector2(-145, -70)
+
 [node name="customers" type="Node2D" parent="."]
+
+[node name="staffs" type="Node2D" parent="."]
 
 [node name="tables" type="Node2D" parent="."]
 visible = false

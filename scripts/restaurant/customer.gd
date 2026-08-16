@@ -140,10 +140,10 @@ func mark_food_served() -> bool:
 	return true
 
 
-func finish_eating() -> bool:
+func finish_eating(requires_cleanup: bool = false) -> bool:
 	if current_state != state_eating or String(order.get("state", "")) != order_state_served:
 		return false
-	_begin_leaving()
+	_begin_leaving(requires_cleanup)
 	return true
 
 
@@ -217,15 +217,19 @@ func _timeout_order() -> void:
 	order["state"] = order_state_failed
 	order["failure_reason"] = "timeout"
 	order_failed.emit(customer_id, order.duplicate(true), "timeout")
-	_begin_leaving()
+	_begin_leaving(false)
 	if not timeout_impact_applied:
 		timeout_impact_applied = true
 		game_manager.change_reputation(timeout_reputation_change)
 
 
-func _begin_leaving() -> void:
+func _begin_leaving(requires_cleanup: bool = false) -> void:
 	if restaurant != null and is_instance_valid(restaurant) and not table_id.is_empty():
-		restaurant.call("release_customer_table", customer_id, table_id)
+		var table_handled: bool = false
+		if requires_cleanup and restaurant.has_method("mark_customer_table_for_cleanup"):
+			table_handled = bool(restaurant.call("mark_customer_table_for_cleanup", customer_id, table_id))
+		if not table_handled:
+			restaurant.call("release_customer_table", customer_id, table_id)
 	table_id = ""
 	leaving_elapsed = 0.0
 	_set_state(state_leaving)

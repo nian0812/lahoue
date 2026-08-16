@@ -187,6 +187,57 @@ func get_item_required_level(item_id: String) -> int:
 	return 1
 
 
+func get_restaurant_unlock_level() -> int:
+	var progression: Dictionary = get_dataset("progression")
+	if progression.is_empty():
+		return 0
+	var restaurant_value: Variant = progression.get("restaurant")
+	if typeof(restaurant_value) != TYPE_DICTIONARY:
+		return 0
+	return _read_positive_integer((restaurant_value as Dictionary).get("unlock_level"))
+
+
+func get_restaurant_table_capacity(restaurant_level: int) -> int:
+	var progression: Dictionary = get_dataset("progression")
+	if progression.is_empty():
+		return 0
+	var restaurant_value: Variant = progression.get("restaurant")
+	if typeof(restaurant_value) != TYPE_DICTIONARY:
+		return 0
+	var levels_value: Variant = (restaurant_value as Dictionary).get("levels")
+	if typeof(levels_value) != TYPE_DICTIONARY:
+		return 0
+	var level_value: Variant = (levels_value as Dictionary).get(str(restaurant_level))
+	if typeof(level_value) != TYPE_DICTIONARY:
+		return 0
+	return _read_positive_integer((level_value as Dictionary).get("tables"))
+
+
+func get_restaurant_menu(player_level: int) -> Dictionary:
+	var unlock_level: int = get_restaurant_unlock_level()
+	if unlock_level <= 0 or player_level < unlock_level:
+		return {}
+
+	var recipes: Dictionary = get_dataset("recipes")
+	var entries_value: Variant = recipes.get("entries", {})
+	if typeof(entries_value) != TYPE_DICTIONARY:
+		return {}
+
+	var menu: Dictionary = {}
+	for recipe_id_value: Variant in entries_value as Dictionary:
+		var recipe_id: String = String(recipe_id_value)
+		var normalized_entry: Dictionary = _normalize_restaurant_recipe(recipe_id, player_level)
+		if not normalized_entry.is_empty():
+			menu[recipe_id] = normalized_entry
+	return menu
+
+
+func get_restaurant_menu_entry(recipe_id: String, player_level: int) -> Dictionary:
+	if player_level < get_restaurant_unlock_level():
+		return {}
+	return _normalize_restaurant_recipe(recipe_id, player_level)
+
+
 func get_level_exp(level: int) -> int:
 	var progression: Dictionary = get_dataset("progression")
 	if progression.is_empty():
@@ -270,6 +321,51 @@ func _get_item_price(item_id: String, field: String) -> int:
 	if typeof(item_value) != TYPE_DICTIONARY:
 		return -1
 	return _read_non_negative_integer((item_value as Dictionary).get(field))
+
+
+func _normalize_restaurant_recipe(recipe_id: String, player_level: int) -> Dictionary:
+	var recipe_value: Variant = get_entry("recipes", recipe_id)
+	if typeof(recipe_value) != TYPE_DICTIONARY:
+		return {}
+	var recipe: Dictionary = recipe_value as Dictionary
+	var unlock_level: int = get_restaurant_unlock_level()
+	var recipe_level: int = unlock_level
+	var required_level_value: Variant = recipe.get("required_level")
+	if required_level_value != null:
+		recipe_level = _read_positive_integer(required_level_value)
+		if recipe_level <= 0:
+			return {}
+	recipe_level = maxi(recipe_level, unlock_level)
+	if player_level < recipe_level:
+		return {}
+
+	var selling_price: int = _read_positive_integer(recipe.get("selling_price"))
+	var ingredients_value: Variant = recipe.get("ingredients")
+	if selling_price <= 0 or typeof(ingredients_value) != TYPE_DICTIONARY:
+		return {}
+	var ingredients: Dictionary = ingredients_value as Dictionary
+	if ingredients.is_empty():
+		return {}
+
+	var normalized_ingredients: Dictionary = {}
+	for item_id_value: Variant in ingredients:
+		if typeof(item_id_value) != TYPE_STRING:
+			return {}
+		var item_id: String = String(item_id_value)
+		var amount: int = _read_positive_integer(ingredients[item_id_value])
+		if item_id.is_empty() or amount <= 0 or get_entry("items", item_id) == null:
+			return {}
+		normalized_ingredients[item_id] = amount
+
+	return {
+		"recipe_id": recipe_id,
+		"name": String(recipe.get("name", recipe_id)),
+		"category": String(recipe.get("category", "")),
+		"required_level": recipe_level,
+		"ingredients": normalized_ingredients,
+		"selling_price": selling_price,
+		"icon": String(recipe.get("icon", "")),
+	}
 
 
 func _read_non_negative_integer(value: Variant) -> int:

@@ -121,6 +121,18 @@ func is_valid_aquaculture_assignment(container_id: String, aquaculture_id: Strin
 	return String(template.get("aquaculture_id", "")) == aquaculture_id
 
 
+func get_restaurant_save_state() -> Dictionary:
+	return $restaurant.call("get_save_state") as Dictionary
+
+
+func apply_restaurant_save_state(state: Dictionary) -> void:
+	$restaurant.call("apply_save_state", state)
+
+
+func has_restaurant_table(table_id: String) -> bool:
+	return bool($restaurant.call("has_table", table_id))
+
+
 func get_animal_save_state() -> Dictionary:
 	var animals: Dictionary = {}
 	var animal_age: Dictionary = {}

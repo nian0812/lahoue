@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/restaurant/restaurant_table.gd" id="1_table"]
+
+[node name="restaurant_table" type="Node2D"]
+script = ExtResource("1_table")
+
+[node name="table_visual" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-32, -22, 32, -22, 32, 22, -32, 22)
+color = Color(0.780392, 0.572549, 0.309804, 1)
+
+[node name="seat_marker" type="Marker2D" parent="."]
+position = Vector2(0, 42)

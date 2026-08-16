@@ -13,6 +13,7 @@ const save_version: int = 1
 const max_safe_json_integer: int = 9007199254740991
 const animal_script: Script = preload("res://scripts/animals/animal.gd")
 const aquaculture_container_script: Script = preload("res://scripts/aquaculture/aquaculture_container.gd")
+const restaurant_table_script: Script = preload("res://scripts/restaurant/restaurant_table.gd")
 
 
 func has_save() -> bool:
@@ -262,6 +263,10 @@ func _validate_save_state(state: Dictionary) -> Dictionary:
 	var aquaculture_error: String = _validate_aquaculture_state(state, normalized_state)
 	if not aquaculture_error.is_empty():
 		return _validation_error(aquaculture_error)
+
+	var restaurant_error: String = _validate_restaurant_state(state, normalized_state)
+	if not restaurant_error.is_empty():
+		return _validation_error(restaurant_error)
 
 	var dictionary_fields: Array[String] = [
 		"staff"
@@ -893,6 +898,59 @@ func _validate_pending_aquaculture_product(product: Dictionary, aquaculture_data
 	}
 
 
+func _validate_restaurant_state(state: Dictionary, normalized_state: Dictionary) -> String:
+	var restaurant_level: int = int(normalized_state.get("restaurant_level", 0))
+	var player_level: int = int(normalized_state.get("level", 1))
+	var unlock_level: int = data_manager.get_restaurant_unlock_level()
+	if unlock_level <= 0:
+		return "restaurant unlock level is not defined in progression data"
+	if restaurant_level > 0 and data_manager.get_restaurant_table_capacity(restaurant_level) <= 0:
+		return "field 'restaurant_level' is not defined in progression data"
+	if restaurant_level > 0 and player_level < unlock_level:
+		return "restaurant cannot be active below its unlock level"
+
+	var tables_value: Variant = state.get("restaurant_tables", {})
+	if typeof(tables_value) != TYPE_DICTIONARY:
+		return "field 'restaurant_tables' must be a dictionary"
+	var saved_tables: Dictionary = tables_value as Dictionary
+	var normalized_tables: Dictionary = {}
+	var current_scene: Node = get_tree().current_scene
+	var maximum_tables: int = data_manager.get_restaurant_table_capacity(maxi(restaurant_level, 1))
+	if saved_tables.size() > maximum_tables:
+		return "restaurant table state exceeds configured capacity"
+
+	for table_id_value: Variant in saved_tables:
+		if typeof(table_id_value) != TYPE_STRING:
+			return "restaurant table ids must be strings"
+		var table_id: String = String(table_id_value)
+		if table_id.is_empty() or table_id != table_id.to_lower() or not table_id.is_valid_identifier():
+			return "restaurant table id '%s' is invalid" % table_id
+		if current_scene != null and current_scene.has_method("has_restaurant_table") and not bool(current_scene.call("has_restaurant_table", table_id)):
+			return "restaurant state contains unknown table '%s'" % table_id
+
+		var table_state_value: Variant = saved_tables[table_id_value]
+		if typeof(table_state_value) != TYPE_DICTIONARY:
+			return "restaurant table state for '%s' must be a dictionary" % table_id
+		var table_state: Dictionary = table_state_value as Dictionary
+		var state_value: Variant = table_state.get("state")
+		var occupant_value: Variant = table_state.get("occupant_id")
+		if typeof(state_value) != TYPE_STRING or typeof(occupant_value) != TYPE_STRING:
+			return "restaurant table '%s' has invalid state data" % table_id
+		var saved_state: String = String(state_value)
+		var occupant_id: String = String(occupant_value)
+		if not restaurant_table_script.is_valid_state_data(saved_state, occupant_id):
+			return "restaurant table '%s' has inconsistent state data" % table_id
+		if restaurant_level == 0 and saved_state != restaurant_table_script.state_available:
+			return "locked restaurant contains an active table '%s'" % table_id
+		normalized_tables[table_id] = {
+			"state": saved_state,
+			"occupant_id": occupant_id,
+		}
+
+	normalized_state["restaurant_tables"] = normalized_tables
+	return ""
+
+
 func _read_integer_field(state: Dictionary, field: String, minimum: int) -> Dictionary:
 	if not state.has(field):
 		return _value_error("missing required field '%s'" % field)
@@ -1073,9 +1131,17 @@ func _build_save_state() -> Dictionary:
 		if typeof(aquaculture_value) == TYPE_DICTIONARY
 		else aquaculture_value
 	)
+	var restaurant_state: Dictionary = _get_restaurant_save_state()
+	var restaurant_level_value: Variant = restaurant_state.get("restaurant_level", 0)
+	var restaurant_tables_value: Variant = restaurant_state.get("restaurant_tables", {})
+	state["restaurant_level"] = restaurant_level_value
+	state["restaurant_tables"] = (
+		(restaurant_tables_value as Dictionary).duplicate(true)
+		if typeof(restaurant_tables_value) == TYPE_DICTIONARY
+		else restaurant_tables_value
+	)
 	state["coop_level"] = 1
 	state["cow_barn_level"] = 1
-	state["restaurant_level"] = 0
 	state["kitchen_level"] = 0
 	state["beverage_counter"] = 0
 	state["staff"] = {}
@@ -1092,6 +1158,7 @@ func _apply_save_state(state: Dictionary) -> void:
 	_apply_farming_save_state(state)
 	_apply_animal_save_state(state)
 	_apply_aquaculture_save_state(state)
+	_apply_restaurant_save_state(state)
 
 
 func create_new_game() -> void:
@@ -1115,6 +1182,10 @@ func create_new_game() -> void:
 		"animals_initialized": false
 	})
 	_apply_aquaculture_save_state({"aquaculture": {}})
+	_apply_restaurant_save_state({
+		"restaurant_level": 0,
+		"restaurant_tables": {},
+	})
 
 
 func _get_farming_save_state() -> Dictionary:
@@ -1181,6 +1252,26 @@ func _apply_aquaculture_save_state(state: Dictionary) -> void:
 	var current_scene: Node = get_tree().current_scene
 	if current_scene != null and current_scene.has_method("apply_aquaculture_save_state"):
 		current_scene.call("apply_aquaculture_save_state", state)
+
+
+func _get_restaurant_save_state() -> Dictionary:
+	var current_scene: Node = get_tree().current_scene
+	if current_scene == null or not current_scene.has_method("get_restaurant_save_state"):
+		return {
+			"restaurant_level": 0,
+			"restaurant_tables": {},
+		}
+	var restaurant_state_value: Variant = current_scene.call("get_restaurant_save_state")
+	if typeof(restaurant_state_value) != TYPE_DICTIONARY:
+		push_error("save_manager: current scene returned an invalid restaurant save state")
+		return {"restaurant_level": restaurant_state_value, "restaurant_tables": {}}
+	return restaurant_state_value as Dictionary
+
+
+func _apply_restaurant_save_state(state: Dictionary) -> void:
+	var current_scene: Node = get_tree().current_scene
+	if current_scene != null and current_scene.has_method("apply_restaurant_save_state"):
+		current_scene.call("apply_restaurant_save_state", state)
 
 
 func _fail_save(reason: String) -> bool:

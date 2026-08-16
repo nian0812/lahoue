@@ -1,5 +1,7 @@
 extends Node
 
+const max_wallet_balance: int = 9007199254740991
+
 signal game_state_changed(state)
 signal day_started(day)
 signal day_time_changed(day_timer, day_duration)
@@ -105,18 +107,31 @@ func finish_day() -> void:
 
 	day_started.emit(day)
 	day_time_changed.emit(day_timer, day_duration)
+func get_wallet_balance() -> int:
+	return money
 
 
-func add_money(amount: int) -> void:
+func can_afford(amount: int) -> bool:
+	return amount >= 0 and money >= amount
+
+
+func can_receive_money(amount: int) -> bool:
+	return amount > 0 and money >= 0 and money <= max_wallet_balance - amount
+
+
+func add_money(amount: int) -> bool:
+	if not can_receive_money(amount):
+		return false
 	money += amount
 	money_changed.emit(money)
+	return true
 
 
 func spend_money(amount: int) -> bool:
 	if amount < 0:
 		return false
 
-	if money < amount:
+	if not can_afford(amount):
 		return false
 
 	money -= amount

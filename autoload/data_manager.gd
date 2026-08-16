@@ -159,6 +159,34 @@ func get_aquaculture_growth_time_seconds(aquaculture_id: String) -> float:
 	return growth_time if is_finite(growth_time) and growth_time > 0.0 else 0.0
 
 
+func get_item_buy_price(item_id: String) -> int:
+	return _get_item_price(item_id, "buy_price")
+
+
+func get_item_sell_price(item_id: String) -> int:
+	return _get_item_price(item_id, "sell_price")
+
+
+func get_item_required_level(item_id: String) -> int:
+	var item_value: Variant = get_entry("items", item_id)
+	if typeof(item_value) != TYPE_DICTIONARY:
+		return 0
+
+	var item_data: Dictionary = item_value as Dictionary
+	var required_level_value: Variant = item_data.get("required_level")
+	if required_level_value != null:
+		return _read_positive_integer(required_level_value)
+
+	if String(item_data.get("category", "")) == "seed":
+		var crop_id: String = get_crop_id_for_seed(item_id)
+		var crop_value: Variant = get_entry("crops", crop_id)
+		if typeof(crop_value) != TYPE_DICTIONARY:
+			return 0
+		return _read_positive_integer((crop_value as Dictionary).get("required_level"))
+
+	return 1
+
+
 func get_level_exp(level: int) -> int:
 	var progression: Dictionary = get_dataset("progression")
 	if progression.is_empty():
@@ -198,6 +226,25 @@ func get_warehouse_capacity(level: int) -> int:
 	return int(level_data.get("capacity", 0))
 
 
+func get_warehouse_upgrade_cost(target_level: int) -> int:
+	var progression: Dictionary = get_dataset("progression")
+	if progression.is_empty():
+		return -1
+
+	var warehouse_value: Variant = progression.get("warehouse", {})
+	if typeof(warehouse_value) != TYPE_DICTIONARY:
+		return -1
+	var levels_value: Variant = (warehouse_value as Dictionary).get("levels", {})
+	if typeof(levels_value) != TYPE_DICTIONARY:
+		return -1
+	var level_value: Variant = (levels_value as Dictionary).get(str(target_level))
+	if typeof(level_value) != TYPE_DICTIONARY:
+		return -1
+
+	var upgrade_cost_value: Variant = (level_value as Dictionary).get("upgrade_cost")
+	return _read_non_negative_integer(upgrade_cost_value)
+
+
 func get_animal_housing_capacity(housing_id: String, level: int = 1) -> int:
 	var progression: Dictionary = get_dataset("progression")
 	if progression.is_empty():
@@ -216,3 +263,24 @@ func get_animal_housing_capacity(housing_id: String, level: int = 1) -> int:
 		return 0
 
 	return int((level_value as Dictionary).get("capacity", 0))
+
+
+func _get_item_price(item_id: String, field: String) -> int:
+	var item_value: Variant = get_entry("items", item_id)
+	if typeof(item_value) != TYPE_DICTIONARY:
+		return -1
+	return _read_non_negative_integer((item_value as Dictionary).get(field))
+
+
+func _read_non_negative_integer(value: Variant) -> int:
+	if typeof(value) != TYPE_INT and typeof(value) != TYPE_FLOAT:
+		return -1
+	var number: float = float(value)
+	if not is_finite(number) or floor(number) != number or number < 0.0:
+		return -1
+	return int(number)
+
+
+func _read_positive_integer(value: Variant) -> int:
+	var integer_value: int = _read_non_negative_integer(value)
+	return integer_value if integer_value > 0 else 0

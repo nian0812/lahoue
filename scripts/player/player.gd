@@ -91,7 +91,8 @@ func _get_available_seed_items() -> Array[String]:
 			continue
 
 		var crop_data: Dictionary = crop_value as Dictionary
-		if int(crop_data.get("required_level", 1)) > game_manager.level:
+		var required_level: int = data_manager.get_crop_required_level(crop_id)
+		if required_level <= 0 or required_level > game_manager.level:
 			continue
 
 		var seed_item_id: String = String(crop_data.get("seed_item", ""))

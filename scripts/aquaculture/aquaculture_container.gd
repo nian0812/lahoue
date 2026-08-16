@@ -45,8 +45,8 @@ func can_start_cycle() -> bool:
 	if not is_configured or current_state != state_empty:
 		return false
 	var aquaculture_data: Dictionary = data_manager.get_entry("aquaculture", aquaculture_id)
-	var required_level: int = int(aquaculture_data.get("required_level", 1))
-	return game_manager.level >= required_level
+	var required_level: int = data_manager.get_aquaculture_required_level(aquaculture_id)
+	return required_level > 0 and game_manager.level >= required_level
 
 
 func start_cycle() -> bool:

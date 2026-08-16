@@ -1,5 +1,7 @@
 extends Node2D
 
+signal upgrade_purchased(system_id: String, level: int, cost: int, effect: int)
+
 const farm_tile_script: Script = preload("res://scripts/farming/farm_tile.gd")
 const animal_script: Script = preload("res://scripts/animals/animal.gd")
 const animal_scene: PackedScene = preload("res://scenes/animals/animal.tscn")
@@ -10,6 +12,9 @@ var animals_by_id: Dictionary = {}
 var default_animal_templates: Dictionary = {}
 var aquaculture_containers_by_id: Dictionary = {}
 var default_aquaculture_templates: Dictionary = {}
+var coop_level: int = 1
+var cow_barn_level: int = 1
+var aquaculture_level: int = 1
 
 
 func _ready() -> void:
@@ -112,6 +117,81 @@ func apply_aquaculture_save_state(state: Dictionary) -> void:
 
 func has_aquaculture_container(container_id: String) -> bool:
 	return aquaculture_containers_by_id.has(container_id)
+
+
+func get_progression_save_state() -> Dictionary:
+	return {
+		"coop_level": coop_level,
+		"cow_barn_level": cow_barn_level,
+		"aquaculture_level": aquaculture_level,
+	}
+
+
+func apply_progression_save_state(state: Dictionary) -> void:
+	coop_level = int(state.get("coop_level", 1))
+	cow_barn_level = int(state.get("cow_barn_level", 1))
+	aquaculture_level = int(state.get("aquaculture_level", 1))
+
+
+func get_upgrade_level(system_id: String) -> int:
+	match system_id:
+		"warehouse":
+			return inventory_manager.warehouse_level
+		"coop":
+			return coop_level
+		"cow_barn":
+			return cow_barn_level
+		"aquaculture":
+			return aquaculture_level
+		"restaurant", "kitchen":
+			return int($restaurant.call("get_upgrade_level", system_id))
+	return 0
+
+
+func get_upgrade_effect(system_id: String) -> int:
+	return data_manager.get_progression_effect(system_id, get_upgrade_level(system_id))
+
+
+func can_upgrade_system(system_id: String) -> bool:
+	match system_id:
+		"warehouse":
+			return inventory_manager.can_upgrade_warehouse()
+		"restaurant", "kitchen":
+			return bool($restaurant.call("can_upgrade_system", system_id))
+		"coop", "cow_barn", "aquaculture":
+			var target_level: int = get_upgrade_level(system_id) + 1
+			var cost: int = data_manager.get_progression_upgrade_cost(system_id, target_level)
+			return (
+				data_manager.get_progression_effect(system_id, target_level) > 0
+				and cost > 0
+				and game_manager.can_afford(cost)
+			)
+	return false
+
+
+func upgrade_system(system_id: String) -> bool:
+	if not can_upgrade_system(system_id):
+		return false
+	if system_id == "warehouse":
+		return inventory_manager.upgrade_warehouse()
+	if system_id == "restaurant" or system_id == "kitchen":
+		return bool($restaurant.call("upgrade_system", system_id))
+	var target_level: int = get_upgrade_level(system_id) + 1
+	var cost: int = data_manager.get_progression_upgrade_cost(system_id, target_level)
+	if not game_manager.spend_money(cost):
+		return false
+	match system_id:
+		"coop":
+			coop_level = target_level
+		"cow_barn":
+			cow_barn_level = target_level
+		"aquaculture":
+			aquaculture_level = target_level
+		_:
+			game_manager.add_money(cost)
+			return false
+	upgrade_purchased.emit(system_id, target_level, cost, get_upgrade_effect(system_id))
+	return true
 
 
 func is_valid_aquaculture_assignment(container_id: String, aquaculture_id: String) -> bool:
@@ -227,7 +307,8 @@ func can_purchase_animal(instance_id: String, new_animal_id: String) -> bool:
 		return false
 
 	var animal_data: Dictionary = animal_data_value as Dictionary
-	if int(animal_data.get("required_level", 1)) > game_manager.level:
+	var required_level: int = data_manager.get_animal_required_level(new_animal_id)
+	if required_level <= 0 or required_level > game_manager.level:
 		return false
 
 	var purchase_price: int = int(animal_data.get("purchase_price", -1))
@@ -235,7 +316,7 @@ func can_purchase_animal(instance_id: String, new_animal_id: String) -> bool:
 		return false
 
 	var housing_id: String = String(animal_data.get("housing", ""))
-	var housing_capacity: int = data_manager.get_animal_housing_capacity(housing_id, 1)
+	var housing_capacity: int = data_manager.get_animal_housing_capacity(housing_id, get_upgrade_level(housing_id))
 	if housing_id.is_empty() or housing_capacity <= 0:
 		return false
 
@@ -256,8 +337,10 @@ func _create_animal(
 		return null
 
 	var animal_data: Dictionary = animal_data_value as Dictionary
-	if enforce_unlock and int(animal_data.get("required_level", 1)) > game_manager.level:
-		return null
+	if enforce_unlock:
+		var required_level: int = data_manager.get_animal_required_level(new_animal_id)
+		if required_level <= 0 or required_level > game_manager.level:
+			return null
 
 	var animal: Node = animal_scene.instantiate()
 	animal.name = instance_id

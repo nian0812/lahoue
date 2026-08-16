@@ -207,13 +207,32 @@ func _validate_save_state(state: Dictionary) -> Dictionary:
 	normalized_state["reputation"] = reputation
 
 	var level: int = int(normalized_state["level"])
-	if data_manager.get_level_exp(level) <= 0:
+	var maximum_player_level: int = data_manager.get_max_player_level()
+	if maximum_player_level <= 0 or level > maximum_player_level or data_manager.get_level_exp(level) <= 0:
 		return _validation_error("field 'level' is not defined in progression data")
+	if level < maximum_player_level and int(normalized_state["exp"]) >= data_manager.get_level_exp(level):
+		return _validation_error("field 'exp' must be below the next level threshold")
 
 	var warehouse_level: int = int(normalized_state["warehouse_level"])
 	var warehouse_capacity: int = data_manager.get_warehouse_capacity(warehouse_level)
 	if warehouse_capacity <= 0:
 		return _validation_error("field 'warehouse_level' is not defined in progression data")
+
+	for system_id: String in ["coop", "cow_barn"]:
+		var upgrade_level: int = int(normalized_state.get("%s_level" % system_id, 1))
+		if data_manager.get_progression_effect(system_id, upgrade_level) <= 0:
+			return _validation_error("field '%s_level' is not defined in progression data" % system_id)
+	var aquaculture_level_result: Dictionary = _read_integer_value(
+		state.get("aquaculture_level", 1),
+		"field 'aquaculture_level'",
+		1
+	)
+	if not bool(aquaculture_level_result.get("ok", false)):
+		return _validation_error(String(aquaculture_level_result.get("error", "invalid aquaculture level")))
+	var aquaculture_level: int = int(aquaculture_level_result.get("value", 1))
+	if data_manager.get_aquaculture_area_capacity(aquaculture_level) <= 0:
+		return _validation_error("field 'aquaculture_level' is not defined in progression data")
+	normalized_state["aquaculture_level"] = aquaculture_level
 
 	var inventory_value: Variant = state.get("inventory")
 	if typeof(inventory_value) != TYPE_DICTIONARY:
@@ -377,6 +396,7 @@ func _validate_animal_state(state: Dictionary, normalized_state: Dictionary) -> 
 	var animal_age: Dictionary = age_value as Dictionary
 	var normalized_animals: Dictionary = {}
 	var normalized_age: Dictionary = {}
+	var housing_counts: Dictionary = {"coop": 0, "cow_barn": 0}
 	var saved_day: int = int(normalized_state.get("day", 1))
 
 	for instance_id_value: Variant in animals:
@@ -536,6 +556,11 @@ func _validate_animal_state(state: Dictionary, normalized_state: Dictionary) -> 
 			expected_state = animal_script.state_product_ready
 		if animal_state != expected_state:
 			return "state for animal '%s' is inconsistent with its lifecycle" % instance_id
+		if animal_state != animal_script.state_completed:
+			var housing_id: String = String(animal_data.get("housing", ""))
+			if not housing_counts.has(housing_id):
+				return "animal '%s' references unknown housing '%s'" % [instance_id, housing_id]
+			housing_counts[housing_id] = int(housing_counts[housing_id]) + 1
 
 		normalized_animals[instance_id] = {
 			"animal_id": animal_id,
@@ -552,6 +577,11 @@ func _validate_animal_state(state: Dictionary, normalized_state: Dictionary) -> 
 	for instance_id_value: Variant in animal_age:
 		if typeof(instance_id_value) != TYPE_STRING or not animals.has(String(instance_id_value)):
 			return "animal_age contains an orphan entry"
+	for housing_id: String in housing_counts:
+		var housing_level: int = int(normalized_state.get("%s_level" % housing_id, 1))
+		var housing_capacity: int = data_manager.get_animal_housing_capacity(housing_id, housing_level)
+		if int(housing_counts[housing_id]) > housing_capacity:
+			return "animals exceed %s capacity at level %d" % [housing_id, housing_level]
 
 	normalized_state["animals"] = normalized_animals
 	normalized_state["animal_age"] = normalized_age
@@ -1652,8 +1682,10 @@ func _build_save_state() -> Dictionary:
 		if typeof(staff_value) == TYPE_DICTIONARY
 		else staff_value
 	)
-	state["coop_level"] = 1
-	state["cow_barn_level"] = 1
+	var progression_state: Dictionary = _get_progression_save_state()
+	state["coop_level"] = progression_state.get("coop_level", 1)
+	state["cow_barn_level"] = progression_state.get("cow_barn_level", 1)
+	state["aquaculture_level"] = progression_state.get("aquaculture_level", 1)
 	state["beverage_counter"] = 0
 	state["unlocked_recipes"] = []
 	state["unlocked_items"] = []
@@ -1665,6 +1697,7 @@ func _build_save_state() -> Dictionary:
 func _apply_save_state(state: Dictionary) -> void:
 	game_manager.apply_save_state(state)
 	inventory_manager.apply_save_state(state)
+	_apply_progression_save_state(state)
 	_apply_farming_save_state(state)
 	_apply_animal_save_state(state)
 	_apply_aquaculture_save_state(state)
@@ -1682,6 +1715,11 @@ func create_new_game() -> void:
 	})
 
 	inventory_manager.clear()
+	_apply_progression_save_state({
+		"coop_level": 1,
+		"cow_barn_level": 1,
+		"aquaculture_level": 1,
+	})
 	_apply_farming_save_state({
 		"crops": {},
 		"crop_growth": {}
@@ -1702,6 +1740,31 @@ func create_new_game() -> void:
 		"restaurant_cooking": {},
 		"staff": {},
 	})
+
+
+func _get_progression_save_state() -> Dictionary:
+	var current_scene: Node = get_tree().current_scene
+	if current_scene == null or not current_scene.has_method("get_progression_save_state"):
+		return {
+			"coop_level": 1,
+			"cow_barn_level": 1,
+			"aquaculture_level": 1,
+		}
+	var progression_state_value: Variant = current_scene.call("get_progression_save_state")
+	if typeof(progression_state_value) != TYPE_DICTIONARY:
+		push_error("save_manager: current scene returned an invalid progression save state")
+		return {
+			"coop_level": progression_state_value,
+			"cow_barn_level": 1,
+			"aquaculture_level": 1,
+		}
+	return progression_state_value as Dictionary
+
+
+func _apply_progression_save_state(state: Dictionary) -> void:
+	var current_scene: Node = get_tree().current_scene
+	if current_scene != null and current_scene.has_method("apply_progression_save_state"):
+		current_scene.call("apply_progression_save_state", state)
 
 
 func _get_farming_save_state() -> Dictionary:

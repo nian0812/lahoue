@@ -59,7 +59,8 @@ func can_plant(seed_item_id: String) -> bool:
 		return false
 
 	var crop_data: Dictionary = crop_data_value as Dictionary
-	if int(crop_data.get("required_level", 1)) > game_manager.level:
+	var required_level: int = data_manager.get_crop_required_level(candidate_crop_id)
+	if required_level <= 0 or required_level > game_manager.level:
 		return false
 	if data_manager.get_crop_growth_time_seconds(candidate_crop_id) <= 0.0:
 		return false

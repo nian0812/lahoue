@@ -139,17 +139,19 @@ func spend_money(amount: int) -> bool:
 	return true
 
 
-func add_exp(amount: int) -> void:
-	if amount <= 0:
-		return
+func add_exp(amount: int) -> bool:
+	if amount <= 0 or current_exp < 0 or current_exp > max_wallet_balance - amount:
+		return false
 
 	current_exp += amount
 	_process_level_up()
 	exp_changed.emit(current_exp, level)
+	return true
 
 
 func _process_level_up() -> void:
-	while level < 10:
+	var maximum_level: int = data_manager.get_max_player_level()
+	while level < maximum_level:
 		var required_exp: int = data_manager.get_level_exp(level)
 		if required_exp <= 0 or current_exp < required_exp:
 			break

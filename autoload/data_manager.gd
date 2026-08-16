@@ -3,6 +3,15 @@ extends Node
 signal data_loaded
 signal data_load_failed(path: String, reason: String)
 
+const progression_effect_fields: Dictionary = {
+	"warehouse": "capacity",
+	"coop": "capacity",
+	"cow_barn": "capacity",
+	"aquaculture": "areas",
+	"restaurant": "tables",
+	"kitchen": "cooking_slots",
+}
+
 const data_paths: Dictionary = {
 	"items": "res://data/items.json",
 	"crops": "res://data/crops.json",
@@ -148,6 +157,13 @@ func get_crop_growth_time_seconds(crop_id: String) -> float:
 	return growth_time if is_finite(growth_time) and growth_time > 0.0 else 0.0
 
 
+func get_crop_required_level(crop_id: String) -> int:
+	var crop_value: Variant = get_entry("crops", crop_id)
+	if typeof(crop_value) != TYPE_DICTIONARY:
+		return 0
+	return _read_positive_integer((crop_value as Dictionary).get("required_level"))
+
+
 func get_aquaculture_growth_time_seconds(aquaculture_id: String) -> float:
 	var aquaculture_value: Variant = get_entry("aquaculture", aquaculture_id)
 	if typeof(aquaculture_value) != TYPE_DICTIONARY:
@@ -159,6 +175,20 @@ func get_aquaculture_growth_time_seconds(aquaculture_id: String) -> float:
 
 	var growth_time: float = float(growth_time_value)
 	return growth_time if is_finite(growth_time) and growth_time > 0.0 else 0.0
+
+
+func get_aquaculture_required_level(aquaculture_id: String) -> int:
+	var aquaculture_value: Variant = get_entry("aquaculture", aquaculture_id)
+	if typeof(aquaculture_value) != TYPE_DICTIONARY:
+		return 0
+	return _read_positive_integer((aquaculture_value as Dictionary).get("required_level"))
+
+
+func get_animal_required_level(animal_id: String) -> int:
+	var animal_value: Variant = get_entry("animals", animal_id)
+	if typeof(animal_value) != TYPE_DICTIONARY:
+		return 0
+	return _read_positive_integer((animal_value as Dictionary).get("required_level"))
 
 
 func get_item_buy_price(item_id: String) -> int:
@@ -184,7 +214,7 @@ func get_item_required_level(item_id: String) -> int:
 		var crop_value: Variant = get_entry("crops", crop_id)
 		if typeof(crop_value) != TYPE_DICTIONARY:
 			return 0
-		return _read_positive_integer((crop_value as Dictionary).get("required_level"))
+		return get_crop_required_level(crop_id)
 
 	return 1
 
@@ -200,19 +230,7 @@ func get_restaurant_unlock_level() -> int:
 
 
 func get_restaurant_table_capacity(restaurant_level: int) -> int:
-	var progression: Dictionary = get_dataset("progression")
-	if progression.is_empty():
-		return 0
-	var restaurant_value: Variant = progression.get("restaurant")
-	if typeof(restaurant_value) != TYPE_DICTIONARY:
-		return 0
-	var levels_value: Variant = (restaurant_value as Dictionary).get("levels")
-	if typeof(levels_value) != TYPE_DICTIONARY:
-		return 0
-	var level_value: Variant = (levels_value as Dictionary).get(str(restaurant_level))
-	if typeof(level_value) != TYPE_DICTIONARY:
-		return 0
-	return _read_positive_integer((level_value as Dictionary).get("tables"))
+	return get_progression_effect("restaurant", restaurant_level)
 
 
 func get_restaurant_menu(player_level: int) -> Dictionary:
@@ -353,71 +371,89 @@ func get_level_exp(level: int) -> int:
 		return 0
 
 	var level_exp: Dictionary = level_exp_value as Dictionary
-	return int(level_exp.get(str(level), 0))
+	return _read_positive_integer(level_exp.get(str(level)))
+
+
+func get_max_player_level() -> int:
+	var progression: Dictionary = get_dataset("progression")
+	var level_exp_value: Variant = progression.get("level_exp", {})
+	if typeof(level_exp_value) != TYPE_DICTIONARY:
+		return 0
+	var maximum: int = 0
+	for level_value: Variant in level_exp_value as Dictionary:
+		var level_string: String = String(level_value)
+		if not level_string.is_valid_int():
+			return 0
+		var level: int = int(level_string)
+		if level <= 0 or _read_positive_integer((level_exp_value as Dictionary)[level_value]) <= 0:
+			return 0
+		maximum = maxi(maximum, level)
+	for level: int in range(1, maximum + 1):
+		if not (level_exp_value as Dictionary).has(str(level)):
+			return 0
+	return maximum
 
 
 func get_warehouse_capacity(level: int) -> int:
-	var progression: Dictionary = get_dataset("progression")
-	if progression.is_empty():
-		return 0
-
-	var warehouse_value: Variant = progression.get("warehouse", {})
-	if typeof(warehouse_value) != TYPE_DICTIONARY:
-		push_error("data_manager: progression.warehouse is not a dictionary")
-		return 0
-
-	var warehouse: Dictionary = warehouse_value as Dictionary
-	var levels_value: Variant = warehouse.get("levels", {})
-	if typeof(levels_value) != TYPE_DICTIONARY:
-		push_error("data_manager: progression.warehouse.levels is not a dictionary")
-		return 0
-
-	var levels: Dictionary = levels_value as Dictionary
-	var level_data_value: Variant = levels.get(str(level), {})
-	if typeof(level_data_value) != TYPE_DICTIONARY:
-		return 0
-
-	var level_data: Dictionary = level_data_value as Dictionary
-	return int(level_data.get("capacity", 0))
+	return get_progression_effect("warehouse", level)
 
 
 func get_warehouse_upgrade_cost(target_level: int) -> int:
-	var progression: Dictionary = get_dataset("progression")
-	if progression.is_empty():
-		return -1
-
-	var warehouse_value: Variant = progression.get("warehouse", {})
-	if typeof(warehouse_value) != TYPE_DICTIONARY:
-		return -1
-	var levels_value: Variant = (warehouse_value as Dictionary).get("levels", {})
-	if typeof(levels_value) != TYPE_DICTIONARY:
-		return -1
-	var level_value: Variant = (levels_value as Dictionary).get(str(target_level))
-	if typeof(level_value) != TYPE_DICTIONARY:
-		return -1
-
-	var upgrade_cost_value: Variant = (level_value as Dictionary).get("upgrade_cost")
-	return _read_non_negative_integer(upgrade_cost_value)
+	return get_progression_upgrade_cost("warehouse", target_level)
 
 
 func get_animal_housing_capacity(housing_id: String, level: int = 1) -> int:
+	if housing_id != "coop" and housing_id != "cow_barn":
+		return 0
+	return get_progression_effect(housing_id, level)
+
+
+func get_aquaculture_area_capacity(level: int) -> int:
+	return get_progression_effect("aquaculture", level)
+
+
+func get_progression_level_data(system_id: String, level: int) -> Dictionary:
+	if not progression_effect_fields.has(system_id) or level <= 0:
+		return {}
+	return _get_progression_level_data(system_id, level)
+
+
+func get_progression_effect(system_id: String, level: int) -> int:
+	var level_data: Dictionary = get_progression_level_data(system_id, level)
+	var effect_field: String = String(progression_effect_fields.get(system_id, ""))
+	return _read_positive_integer(level_data.get(effect_field))
+
+
+func get_progression_upgrade_cost(system_id: String, target_level: int) -> int:
+	var level_data: Dictionary = get_progression_level_data(system_id, target_level)
+	if level_data.is_empty():
+		return -1
+	return _read_non_negative_integer(level_data.get("upgrade_cost"))
+
+
+func get_progression_max_level(system_id: String) -> int:
+	if not progression_effect_fields.has(system_id):
+		return 0
 	var progression: Dictionary = get_dataset("progression")
-	if progression.is_empty():
+	var system_value: Variant = progression.get(system_id, {})
+	if typeof(system_value) != TYPE_DICTIONARY:
 		return 0
-
-	var housing_value: Variant = progression.get(housing_id, {})
-	if typeof(housing_value) != TYPE_DICTIONARY:
-		return 0
-
-	var levels_value: Variant = (housing_value as Dictionary).get("levels", {})
+	var levels_value: Variant = (system_value as Dictionary).get("levels", {})
 	if typeof(levels_value) != TYPE_DICTIONARY:
 		return 0
-
-	var level_value: Variant = (levels_value as Dictionary).get(str(level), {})
-	if typeof(level_value) != TYPE_DICTIONARY:
-		return 0
-
-	return int((level_value as Dictionary).get("capacity", 0))
+	var maximum: int = 0
+	for level_value: Variant in levels_value as Dictionary:
+		var level_string: String = String(level_value)
+		if not level_string.is_valid_int():
+			return 0
+		var level: int = int(level_string)
+		if level <= 0 or get_progression_effect(system_id, level) <= 0:
+			return 0
+		maximum = maxi(maximum, level)
+	for level: int in range(1, maximum + 1):
+		if not (levels_value as Dictionary).has(str(level)):
+			return 0
+	return maximum
 
 
 func _get_progression_level_data(system_id: String, level: int) -> Dictionary:

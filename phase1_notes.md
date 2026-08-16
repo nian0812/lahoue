@@ -68,6 +68,16 @@ one-time foundation hiring cost and stores temporary movement and cleaning value
 `data/staff.json`. These values can be rebalanced without changing staff jobs or the
 save format; recurring payroll remains a later design dependency.
 
+## phase 11 progression boundaries
+
+Phase 11 activates only upgrade levels already defined in `data/progression.json`.
+Systems inherited from earlier phases begin at level 1, so an `upgrade_cost` stored on
+level 1 is not charged retroactively; each transaction reads the cost of its target
+level. Aquaculture area capacity now progresses and persists, but construction and
+placement of additional world areas remain unresolved because no layout or purchase
+data is defined. Restaurant table positions created above level 1 are functional
+technical slots rather than final layout balance.
+
 ## test
 
 1. Open `project.godot` in Godot 4.x.

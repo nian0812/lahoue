@@ -13,6 +13,7 @@ signal cooking_canceled(customer_id: String, recipe_id: String)
 signal staff_hired(staff_id: String, staff_type_id: String, cost: int)
 signal staff_job_assigned(staff_id: String, job_type: String, target_id: String)
 signal staff_job_released(staff_id: String, job_type: String, target_id: String, succeeded: bool)
+signal upgrade_purchased(system_id: String, level: int, cost: int, effect: int)
 
 const state_locked: String = "locked"
 const state_available: String = "available"
@@ -28,6 +29,7 @@ const valid_cooking_states: Array[String] = [
 ]
 const customer_scene: PackedScene = preload("res://scenes/restaurant/customer.tscn")
 const staff_scene: PackedScene = preload("res://scenes/restaurant/staff.tscn")
+const restaurant_table_scene: PackedScene = preload("res://scenes/restaurant/restaurant_table.tscn")
 const customer_script: Script = preload("res://scripts/restaurant/customer.gd")
 const restaurant_table_script: Script = preload("res://scripts/restaurant/restaurant_table.gd")
 const staff_script: Script = preload("res://scripts/restaurant/staff.gd")
@@ -112,6 +114,57 @@ func refresh_availability() -> void:
 
 func get_menu_entries() -> Dictionary:
 	return menu_entries.duplicate(true)
+
+
+func get_upgrade_level(system_id: String) -> int:
+	if system_id == "restaurant":
+		return restaurant_level
+	if system_id == "kitchen":
+		return kitchen_level
+	return 0
+
+
+func can_upgrade_system(system_id: String) -> bool:
+	if not is_available() or (system_id != "restaurant" and system_id != "kitchen"):
+		return false
+	var current_level: int = get_upgrade_level(system_id)
+	var target_level: int = current_level + 1
+	var cost: int = data_manager.get_progression_upgrade_cost(system_id, target_level)
+	return (
+		current_level > 0
+		and data_manager.get_progression_effect(system_id, target_level) > 0
+		and cost > 0
+		and game_manager.can_afford(cost)
+	)
+
+
+func upgrade_system(system_id: String) -> bool:
+	if not can_upgrade_system(system_id):
+		return false
+	var current_level: int = get_upgrade_level(system_id)
+	var target_level: int = current_level + 1
+	var cost: int = data_manager.get_progression_upgrade_cost(system_id, target_level)
+	if not game_manager.spend_money(cost):
+		return false
+	if system_id == "restaurant":
+		var target_capacity: int = data_manager.get_restaurant_table_capacity(target_level)
+		if not _set_table_capacity(target_capacity):
+			_set_table_capacity(data_manager.get_restaurant_table_capacity(current_level))
+			game_manager.add_money(cost)
+			return false
+		restaurant_level = target_level
+	else:
+		if data_manager.get_kitchen_speed_percent(target_level) <= 0:
+			game_manager.add_money(cost)
+			return false
+		kitchen_level = target_level
+	upgrade_purchased.emit(
+		system_id,
+		target_level,
+		cost,
+		data_manager.get_progression_effect(system_id, target_level)
+	)
+	return true
 
 
 func get_menu_entry(recipe_id: String) -> Dictionary:
@@ -485,6 +538,10 @@ func apply_save_state(saved_state: Dictionary) -> void:
 	_clear_staff()
 	_clear_customers()
 	cooking_jobs.clear()
+	var saved_capacity: int = data_manager.get_restaurant_table_capacity(maxi(restaurant_level, 1))
+	if not _set_table_capacity(saved_capacity):
+		push_error("restaurant: failed to restore table capacity for level %d" % restaurant_level)
+		return
 	_reset_tables()
 	var saved_tables_value: Variant = saved_state.get("restaurant_tables", {})
 	if typeof(saved_tables_value) == TYPE_DICTIONARY:
@@ -534,7 +591,14 @@ func apply_save_state(saved_state: Dictionary) -> void:
 
 
 func has_table(table_id: String) -> bool:
-	return tables_by_id.has(table_id)
+	if tables_by_id.has(table_id):
+		return true
+	var maximum_level: int = data_manager.get_progression_max_level("restaurant")
+	var maximum_tables: int = data_manager.get_restaurant_table_capacity(maximum_level)
+	for table_number: int in range(1, maximum_tables + 1):
+		if table_id == "table_%02d" % table_number:
+			return true
+	return false
 
 
 func _cache_tables() -> void:
@@ -566,6 +630,39 @@ func _validate_configuration() -> bool:
 func _reset_tables() -> void:
 	for table_value: Variant in tables_by_id.values():
 		table_value.call("reset_table")
+
+
+func _set_table_capacity(target_capacity: int) -> bool:
+	if target_capacity <= 0:
+		return false
+	for table_number: int in range(tables_by_id.size(), target_capacity):
+		var next_number: int = table_number + 1
+		var table_id: String = "table_%02d" % next_number
+		if tables_by_id.has(table_id):
+			continue
+		var table: Node = restaurant_table_scene.instantiate()
+		table.name = table_id
+		table.set("table_id", table_id)
+		table.position = _get_upgrade_table_position(next_number)
+		tables.add_child(table)
+		if not table.has_method("get_save_state") or not table.has_method("reset_table"):
+			table.free()
+			return false
+		tables_by_id[table_id] = table
+	for table_id_value: Variant in tables_by_id.keys():
+		var table_id: String = String(table_id_value)
+		var number_text: String = table_id.trim_prefix("table_")
+		if number_text.is_valid_int() and int(number_text) > target_capacity:
+			var removed_table: Node = tables_by_id.get(table_id) as Node
+			tables_by_id.erase(table_id)
+			if removed_table != null and is_instance_valid(removed_table):
+				removed_table.free()
+	return tables_by_id.size() == target_capacity
+
+
+func _get_upgrade_table_position(table_number: int) -> Vector2:
+	var extra_index: int = maxi(table_number - 4, 0)
+	return Vector2(-130.0 + float(extra_index % 5) * 65.0, 85.0 + float(extra_index / 5) * 50.0)
 
 
 func _begin_customer_visit(customer_id: String) -> void:

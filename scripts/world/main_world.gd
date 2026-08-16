@@ -133,6 +133,10 @@ func has_restaurant_table(table_id: String) -> bool:
 	return bool($restaurant.call("has_table", table_id))
 
 
+func has_restaurant_customer(customer_id: String) -> bool:
+	return bool($restaurant.call("has_customer", customer_id))
+
+
 func get_animal_save_state() -> Dictionary:
 	var animals: Dictionary = {}
 	var animal_age: Dictionary = {}

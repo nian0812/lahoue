@@ -38,6 +38,19 @@ original cow values were unresolved, Phase 4 uses conservative functional defaul
 These values are gameplay data and can be balanced later without changing the animal
 state machine or save format.
 
+## phase 8 customer data defaults
+
+Customer flow balance is stored in `data/customers.json`. The source specification
+does not provide exact timing values, so Phase 8 uses conservative functional defaults:
+
+- one regular customer attempts to spawn every 30 seconds while the restaurant is open
+- regular customers wait 60 seconds for food
+- timed-out customers reduce reputation by 0.1
+- leaving customers remain in the lifecycle for 2 seconds before despawning
+
+These values can be rebalanced without changing the customer/order state machine or
+save format.
+
 ## test
 
 1. Open `project.godot` in Godot 4.x.

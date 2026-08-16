@@ -14,6 +14,7 @@ const max_safe_json_integer: int = 9007199254740991
 const animal_script: Script = preload("res://scripts/animals/animal.gd")
 const aquaculture_container_script: Script = preload("res://scripts/aquaculture/aquaculture_container.gd")
 const restaurant_table_script: Script = preload("res://scripts/restaurant/restaurant_table.gd")
+const customer_script: Script = preload("res://scripts/restaurant/customer.gd")
 
 
 func has_save() -> bool:
@@ -948,7 +949,227 @@ func _validate_restaurant_state(state: Dictionary, normalized_state: Dictionary)
 		}
 
 	normalized_state["restaurant_tables"] = normalized_tables
+
+	var sequence_result: Dictionary = _read_integer_value(
+		state.get("restaurant_customer_sequence", 0),
+		"field 'restaurant_customer_sequence'",
+		0
+	)
+	if not bool(sequence_result.get("ok", false)):
+		return String(sequence_result.get("error", "invalid restaurant customer sequence"))
+	normalized_state["restaurant_customer_sequence"] = int(sequence_result.get("value", 0))
+
+	var settings: Dictionary = data_manager.get_customer_settings()
+	if settings.is_empty():
+		return "customer settings are invalid"
+	var spawn_elapsed_value: Variant = state.get("restaurant_spawn_elapsed", 0.0)
+	if typeof(spawn_elapsed_value) != TYPE_INT and typeof(spawn_elapsed_value) != TYPE_FLOAT:
+		return "field 'restaurant_spawn_elapsed' must be a number"
+	var spawn_elapsed: float = float(spawn_elapsed_value)
+	var spawn_interval: float = float(settings.get("spawn_interval_seconds", 0.0))
+	if not is_finite(spawn_elapsed) or spawn_elapsed < 0.0 or spawn_elapsed > spawn_interval:
+		return "field 'restaurant_spawn_elapsed' is outside the configured interval"
+	normalized_state["restaurant_spawn_elapsed"] = spawn_elapsed
+
+	var customers_value: Variant = state.get("restaurant_customers", {})
+	if typeof(customers_value) != TYPE_DICTIONARY:
+		return "field 'restaurant_customers' must be a dictionary"
+	var saved_customers: Dictionary = customers_value as Dictionary
+	if restaurant_level == 0 and not saved_customers.is_empty():
+		return "locked restaurant contains customers"
+	if saved_customers.size() > maximum_tables:
+		return "restaurant customer state exceeds configured table capacity"
+
+	var normalized_customers: Dictionary = {}
+	var claimed_tables: Dictionary = {}
+	for customer_id_value: Variant in saved_customers:
+		if typeof(customer_id_value) != TYPE_STRING:
+			return "restaurant customer ids must be strings"
+		var customer_id: String = String(customer_id_value)
+		if not customer_script.is_valid_customer_id(customer_id):
+			return "restaurant customer id '%s' is invalid" % customer_id
+		var customer_state_value: Variant = saved_customers[customer_id_value]
+		if typeof(customer_state_value) != TYPE_DICTIONARY:
+			return "restaurant customer state for '%s' must be a dictionary" % customer_id
+		var customer_result: Dictionary = _validate_restaurant_customer(
+			customer_id,
+			customer_state_value as Dictionary,
+			player_level,
+			normalized_tables,
+			claimed_tables
+		)
+		if not bool(customer_result.get("ok", false)):
+			return String(customer_result.get("error", "invalid restaurant customer"))
+		normalized_customers[customer_id] = customer_result.get("value", {})
+	normalized_state["restaurant_customers"] = normalized_customers
 	return ""
+
+
+func _validate_restaurant_customer(
+	customer_id: String,
+	saved_customer: Dictionary,
+	player_level: int,
+	tables: Dictionary,
+	claimed_tables: Dictionary
+) -> Dictionary:
+	var customer_type_value: Variant = saved_customer.get("customer_type_id")
+	if typeof(customer_type_value) != TYPE_STRING:
+		return _value_error("customer '%s' has an invalid type id" % customer_id)
+	var customer_type_id: String = String(customer_type_value)
+	if data_manager.get_customer_type(customer_type_id).is_empty():
+		return _value_error("customer '%s' has an unknown type" % customer_id)
+
+	var position_value: Variant = saved_customer.get("position")
+	if typeof(position_value) != TYPE_DICTIONARY:
+		return _value_error("position for customer '%s' must be a dictionary" % customer_id)
+	var normalized_position: Dictionary = {}
+	for axis: String in ["x", "y"]:
+		var axis_value: Variant = (position_value as Dictionary).get(axis)
+		if typeof(axis_value) != TYPE_INT and typeof(axis_value) != TYPE_FLOAT:
+			return _value_error("position.%s for customer '%s' must be a number" % [axis, customer_id])
+		var axis_number: float = float(axis_value)
+		if not is_finite(axis_number):
+			return _value_error("position.%s for customer '%s' must be finite" % [axis, customer_id])
+		normalized_position[axis] = axis_number
+
+	var state_value: Variant = saved_customer.get("state")
+	var table_id_value: Variant = saved_customer.get("table_id")
+	var requested_recipe_value: Variant = saved_customer.get("requested_recipe_id", "")
+	if typeof(state_value) != TYPE_STRING or typeof(table_id_value) != TYPE_STRING or typeof(requested_recipe_value) != TYPE_STRING:
+		return _value_error("customer '%s' has invalid lifecycle identifiers" % customer_id)
+	var customer_state: String = String(state_value)
+	var table_id: String = String(table_id_value)
+	var requested_recipe_id: String = String(requested_recipe_value)
+	if not customer_script.is_valid_state(customer_state):
+		return _value_error("customer '%s' has an invalid state" % customer_id)
+	if not requested_recipe_id.is_empty() and data_manager.get_restaurant_menu_entry(requested_recipe_id, player_level).is_empty():
+		return _value_error("customer '%s' requested an unavailable recipe" % customer_id)
+
+	var active_at_table: bool = customer_state in [
+		customer_script.state_seated,
+		customer_script.state_ordering,
+		customer_script.state_waiting_food,
+		customer_script.state_eating,
+	]
+	if active_at_table:
+		if not customer_script.is_valid_table_id(table_id) or not tables.has(table_id):
+			return _value_error("customer '%s' references an invalid table" % customer_id)
+		if claimed_tables.has(table_id):
+			return _value_error("table '%s' is assigned to multiple customers" % table_id)
+		var table_state: Dictionary = tables[table_id] as Dictionary
+		if String(table_state.get("occupant_id", "")) != customer_id:
+			return _value_error("customer '%s' does not match table occupant" % customer_id)
+		var saved_table_state: String = String(table_state.get("state", ""))
+		if customer_state == customer_script.state_seated:
+			if saved_table_state != restaurant_table_script.state_reserved and saved_table_state != restaurant_table_script.state_occupied:
+				return _value_error("seated customer '%s' has an invalid table state" % customer_id)
+		elif saved_table_state != restaurant_table_script.state_occupied:
+			return _value_error("customer '%s' does not have an occupied table" % customer_id)
+		claimed_tables[table_id] = customer_id
+	elif not table_id.is_empty():
+		return _value_error("customer '%s' has a table outside an active table state" % customer_id)
+
+	var patience_result: Dictionary = _validate_customer_number_pair(saved_customer, "patience_elapsed", "patience_limit", customer_id)
+	if not bool(patience_result.get("ok", false)):
+		return patience_result
+	var leaving_result: Dictionary = _validate_customer_number_pair(saved_customer, "leaving_elapsed", "leaving_duration", customer_id)
+	if not bool(leaving_result.get("ok", false)):
+		return leaving_result
+
+	var reputation_value: Variant = saved_customer.get("timeout_reputation_change")
+	if typeof(reputation_value) != TYPE_INT and typeof(reputation_value) != TYPE_FLOAT:
+		return _value_error("timeout reputation change for customer '%s' must be a number" % customer_id)
+	var reputation_change: float = float(reputation_value)
+	if not is_finite(reputation_change) or reputation_change >= 0.0:
+		return _value_error("timeout reputation change for customer '%s' must be negative" % customer_id)
+	var impact_value: Variant = saved_customer.get("timeout_impact_applied")
+	if typeof(impact_value) != TYPE_BOOL:
+		return _value_error("timeout impact flag for customer '%s' must be a boolean" % customer_id)
+
+	var order_value: Variant = saved_customer.get("order")
+	if typeof(order_value) != TYPE_DICTIONARY:
+		return _value_error("order for customer '%s' must be a dictionary" % customer_id)
+	var order_result: Dictionary = _validate_restaurant_order(customer_id, order_value as Dictionary, customer_state, player_level)
+	if not bool(order_result.get("ok", false)):
+		return order_result
+	var normalized_order: Dictionary = order_result.get("value", {}) as Dictionary
+	if customer_state in [customer_script.state_enter, customer_script.state_seated, customer_script.state_ordering] and not normalized_order.is_empty():
+		return _value_error("customer '%s' has an order before WAITING_FOOD" % customer_id)
+	if customer_state == customer_script.state_leaving and String(normalized_order.get("state", "")) == customer_script.order_state_pending:
+		return _value_error("leaving customer '%s' still has a pending order" % customer_id)
+	if String(normalized_order.get("state", "")) == customer_script.order_state_failed and not bool(impact_value):
+		return _value_error("failed order for customer '%s' has no applied reputation impact" % customer_id)
+
+	return {
+		"ok": true,
+		"value": {
+			"customer_type_id": customer_type_id,
+			"position": normalized_position,
+			"state": customer_state,
+			"table_id": table_id,
+			"requested_recipe_id": requested_recipe_id,
+			"order": normalized_order,
+			"patience_elapsed": float(patience_result.get("elapsed", 0.0)),
+			"patience_limit": float(patience_result.get("limit", 0.0)),
+			"leaving_elapsed": float(leaving_result.get("elapsed", 0.0)),
+			"leaving_duration": float(leaving_result.get("limit", 0.0)),
+			"timeout_reputation_change": reputation_change,
+			"timeout_impact_applied": bool(impact_value),
+		},
+		"error": "",
+	}
+
+
+func _validate_customer_number_pair(saved_customer: Dictionary, elapsed_field: String, limit_field: String, customer_id: String) -> Dictionary:
+	var elapsed_value: Variant = saved_customer.get(elapsed_field)
+	var limit_value: Variant = saved_customer.get(limit_field)
+	if (typeof(elapsed_value) != TYPE_INT and typeof(elapsed_value) != TYPE_FLOAT) or (typeof(limit_value) != TYPE_INT and typeof(limit_value) != TYPE_FLOAT):
+		return _value_error("customer '%s' has invalid %s data" % [customer_id, elapsed_field])
+	var elapsed: float = float(elapsed_value)
+	var limit: float = float(limit_value)
+	if not is_finite(elapsed) or not is_finite(limit) or elapsed < 0.0 or limit <= 0.0 or elapsed > limit:
+		return _value_error("customer '%s' has inconsistent %s data" % [customer_id, elapsed_field])
+	return {"ok": true, "elapsed": elapsed, "limit": limit, "error": ""}
+
+
+func _validate_restaurant_order(customer_id: String, saved_order: Dictionary, customer_state: String, player_level: int) -> Dictionary:
+	if saved_order.is_empty():
+		if customer_state == customer_script.state_waiting_food or customer_state == customer_script.state_eating:
+			return _value_error("customer '%s' is missing an active order" % customer_id)
+		return {"ok": true, "value": {}, "error": ""}
+	var recipe_value: Variant = saved_order.get("recipe_id")
+	var state_value: Variant = saved_order.get("state")
+	var failure_value: Variant = saved_order.get("failure_reason")
+	if typeof(recipe_value) != TYPE_STRING or typeof(state_value) != TYPE_STRING or typeof(failure_value) != TYPE_STRING:
+		return _value_error("customer '%s' has invalid order identifiers" % customer_id)
+	var recipe_id: String = String(recipe_value)
+	var order_state: String = String(state_value)
+	var failure_reason: String = String(failure_value)
+	if data_manager.get_restaurant_menu_entry(recipe_id, player_level).is_empty():
+		return _value_error("customer '%s' order references an unavailable recipe" % customer_id)
+	if not customer_script.is_valid_order_state(order_state):
+		return _value_error("customer '%s' order has an invalid state" % customer_id)
+	var quantity_result: Dictionary = _read_integer_value(saved_order.get("quantity"), "order quantity for customer '%s'" % customer_id, 1)
+	if not bool(quantity_result.get("ok", false)):
+		return quantity_result
+	if customer_state == customer_script.state_waiting_food and order_state != customer_script.order_state_pending:
+		return _value_error("waiting customer '%s' does not have a pending order" % customer_id)
+	if customer_state == customer_script.state_eating and order_state != customer_script.order_state_served:
+		return _value_error("eating customer '%s' does not have a served order" % customer_id)
+	if order_state == customer_script.order_state_failed and failure_reason.is_empty():
+		return _value_error("failed order for customer '%s' has no reason" % customer_id)
+	if order_state != customer_script.order_state_failed and not failure_reason.is_empty():
+		return _value_error("active order for customer '%s' has a failure reason" % customer_id)
+	return {
+		"ok": true,
+		"value": {
+			"recipe_id": recipe_id,
+			"quantity": int(quantity_result.get("value", 0)),
+			"state": order_state,
+			"failure_reason": failure_reason,
+		},
+		"error": "",
+	}
 
 
 func _read_integer_field(state: Dictionary, field: String, minimum: int) -> Dictionary:
@@ -1134,12 +1355,20 @@ func _build_save_state() -> Dictionary:
 	var restaurant_state: Dictionary = _get_restaurant_save_state()
 	var restaurant_level_value: Variant = restaurant_state.get("restaurant_level", 0)
 	var restaurant_tables_value: Variant = restaurant_state.get("restaurant_tables", {})
+	var restaurant_customers_value: Variant = restaurant_state.get("restaurant_customers", {})
 	state["restaurant_level"] = restaurant_level_value
 	state["restaurant_tables"] = (
 		(restaurant_tables_value as Dictionary).duplicate(true)
 		if typeof(restaurant_tables_value) == TYPE_DICTIONARY
 		else restaurant_tables_value
 	)
+	state["restaurant_customers"] = (
+		(restaurant_customers_value as Dictionary).duplicate(true)
+		if typeof(restaurant_customers_value) == TYPE_DICTIONARY
+		else restaurant_customers_value
+	)
+	state["restaurant_customer_sequence"] = restaurant_state.get("restaurant_customer_sequence", 0)
+	state["restaurant_spawn_elapsed"] = restaurant_state.get("restaurant_spawn_elapsed", 0.0)
 	state["coop_level"] = 1
 	state["cow_barn_level"] = 1
 	state["kitchen_level"] = 0
@@ -1185,6 +1414,9 @@ func create_new_game() -> void:
 	_apply_restaurant_save_state({
 		"restaurant_level": 0,
 		"restaurant_tables": {},
+		"restaurant_customers": {},
+		"restaurant_customer_sequence": 0,
+		"restaurant_spawn_elapsed": 0.0,
 	})
 
 
@@ -1260,11 +1492,20 @@ func _get_restaurant_save_state() -> Dictionary:
 		return {
 			"restaurant_level": 0,
 			"restaurant_tables": {},
+			"restaurant_customers": {},
+			"restaurant_customer_sequence": 0,
+			"restaurant_spawn_elapsed": 0.0,
 		}
 	var restaurant_state_value: Variant = current_scene.call("get_restaurant_save_state")
 	if typeof(restaurant_state_value) != TYPE_DICTIONARY:
 		push_error("save_manager: current scene returned an invalid restaurant save state")
-		return {"restaurant_level": restaurant_state_value, "restaurant_tables": {}}
+		return {
+			"restaurant_level": restaurant_state_value,
+			"restaurant_tables": {},
+			"restaurant_customers": {},
+			"restaurant_customer_sequence": 0,
+			"restaurant_spawn_elapsed": 0.0,
+		}
 	return restaurant_state_value as Dictionary
 
 

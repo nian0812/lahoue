@@ -9,6 +9,7 @@ const data_paths: Dictionary = {
 	"animals": "res://data/animals.json",
 	"aquaculture": "res://data/aquaculture.json",
 	"recipes": "res://data/recipes.json",
+	"customers": "res://data/customers.json",
 	"progression": "res://data/progression.json"
 }
 
@@ -238,6 +239,47 @@ func get_restaurant_menu_entry(recipe_id: String, player_level: int) -> Dictiona
 	return _normalize_restaurant_recipe(recipe_id, player_level)
 
 
+func get_customer_settings() -> Dictionary:
+	var customers: Dictionary = get_dataset("customers")
+	var settings_value: Variant = customers.get("settings", {})
+	if typeof(settings_value) != TYPE_DICTIONARY:
+		return {}
+	var settings: Dictionary = settings_value as Dictionary
+	var spawn_interval: float = _read_positive_number(settings.get("spawn_interval_seconds"))
+	var default_type: String = String(settings.get("default_customer_type", ""))
+	if spawn_interval <= 0.0 or get_customer_type(default_type).is_empty():
+		return {}
+	return {
+		"spawn_interval_seconds": spawn_interval,
+		"default_customer_type": default_type,
+	}
+
+
+func get_customer_type(customer_type_id: String) -> Dictionary:
+	var customer_value: Variant = get_entry("customers", customer_type_id)
+	if typeof(customer_value) != TYPE_DICTIONARY:
+		return {}
+	var customer_data: Dictionary = customer_value as Dictionary
+	var patience: float = _read_positive_number(customer_data.get("patience_seconds"))
+	var leaving_duration: float = _read_positive_number(customer_data.get("leaving_duration_seconds"))
+	var order_quantity: int = _read_positive_integer(customer_data.get("order_quantity"))
+	var reputation_value: Variant = customer_data.get("timeout_reputation_change")
+	if typeof(reputation_value) != TYPE_INT and typeof(reputation_value) != TYPE_FLOAT:
+		return {}
+	var reputation_change: float = float(reputation_value)
+	if not is_finite(reputation_change) or reputation_change >= 0.0:
+		return {}
+	if patience <= 0.0 or leaving_duration <= 0.0 or order_quantity <= 0:
+		return {}
+	return {
+		"customer_type_id": customer_type_id,
+		"patience_seconds": patience,
+		"leaving_duration_seconds": leaving_duration,
+		"order_quantity": order_quantity,
+		"timeout_reputation_change": reputation_change,
+	}
+
+
 func get_level_exp(level: int) -> int:
 	var progression: Dictionary = get_dataset("progression")
 	if progression.is_empty():
@@ -380,3 +422,10 @@ func _read_non_negative_integer(value: Variant) -> int:
 func _read_positive_integer(value: Variant) -> int:
 	var integer_value: int = _read_non_negative_integer(value)
 	return integer_value if integer_value > 0 else 0
+
+
+func _read_positive_number(value: Variant) -> float:
+	if typeof(value) != TYPE_INT and typeof(value) != TYPE_FLOAT:
+		return 0.0
+	var number: float = float(value)
+	return number if is_finite(number) and number > 0.0 else 0.0

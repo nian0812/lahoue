@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "settings": {
+    "spawn_interval_seconds": 30,
+    "default_customer_type": "regular"
+  },
+  "entries": {
+    "regular": {
+      "patience_seconds": 60,
+      "leaving_duration_seconds": 2,
+      "order_quantity": 1,
+      "timeout_reputation_change": -0.1
+    }
+  }
+}

@@ -20,7 +20,20 @@ const data_paths: Dictionary = {
 	"recipes": "res://data/recipes.json",
 	"customers": "res://data/customers.json",
 	"staff": "res://data/staff.json",
-	"progression": "res://data/progression.json"
+	"progression": "res://data/progression.json",
+	"achievements": "res://data/achievements.json"
+}
+
+const achievement_metric_modes: Dictionary = {
+	"crops_harvested": "increment",
+	"animal_products_collected": "increment",
+	"aquaculture_products_collected": "increment",
+	"cooking_orders_completed": "increment",
+	"restaurant_orders_paid": "increment",
+	"items_sold": "increment",
+	"money_earned": "increment",
+	"upgrades_purchased": "increment",
+	"player_level": "maximum",
 }
 
 var data: Dictionary = {}
@@ -109,6 +122,74 @@ func get_dataset(data_key: String) -> Dictionary:
 		return {}
 
 	return dataset_value as Dictionary
+
+
+func validate_achievement_definitions(dataset: Dictionary) -> Dictionary:
+	if int(dataset.get("schema_version", 0)) != 1:
+		return {"ok": false, "definitions": {}, "error": "schema_version must be 1"}
+	var entries_value: Variant = dataset.get("entries")
+	if typeof(entries_value) != TYPE_DICTIONARY:
+		return {"ok": false, "definitions": {}, "error": "entries must be a dictionary"}
+
+	var normalized: Dictionary = {}
+	for achievement_id_value: Variant in entries_value as Dictionary:
+		if typeof(achievement_id_value) != TYPE_STRING:
+			return {"ok": false, "definitions": {}, "error": "achievement ids must be strings"}
+		var achievement_id: String = String(achievement_id_value)
+		if (
+			achievement_id.is_empty()
+			or achievement_id != achievement_id.to_lower()
+			or not achievement_id.is_valid_identifier()
+		):
+			return {"ok": false, "definitions": {}, "error": "invalid achievement id '%s'" % achievement_id}
+		var definition_value: Variant = (entries_value as Dictionary)[achievement_id_value]
+		if typeof(definition_value) != TYPE_DICTIONARY:
+			return {"ok": false, "definitions": {}, "error": "achievement '%s' must be a dictionary" % achievement_id}
+		var definition: Dictionary = definition_value as Dictionary
+		var condition_value: Variant = definition.get("condition")
+		if typeof(condition_value) != TYPE_DICTIONARY:
+			return {"ok": false, "definitions": {}, "error": "achievement '%s' needs a condition" % achievement_id}
+		var condition: Dictionary = condition_value as Dictionary
+		var metric: String = String(condition.get("metric", ""))
+		var mode: String = String(condition.get("mode", ""))
+		var target: int = _read_positive_integer(condition.get("target"))
+		if not achievement_metric_modes.has(metric) or mode != String(achievement_metric_modes[metric]) or target <= 0:
+			return {"ok": false, "definitions": {}, "error": "achievement '%s' has an invalid condition" % achievement_id}
+
+		var reward_value: Variant = definition.get("reward", null)
+		var reward: Variant = null
+		if reward_value != null:
+			if typeof(reward_value) != TYPE_DICTIONARY:
+				return {"ok": false, "definitions": {}, "error": "achievement '%s' has an invalid reward" % achievement_id}
+			var reward_data: Dictionary = reward_value as Dictionary
+			var reward_type: String = String(reward_data.get("type", ""))
+			var reward_amount: int = _read_positive_integer(reward_data.get("amount"))
+			if not ["money", "exp", "item"].has(reward_type) or reward_amount <= 0:
+				return {"ok": false, "definitions": {}, "error": "achievement '%s' has an invalid reward" % achievement_id}
+			reward = {"type": reward_type, "amount": reward_amount}
+			if reward_type == "item":
+				var item_id: String = String(reward_data.get("item_id", ""))
+				if item_id.is_empty() or get_entry("items", item_id) == null:
+					return {"ok": false, "definitions": {}, "error": "achievement '%s' has an unknown reward item" % achievement_id}
+				(reward as Dictionary)["item_id"] = item_id
+
+		normalized[achievement_id] = {
+			"achievement_id": achievement_id,
+			"name": String(definition.get("name", achievement_id)),
+			"description": String(definition.get("description", "")),
+			"condition": {"metric": metric, "mode": mode, "target": target},
+			"reward": reward,
+		}
+
+	return {"ok": true, "definitions": normalized, "error": ""}
+
+
+func get_achievement_definitions() -> Dictionary:
+	var result: Dictionary = validate_achievement_definitions(get_dataset("achievements"))
+	if not bool(result.get("ok", false)):
+		push_error("data_manager: invalid achievement data: %s" % String(result.get("error", "unknown error")))
+		return {}
+	return (result.get("definitions", {}) as Dictionary).duplicate(true)
 
 
 func get_entry(data_key: String, entry_id: String) -> Variant:

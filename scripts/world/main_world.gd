@@ -16,11 +16,14 @@ var coop_level: int = 1
 var cow_barn_level: int = 1
 var aquaculture_level: int = 1
 
+@onready var achievement_tracker: Node = $achievement_tracker
+
 
 func _ready() -> void:
 	_cache_farm_tiles()
 	_cache_animals()
 	_cache_aquaculture_containers()
+	_connect_achievement_signals()
 
 	if not data_manager.is_ready:
 		push_error("main_world: cannot start gameplay because required game data failed to load")
@@ -33,7 +36,16 @@ func _ready() -> void:
 	if not state_loaded:
 		save_manager.create_new_game()
 
+	achievement_tracker.call("record_maximum", "player_level", game_manager.level)
 	game_manager.start_gameplay()
+
+
+func get_achievement_save_state() -> Array:
+	return achievement_tracker.call("get_save_state") as Array
+
+
+func apply_achievement_save_state(state: Array) -> void:
+	achievement_tracker.call("apply_save_state", state)
 
 
 func get_farming_save_state() -> Dictionary:
@@ -373,6 +385,7 @@ func _cache_farm_tiles() -> void:
 			continue
 
 		farm_tiles_by_id[tile_id] = child
+		_connect_signal_once(child, "crop_harvested", _on_crop_harvested)
 
 
 func _cache_animals() -> void:
@@ -416,6 +429,7 @@ func _cache_aquaculture_containers() -> void:
 			continue
 
 		aquaculture_containers_by_id[container_id] = child
+		_connect_signal_once(child, "product_received", _on_aquaculture_product_received)
 		default_aquaculture_templates[container_id] = {
 			"aquaculture_id": String(child.get("aquaculture_id")),
 			"position": (child as Node2D).position,
@@ -475,9 +489,69 @@ func _get_animal_housing_count(housing_id: String) -> int:
 
 
 func _connect_animal_signals(animal: Node) -> void:
-	var completion_callback: Callable = _on_animal_completed
-	if not animal.is_connected("animal_completed", completion_callback):
-		animal.connect("animal_completed", completion_callback)
+	_connect_signal_once(animal, "animal_completed", _on_animal_completed)
+	_connect_signal_once(animal, "product_collected", _on_animal_product_collected)
+
+
+func _connect_achievement_signals() -> void:
+	_connect_signal_once(game_manager, "level_changed", _on_achievement_level_changed)
+	_connect_signal_once(inventory_manager, "item_sold", _on_achievement_item_sold)
+	_connect_signal_once(inventory_manager, "warehouse_upgraded", _on_achievement_upgrade_purchased)
+	_connect_signal_once($restaurant, "food_ready", _on_achievement_food_ready)
+	_connect_signal_once($restaurant, "payment_collected", _on_achievement_payment_collected)
+	_connect_signal_once($restaurant, "revenue_collected", _on_achievement_revenue_collected)
+	_connect_signal_once($restaurant, "upgrade_purchased", _on_achievement_restaurant_upgrade)
+	_connect_signal_once(self, "upgrade_purchased", _on_achievement_world_upgrade)
+
+
+func _connect_signal_once(source: Object, signal_name: StringName, callback: Callable) -> void:
+	if source.has_signal(signal_name) and not source.is_connected(signal_name, callback):
+		source.connect(signal_name, callback)
+
+
+func _on_crop_harvested(_tile_id: String, _crop_id: String, _item_id: String, _amount: int) -> void:
+	achievement_tracker.call("record_increment", "crops_harvested", 1)
+
+
+func _on_animal_product_collected(_instance_id: String, _item_id: String, amount: int) -> void:
+	achievement_tracker.call("record_increment", "animal_products_collected", amount)
+
+
+func _on_aquaculture_product_received(_container_id: String, _item_id: String, amount: int) -> void:
+	achievement_tracker.call("record_increment", "aquaculture_products_collected", amount)
+
+
+func _on_achievement_food_ready(_customer_id: String, _recipe_id: String) -> void:
+	achievement_tracker.call("record_increment", "cooking_orders_completed", 1)
+
+
+func _on_achievement_payment_collected(_customer_id: String, _recipe_id: String, _revenue: int) -> void:
+	achievement_tracker.call("record_increment", "restaurant_orders_paid", 1)
+
+
+func _on_achievement_revenue_collected(_recipe_id: String, _amount: int, revenue: int) -> void:
+	achievement_tracker.call("record_increment", "money_earned", revenue)
+
+
+func _on_achievement_item_sold(_item_id: String, amount: int, total_price: int) -> void:
+	achievement_tracker.call("record_increment", "items_sold", amount)
+	achievement_tracker.call("record_increment", "money_earned", total_price)
+
+
+func _on_achievement_level_changed(new_level: int) -> void:
+	achievement_tracker.call("record_maximum", "player_level", new_level)
+
+
+func _on_achievement_upgrade_purchased(_level: int, _capacity: int) -> void:
+	achievement_tracker.call("record_increment", "upgrades_purchased", 1)
+
+
+func _on_achievement_restaurant_upgrade(_system_id: String, _level: int, _cost: int, _effect: int) -> void:
+	achievement_tracker.call("record_increment", "upgrades_purchased", 1)
+
+
+func _on_achievement_world_upgrade(_system_id: String, _level: int, _cost: int, _effect: int) -> void:
+	achievement_tracker.call("record_increment", "upgrades_purchased", 1)
 
 
 func _on_animal_completed(instance_id: String, _animal_id: String) -> void:

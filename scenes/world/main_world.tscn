@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scripts/world/main_world.gd" id="1_main"]
 [ext_resource type="Script" path="res://scripts/player/player.gd" id="2_player"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" path="res://scenes/animals/animal.tscn" id="4_animal"]
 [ext_resource type="PackedScene" path="res://scenes/aquaculture/aquaculture_container.tscn" id="5_aquaculture"]
 [ext_resource type="PackedScene" path="res://scenes/restaurant/restaurant.tscn" id="6_restaurant"]
+[ext_resource type="Script" path="res://scripts/achievements/achievement_tracker.gd" id="7_achievement"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_player"]
 radius = 18.0
@@ -21,6 +22,9 @@ size = Vector2(64, 1080)
 
 [node name="main_world" type="Node2D"]
 script = ExtResource("1_main")
+
+[node name="achievement_tracker" type="Node" parent="."]
+script = ExtResource("7_achievement")
 
 [node name="ground" type="Polygon2D" parent="."]
 z_index = -10

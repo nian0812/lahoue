@@ -78,6 +78,14 @@ placement of additional world areas remain unresolved because no layout or purch
 data is defined. Restaurant table positions created above level 1 are functional
 technical slots rather than final layout balance.
 
+## phase 12 achievement boundaries
+
+The source specification does not define concrete achievement IDs, targets, or
+rewards. Phase 12 therefore provides the data-driven condition, progress, reward,
+integration, and save/load foundation, while `data/achievements.json` deliberately
+contains no production entries. Achievement balance can be added later without
+changing the tracker or save version.
+
 ## test
 
 1. Open `project.godot` in Godot 4.x.

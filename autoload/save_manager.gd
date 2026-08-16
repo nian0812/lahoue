@@ -290,10 +290,13 @@ func _validate_save_state(state: Dictionary) -> Dictionary:
 	if not restaurant_error.is_empty():
 		return _validation_error(restaurant_error)
 
+	var achievement_error: String = _validate_achievement_state(state, normalized_state)
+	if not achievement_error.is_empty():
+		return _validation_error(achievement_error)
+
 	var array_fields: Array[String] = [
 		"unlocked_recipes",
-		"unlocked_items",
-		"achievements"
+		"unlocked_items"
 	]
 	for field: String in array_fields:
 		if typeof(state.get(field)) != TYPE_ARRAY:
@@ -304,6 +307,68 @@ func _validate_save_state(state: Dictionary) -> Dictionary:
 		"state": normalized_state,
 		"error": ""
 	}
+
+
+func _validate_achievement_state(state: Dictionary, normalized_state: Dictionary) -> String:
+	var achievements_value: Variant = state.get("achievements", [])
+	if typeof(achievements_value) != TYPE_ARRAY:
+		return "field 'achievements' must be an array"
+	var definition_result: Dictionary = data_manager.validate_achievement_definitions(
+		data_manager.get_dataset("achievements")
+	)
+	if not bool(definition_result.get("ok", false)):
+		return "achievement definitions are invalid: %s" % String(definition_result.get("error", "unknown error"))
+	var definitions: Dictionary = definition_result.get("definitions", {}) as Dictionary
+	var normalized_achievements: Array = []
+	var seen_ids: Dictionary = {}
+	for entry_value: Variant in achievements_value as Array:
+		if typeof(entry_value) != TYPE_DICTIONARY:
+			return "achievement state entries must be dictionaries"
+		var entry: Dictionary = entry_value as Dictionary
+		var achievement_id_value: Variant = entry.get("achievement_id")
+		if typeof(achievement_id_value) != TYPE_STRING:
+			return "achievement state id must be a string"
+		var achievement_id: String = String(achievement_id_value)
+		if not definitions.has(achievement_id):
+			return "achievement state contains unknown id '%s'" % achievement_id
+		if seen_ids.has(achievement_id):
+			return "achievement state contains duplicate id '%s'" % achievement_id
+		seen_ids[achievement_id] = true
+
+		var definition: Dictionary = definitions[achievement_id] as Dictionary
+		var condition: Dictionary = definition.get("condition", {}) as Dictionary
+		var target: int = int(condition.get("target", 0))
+		var progress_result: Dictionary = _read_integer_value(
+			entry.get("progress"),
+			"achievement progress for '%s'" % achievement_id,
+			0
+		)
+		if not bool(progress_result.get("ok", false)):
+			return String(progress_result.get("error", "invalid achievement progress"))
+		var progress: int = int(progress_result.get("value", 0))
+		if progress > target:
+			return "achievement '%s' progress exceeds its target" % achievement_id
+		if typeof(entry.get("unlocked")) != TYPE_BOOL or typeof(entry.get("reward_claimed")) != TYPE_BOOL:
+			return "achievement '%s' flags must be booleans" % achievement_id
+		var unlocked: bool = bool(entry.get("unlocked"))
+		var reward_claimed: bool = bool(entry.get("reward_claimed"))
+		if not unlocked and progress >= target:
+			return "achievement '%s' reached its target without unlocking" % achievement_id
+		if reward_claimed and not unlocked:
+			return "achievement '%s' has a reward claimed before unlock" % achievement_id
+		if unlocked and definition.get("reward", null) == null and not reward_claimed:
+			return "achievement '%s' has an unclaimed empty reward" % achievement_id
+		normalized_achievements.append({
+			"achievement_id": achievement_id,
+			"progress": progress,
+			"unlocked": unlocked,
+			"reward_claimed": reward_claimed,
+		})
+	normalized_achievements.sort_custom(func(left: Dictionary, right: Dictionary) -> bool:
+		return String(left.get("achievement_id", "")) < String(right.get("achievement_id", ""))
+	)
+	normalized_state["achievements"] = normalized_achievements
+	return ""
 
 
 func _validate_farming_state(state: Dictionary, normalized_state: Dictionary) -> String:
@@ -1689,7 +1754,7 @@ func _build_save_state() -> Dictionary:
 	state["beverage_counter"] = 0
 	state["unlocked_recipes"] = []
 	state["unlocked_items"] = []
-	state["achievements"] = []
+	state["achievements"] = _get_achievement_save_state()
 
 	return state
 
@@ -1702,6 +1767,7 @@ func _apply_save_state(state: Dictionary) -> void:
 	_apply_animal_save_state(state)
 	_apply_aquaculture_save_state(state)
 	_apply_restaurant_save_state(state)
+	_apply_achievement_save_state(state.get("achievements", []) as Array)
 
 
 func create_new_game() -> void:
@@ -1740,6 +1806,7 @@ func create_new_game() -> void:
 		"restaurant_cooking": {},
 		"staff": {},
 	})
+	_apply_achievement_save_state([])
 
 
 func _get_progression_save_state() -> Dictionary:
@@ -1866,6 +1933,23 @@ func _apply_restaurant_save_state(state: Dictionary) -> void:
 	var current_scene: Node = get_tree().current_scene
 	if current_scene != null and current_scene.has_method("apply_restaurant_save_state"):
 		current_scene.call("apply_restaurant_save_state", state)
+
+
+func _get_achievement_save_state() -> Array:
+	var current_scene: Node = get_tree().current_scene
+	if current_scene == null or not current_scene.has_method("get_achievement_save_state"):
+		return []
+	var achievement_state_value: Variant = current_scene.call("get_achievement_save_state")
+	if typeof(achievement_state_value) != TYPE_ARRAY:
+		push_error("save_manager: current scene returned an invalid achievement save state")
+		return []
+	return (achievement_state_value as Array).duplicate(true)
+
+
+func _apply_achievement_save_state(state: Array) -> void:
+	var current_scene: Node = get_tree().current_scene
+	if current_scene != null and current_scene.has_method("apply_achievement_save_state"):
+		current_scene.call("apply_achievement_save_state", state)
 
 
 func _fail_save(reason: String) -> bool:

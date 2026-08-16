@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/farming/farm_tile.gd" id="1_tile"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tile"]
+size = Vector2(60, 60)
+
+[node name="farm_tile" type="Area2D"]
+collision_layer = 4
+collision_mask = 0
+monitoring = false
+script = ExtResource("1_tile")
+
+[node name="soil" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-30, -30, 30, -30, 30, 30, -30, 30)
+color = Color(0.34, 0.19, 0.09, 1)
+
+[node name="crop" type="Polygon2D" parent="."]
+visible = false
+polygon = PackedVector2Array(0, -23, 18, -8, 13, 20, -13, 20, -18, -8)
+color = Color(0.24, 0.68, 0.25, 1)
+
+[node name="collision_shape" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_tile")

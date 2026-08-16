@@ -114,6 +114,38 @@ func get_entry(data_key: String, entry_id: String) -> Variant:
 	return entries.get(entry_id)
 
 
+func get_crop_id_for_seed(seed_item_id: String) -> String:
+	var crops: Dictionary = get_dataset("crops")
+	var entries_value: Variant = crops.get("entries", {})
+	if typeof(entries_value) != TYPE_DICTIONARY:
+		return ""
+
+	var entries: Dictionary = entries_value as Dictionary
+	for crop_id_value: Variant in entries:
+		var crop_value: Variant = entries[crop_id_value]
+		if typeof(crop_value) != TYPE_DICTIONARY:
+			continue
+
+		var crop_data: Dictionary = crop_value as Dictionary
+		if String(crop_data.get("seed_item", "")) == seed_item_id:
+			return String(crop_id_value)
+
+	return ""
+
+
+func get_crop_growth_time_seconds(crop_id: String) -> float:
+	var crop_value: Variant = get_entry("crops", crop_id)
+	if typeof(crop_value) != TYPE_DICTIONARY:
+		return 0.0
+
+	var growth_time_value: Variant = (crop_value as Dictionary).get("growth_time")
+	if typeof(growth_time_value) != TYPE_INT and typeof(growth_time_value) != TYPE_FLOAT:
+		return 0.0
+
+	var growth_time: float = float(growth_time_value)
+	return growth_time if is_finite(growth_time) and growth_time > 0.0 else 0.0
+
+
 func get_level_exp(level: int) -> int:
 	var progression: Dictionary = get_dataset("progression")
 	if progression.is_empty():

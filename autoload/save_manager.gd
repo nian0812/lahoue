@@ -244,9 +244,11 @@ func _validate_save_state(state: Dictionary) -> Dictionary:
 
 	normalized_state["inventory"] = normalized_inventory
 
+	var farming_error: String = _validate_farming_state(state, normalized_state)
+	if not farming_error.is_empty():
+		return _validation_error(farming_error)
+
 	var dictionary_fields: Array[String] = [
-		"crops",
-		"crop_growth",
 		"animals",
 		"animal_age",
 		"aquaculture",
@@ -270,6 +272,84 @@ func _validate_save_state(state: Dictionary) -> Dictionary:
 		"state": normalized_state,
 		"error": ""
 	}
+
+
+func _validate_farming_state(state: Dictionary, normalized_state: Dictionary) -> String:
+	var crops_value: Variant = state.get("crops")
+	var growth_value: Variant = state.get("crop_growth")
+	if typeof(crops_value) != TYPE_DICTIONARY:
+		return "field 'crops' must be a dictionary"
+	if typeof(growth_value) != TYPE_DICTIONARY:
+		return "field 'crop_growth' must be a dictionary"
+
+	var crops: Dictionary = crops_value as Dictionary
+	var crop_growth: Dictionary = growth_value as Dictionary
+	var normalized_crops: Dictionary = {}
+	var normalized_growth: Dictionary = {}
+	var current_scene: Node = get_tree().current_scene
+
+	for tile_id_value: Variant in crops:
+		if typeof(tile_id_value) != TYPE_STRING or String(tile_id_value).is_empty():
+			return "farming tile ids must be non-empty strings"
+
+		var tile_id: String = String(tile_id_value)
+		if (
+			current_scene != null
+			and current_scene.has_method("has_farm_tile")
+			and not bool(current_scene.call("has_farm_tile", tile_id))
+		):
+			return "farming state contains unknown tile '%s'" % tile_id
+
+		var crop_id_value: Variant = crops[tile_id_value]
+		if typeof(crop_id_value) != TYPE_STRING:
+			return "crop id for tile '%s' must be a string" % tile_id
+
+		var crop_id: String = String(crop_id_value)
+		var crop_data_value: Variant = data_manager.get_entry("crops", crop_id)
+		if typeof(crop_data_value) != TYPE_DICTIONARY:
+			return "tile '%s' contains unknown crop '%s'" % [tile_id, crop_id]
+
+		var crop_data: Dictionary = crop_data_value as Dictionary
+		var seed_item_id: String = String(crop_data.get("seed_item", ""))
+		var harvest_item_id: String = String(crop_data.get("harvest_item", ""))
+		if data_manager.get_entry("items", seed_item_id) == null:
+			return "crop '%s' references unknown seed item '%s'" % [crop_id, seed_item_id]
+		if data_manager.get_entry("items", harvest_item_id) == null:
+			return "crop '%s' references unknown harvest item '%s'" % [crop_id, harvest_item_id]
+
+		var growth_time: float = data_manager.get_crop_growth_time_seconds(crop_id)
+		if growth_time <= 0.0:
+			return "crop '%s' has invalid growth_time" % crop_id
+
+		var yield_result: Dictionary = _read_integer_value(
+			crop_data.get("yield"),
+			"yield for crop '%s'" % crop_id,
+			1
+		)
+		if not bool(yield_result.get("ok", false)):
+			return String(yield_result.get("error", "invalid crop yield"))
+
+		if not crop_growth.has(tile_id):
+			return "missing crop_growth for tile '%s'" % tile_id
+
+		var elapsed_value: Variant = crop_growth[tile_id]
+		if typeof(elapsed_value) != TYPE_INT and typeof(elapsed_value) != TYPE_FLOAT:
+			return "crop_growth for tile '%s' must be a number" % tile_id
+
+		var elapsed: float = float(elapsed_value)
+		if not is_finite(elapsed) or elapsed < 0.0 or elapsed > growth_time:
+			return "crop_growth for tile '%s' is outside the valid range" % tile_id
+
+		normalized_crops[tile_id] = crop_id
+		normalized_growth[tile_id] = elapsed
+
+	for tile_id_value: Variant in crop_growth:
+		if typeof(tile_id_value) != TYPE_STRING or not crops.has(String(tile_id_value)):
+			return "crop_growth contains an orphan tile entry"
+
+	normalized_state["crops"] = normalized_crops
+	normalized_state["crop_growth"] = normalized_growth
+	return ""
 
 
 func _read_integer_field(state: Dictionary, field: String, minimum: int) -> Dictionary:
@@ -418,8 +498,19 @@ func _build_save_state() -> Dictionary:
 	# These fields are reserved now so later systems can be added
 	# without changing the agreed top-level save structure.
 	state["save_version"] = save_version
-	state["crops"] = {}
-	state["crop_growth"] = {}
+	var farming_state: Dictionary = _get_farming_save_state()
+	var crops_value: Variant = farming_state.get("crops", {})
+	var growth_value: Variant = farming_state.get("crop_growth", {})
+	state["crops"] = (
+		(crops_value as Dictionary).duplicate(true)
+		if typeof(crops_value) == TYPE_DICTIONARY
+		else crops_value
+	)
+	state["crop_growth"] = (
+		(growth_value as Dictionary).duplicate(true)
+		if typeof(growth_value) == TYPE_DICTIONARY
+		else growth_value
+	)
 	state["animals"] = {}
 	state["animal_age"] = {}
 	state["aquaculture"] = {}
@@ -439,6 +530,7 @@ func _build_save_state() -> Dictionary:
 func _apply_save_state(state: Dictionary) -> void:
 	game_manager.apply_save_state(state)
 	inventory_manager.apply_save_state(state)
+	_apply_farming_save_state(state)
 
 
 func create_new_game() -> void:
@@ -452,6 +544,34 @@ func create_new_game() -> void:
 	})
 
 	inventory_manager.clear()
+	_apply_farming_save_state({
+		"crops": {},
+		"crop_growth": {}
+	})
+
+
+func _get_farming_save_state() -> Dictionary:
+	var current_scene: Node = get_tree().current_scene
+	if current_scene == null or not current_scene.has_method("get_farming_save_state"):
+		return {
+			"crops": {},
+			"crop_growth": {}
+		}
+
+	var farming_state_value: Variant = current_scene.call("get_farming_save_state")
+	if typeof(farming_state_value) != TYPE_DICTIONARY:
+		return {
+			"crops": {},
+			"crop_growth": {}
+		}
+
+	return farming_state_value as Dictionary
+
+
+func _apply_farming_save_state(state: Dictionary) -> void:
+	var current_scene: Node = get_tree().current_scene
+	if current_scene != null and current_scene.has_method("apply_farming_save_state"):
+		current_scene.call("apply_farming_save_state", state)
 
 
 func _fail_save(reason: String) -> bool:

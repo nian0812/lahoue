@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scripts/world/main_world.gd" id="1_main"]
 [ext_resource type="Script" path="res://scripts/player/player.gd" id="2_player"]
+[ext_resource type="PackedScene" path="res://scenes/farming/farm_tile.tscn" id="3_farm_tile"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_player"]
 radius = 18.0
@@ -26,6 +27,30 @@ color = Color(0.184, 0.31, 0.184, 1)
 [node name="hub" type="Node2D" parent="."]
 
 [node name="farm" type="Node2D" parent="."]
+
+[node name="tile_01" parent="farm" instance=ExtResource("3_farm_tile")]
+position = Vector2(760, 324)
+tile_id = "farm_01"
+
+[node name="tile_02" parent="farm" instance=ExtResource("3_farm_tile")]
+position = Vector2(832, 324)
+tile_id = "farm_02"
+
+[node name="tile_03" parent="farm" instance=ExtResource("3_farm_tile")]
+position = Vector2(904, 324)
+tile_id = "farm_03"
+
+[node name="tile_04" parent="farm" instance=ExtResource("3_farm_tile")]
+position = Vector2(760, 396)
+tile_id = "farm_04"
+
+[node name="tile_05" parent="farm" instance=ExtResource("3_farm_tile")]
+position = Vector2(832, 396)
+tile_id = "farm_05"
+
+[node name="tile_06" parent="farm" instance=ExtResource("3_farm_tile")]
+position = Vector2(904, 396)
+tile_id = "farm_06"
 
 [node name="restaurant" type="Node2D" parent="."]
 visible = false

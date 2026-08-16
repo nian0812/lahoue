@@ -239,6 +239,16 @@ func get_restaurant_menu_entry(recipe_id: String, player_level: int) -> Dictiona
 	return _normalize_restaurant_recipe(recipe_id, player_level)
 
 
+func get_kitchen_cooking_slots(kitchen_level: int) -> int:
+	var level_data: Dictionary = _get_progression_level_data("kitchen", kitchen_level)
+	return _read_positive_integer(level_data.get("cooking_slots"))
+
+
+func get_kitchen_speed_percent(kitchen_level: int) -> int:
+	var level_data: Dictionary = _get_progression_level_data("kitchen", kitchen_level)
+	return _read_positive_integer(level_data.get("speed_percent"))
+
+
 func get_customer_settings() -> Dictionary:
 	var customers: Dictionary = get_dataset("customers")
 	var settings_value: Variant = customers.get("settings", {})
@@ -358,6 +368,20 @@ func get_animal_housing_capacity(housing_id: String, level: int = 1) -> int:
 	return int((level_value as Dictionary).get("capacity", 0))
 
 
+func _get_progression_level_data(system_id: String, level: int) -> Dictionary:
+	var progression: Dictionary = get_dataset("progression")
+	var system_value: Variant = progression.get(system_id, {})
+	if typeof(system_value) != TYPE_DICTIONARY:
+		return {}
+	var levels_value: Variant = (system_value as Dictionary).get("levels", {})
+	if typeof(levels_value) != TYPE_DICTIONARY:
+		return {}
+	var level_value: Variant = (levels_value as Dictionary).get(str(level), {})
+	if typeof(level_value) != TYPE_DICTIONARY:
+		return {}
+	return (level_value as Dictionary).duplicate(true)
+
+
 func _get_item_price(item_id: String, field: String) -> int:
 	var item_value: Variant = get_entry("items", item_id)
 	if typeof(item_value) != TYPE_DICTIONARY:
@@ -382,8 +406,9 @@ func _normalize_restaurant_recipe(recipe_id: String, player_level: int) -> Dicti
 		return {}
 
 	var selling_price: int = _read_positive_integer(recipe.get("selling_price"))
+	var cooking_time: float = _read_positive_number(recipe.get("cooking_time"))
 	var ingredients_value: Variant = recipe.get("ingredients")
-	if selling_price <= 0 or typeof(ingredients_value) != TYPE_DICTIONARY:
+	if selling_price <= 0 or cooking_time <= 0.0 or typeof(ingredients_value) != TYPE_DICTIONARY:
 		return {}
 	var ingredients: Dictionary = ingredients_value as Dictionary
 	if ingredients.is_empty():
@@ -405,6 +430,7 @@ func _normalize_restaurant_recipe(recipe_id: String, player_level: int) -> Dicti
 		"category": String(recipe.get("category", "")),
 		"required_level": recipe_level,
 		"ingredients": normalized_ingredients,
+		"cooking_time_seconds": cooking_time,
 		"selling_price": selling_price,
 		"icon": String(recipe.get("icon", "")),
 	}

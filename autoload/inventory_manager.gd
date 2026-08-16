@@ -125,6 +125,42 @@ func remove_item(item_id: String, amount: int) -> bool:
 	return true
 
 
+func can_remove_items(requirements: Dictionary) -> bool:
+	if requirements.is_empty():
+		return false
+	for item_id_value: Variant in requirements:
+		if typeof(item_id_value) != TYPE_STRING:
+			return false
+		var item_id: String = String(item_id_value)
+		var amount_value: Variant = requirements[item_id_value]
+		if typeof(amount_value) != TYPE_INT:
+			return false
+		var amount: int = int(amount_value)
+		if amount <= 0 or data_manager.get_entry("items", item_id) == null or not has_item(item_id, amount):
+			return false
+	return true
+
+
+func remove_items_atomic(requirements: Dictionary) -> bool:
+	if not can_remove_items(requirements):
+		return false
+	var next_items: Dictionary = items.duplicate(true)
+	for item_id_value: Variant in requirements:
+		var item_id: String = String(item_id_value)
+		var amount: int = int(requirements[item_id_value])
+		var remaining: int = int(next_items.get(item_id, 0)) - amount
+		if remaining == 0:
+			next_items.erase(item_id)
+		else:
+			next_items[item_id] = remaining
+	items = next_items
+	for item_id_value: Variant in requirements:
+		item_removed.emit(String(item_id_value), int(requirements[item_id_value]))
+	inventory_changed.emit(items.duplicate(true))
+	_emit_capacity()
+	return true
+
+
 func can_sell_item(item_id: String, amount: int = 1) -> bool:
 	if amount <= 0 or not has_item(item_id, amount):
 		return false

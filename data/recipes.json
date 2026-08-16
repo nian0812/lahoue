@@ -9,7 +9,7 @@
         "rice": 1,
         "egg": 1
       },
-      "cooking_time": null,
+      "cooking_time": 10,
       "selling_price": 79000,
       "exp": null,
       "icon": ""
@@ -22,7 +22,7 @@
         "rice_processed": 1,
         "chicken_meat": 1
       },
-      "cooking_time": null,
+      "cooking_time": 10,
       "selling_price": 79000,
       "exp": null,
       "icon": ""
@@ -35,7 +35,7 @@
         "rice_processed": 1,
         "fish": 1
       },
-      "cooking_time": null,
+      "cooking_time": 10,
       "selling_price": 89000,
       "exp": null,
       "icon": ""
@@ -48,7 +48,7 @@
         "rice_processed": 1,
         "beef": 1
       },
-      "cooking_time": null,
+      "cooking_time": 10,
       "selling_price": 109000,
       "exp": null,
       "icon": ""
@@ -61,7 +61,7 @@
         "rice_processed": 1,
         "shrimp": 1
       },
-      "cooking_time": null,
+      "cooking_time": 10,
       "selling_price": 109000,
       "exp": null,
       "icon": ""
@@ -75,7 +75,7 @@
         "shrimp": 1,
         "squid": 1
       },
-      "cooking_time": null,
+      "cooking_time": 10,
       "selling_price": 129000,
       "exp": null,
       "icon": ""
@@ -88,7 +88,7 @@
         "rice_processed": 1,
         "crab": 1
       },
-      "cooking_time": null,
+      "cooking_time": 10,
       "selling_price": 139000,
       "exp": null,
       "icon": ""
@@ -101,7 +101,7 @@
         "rice_processed": 1,
         "octopus": 1
       },
-      "cooking_time": null,
+      "cooking_time": 10,
       "selling_price": 149000,
       "exp": null,
       "icon": ""
@@ -114,7 +114,7 @@
         "noodle": 1,
         "vegetables": 1
       },
-      "cooking_time": null,
+      "cooking_time": 10,
       "selling_price": 59000,
       "exp": null,
       "icon": ""
@@ -127,7 +127,7 @@
         "noodle": 1,
         "egg": 1
       },
-      "cooking_time": null,
+      "cooking_time": 10,
       "selling_price": 69000,
       "exp": null,
       "icon": ""
@@ -140,7 +140,7 @@
         "noodle": 1,
         "chicken_meat": 1
       },
-      "cooking_time": null,
+      "cooking_time": 10,
       "selling_price": 89000,
       "exp": null,
       "icon": ""
@@ -153,7 +153,7 @@
         "noodle": 1,
         "beef": 1
       },
-      "cooking_time": null,
+      "cooking_time": 10,
       "selling_price": 99000,
       "exp": null,
       "icon": ""
@@ -166,7 +166,7 @@
         "noodle": 1,
         "shrimp": 1
       },
-      "cooking_time": null,
+      "cooking_time": 10,
       "selling_price": 109000,
       "exp": null,
       "icon": ""
@@ -179,7 +179,7 @@
         "noodle": 1,
         "squid": 1
       },
-      "cooking_time": null,
+      "cooking_time": 10,
       "selling_price": 119000,
       "exp": null,
       "icon": ""
@@ -192,7 +192,7 @@
         "noodle": 1,
         "crab": 1
       },
-      "cooking_time": null,
+      "cooking_time": 10,
       "selling_price": 129000,
       "exp": null,
       "icon": ""
@@ -205,7 +205,7 @@
         "noodle": 1,
         "octopus": 1
       },
-      "cooking_time": null,
+      "cooking_time": 10,
       "selling_price": 139000,
       "exp": null,
       "icon": ""
@@ -220,7 +220,7 @@
         "squid": 1,
         "octopus": 1
       },
-      "cooking_time": null,
+      "cooking_time": 10,
       "selling_price": 149000,
       "exp": null,
       "icon": ""

@@ -15,6 +15,7 @@ const animal_script: Script = preload("res://scripts/animals/animal.gd")
 const aquaculture_container_script: Script = preload("res://scripts/aquaculture/aquaculture_container.gd")
 const restaurant_table_script: Script = preload("res://scripts/restaurant/restaurant_table.gd")
 const customer_script: Script = preload("res://scripts/restaurant/customer.gd")
+const restaurant_script: Script = preload("res://scripts/restaurant/restaurant.gd")
 
 
 func has_save() -> bool:
@@ -901,6 +902,7 @@ func _validate_pending_aquaculture_product(product: Dictionary, aquaculture_data
 
 func _validate_restaurant_state(state: Dictionary, normalized_state: Dictionary) -> String:
 	var restaurant_level: int = int(normalized_state.get("restaurant_level", 0))
+	var kitchen_level: int = int(normalized_state.get("kitchen_level", 0))
 	var player_level: int = int(normalized_state.get("level", 1))
 	var unlock_level: int = data_manager.get_restaurant_unlock_level()
 	if unlock_level <= 0:
@@ -909,6 +911,13 @@ func _validate_restaurant_state(state: Dictionary, normalized_state: Dictionary)
 		return "field 'restaurant_level' is not defined in progression data"
 	if restaurant_level > 0 and player_level < unlock_level:
 		return "restaurant cannot be active below its unlock level"
+	if kitchen_level > 0 and data_manager.get_kitchen_cooking_slots(kitchen_level) <= 0:
+		return "field 'kitchen_level' is not defined in progression data"
+	if kitchen_level > 0 and restaurant_level == 0:
+		# Phase 7 saves did not own kitchen state. Normalize their inactive restaurant
+		# fixture back to an inactive kitchen instead of rejecting save version 1.
+		kitchen_level = 0
+		normalized_state["kitchen_level"] = 0
 
 	var tables_value: Variant = state.get("restaurant_tables", {})
 	if typeof(tables_value) != TYPE_DICTIONARY:
@@ -1002,7 +1011,110 @@ func _validate_restaurant_state(state: Dictionary, normalized_state: Dictionary)
 			return String(customer_result.get("error", "invalid restaurant customer"))
 		normalized_customers[customer_id] = customer_result.get("value", {})
 	normalized_state["restaurant_customers"] = normalized_customers
+
+	var cooking_value: Variant = state.get("restaurant_cooking", {})
+	if typeof(cooking_value) != TYPE_DICTIONARY:
+		return "field 'restaurant_cooking' must be a dictionary"
+	var saved_cooking: Dictionary = cooking_value as Dictionary
+	if kitchen_level == 0 and not saved_cooking.is_empty():
+		return "inactive kitchen contains cooking jobs"
+	var cooking_slots: int = data_manager.get_kitchen_cooking_slots(kitchen_level)
+	var active_cooking_count: int = 0
+	var normalized_cooking: Dictionary = {}
+	for customer_id_value: Variant in saved_cooking:
+		if typeof(customer_id_value) != TYPE_STRING:
+			return "cooking job customer ids must be strings"
+		var customer_id: String = String(customer_id_value)
+		if not normalized_customers.has(customer_id):
+			return "cooking job references unknown customer '%s'" % customer_id
+		var job_value: Variant = saved_cooking[customer_id_value]
+		if typeof(job_value) != TYPE_DICTIONARY:
+			return "cooking job for '%s' must be a dictionary" % customer_id
+		var job_result: Dictionary = _validate_restaurant_cooking_job(
+			customer_id,
+			job_value as Dictionary,
+			normalized_customers[customer_id] as Dictionary,
+			player_level
+		)
+		if not bool(job_result.get("ok", false)):
+			return String(job_result.get("error", "invalid cooking job"))
+		var normalized_job: Dictionary = job_result.get("value", {}) as Dictionary
+		if String(normalized_job.get("state", "")) == restaurant_script.cooking_state_cooking:
+			active_cooking_count += 1
+		normalized_cooking[customer_id] = normalized_job
+	if active_cooking_count > cooking_slots:
+		return "active cooking jobs exceed kitchen capacity"
+	normalized_state["restaurant_cooking"] = normalized_cooking
 	return ""
+
+
+func _validate_restaurant_cooking_job(
+	customer_id: String,
+	saved_job: Dictionary,
+	saved_customer: Dictionary,
+	player_level: int
+) -> Dictionary:
+	var recipe_value: Variant = saved_job.get("recipe_id")
+	var state_value: Variant = saved_job.get("state")
+	var payment_value: Variant = saved_job.get("payment_collected")
+	if typeof(recipe_value) != TYPE_STRING or typeof(state_value) != TYPE_STRING or typeof(payment_value) != TYPE_BOOL:
+		return _value_error("cooking job for '%s' has invalid identifiers" % customer_id)
+	var recipe_id: String = String(recipe_value)
+	var cooking_state: String = String(state_value)
+	if not restaurant_script.is_valid_cooking_state(cooking_state):
+		return _value_error("cooking job for '%s' has an invalid state" % customer_id)
+	if data_manager.get_restaurant_menu_entry(recipe_id, player_level).is_empty():
+		return _value_error("cooking job for '%s' references an unavailable recipe" % customer_id)
+	var quantity_result: Dictionary = _read_integer_value(
+		saved_job.get("quantity"),
+		"cooking quantity for customer '%s'" % customer_id,
+		1
+	)
+	if not bool(quantity_result.get("ok", false)):
+		return quantity_result
+	var elapsed_value: Variant = saved_job.get("cooking_elapsed")
+	var duration_value: Variant = saved_job.get("cooking_duration")
+	if (typeof(elapsed_value) != TYPE_INT and typeof(elapsed_value) != TYPE_FLOAT) or (typeof(duration_value) != TYPE_INT and typeof(duration_value) != TYPE_FLOAT):
+		return _value_error("cooking timer for customer '%s' must be numeric" % customer_id)
+	var elapsed: float = float(elapsed_value)
+	var duration: float = float(duration_value)
+	if not is_finite(elapsed) or not is_finite(duration) or elapsed < 0.0 or duration <= 0.0 or elapsed > duration:
+		return _value_error("cooking timer for customer '%s' is inconsistent" % customer_id)
+	if cooking_state == restaurant_script.cooking_state_cooking and elapsed >= duration:
+		return _value_error("active cooking job for '%s' has already reached its duration" % customer_id)
+	if cooking_state != restaurant_script.cooking_state_cooking and not is_equal_approx(elapsed, duration):
+		return _value_error("completed cooking job for '%s' has an incomplete timer" % customer_id)
+
+	var order: Dictionary = saved_customer.get("order", {}) as Dictionary
+	if recipe_id != String(order.get("recipe_id", "")) or int(quantity_result.get("value", 0)) != int(order.get("quantity", 0)):
+		return _value_error("cooking job for '%s' does not match its order" % customer_id)
+	var customer_state: String = String(saved_customer.get("state", ""))
+	var order_state: String = String(order.get("state", ""))
+	match cooking_state:
+		restaurant_script.cooking_state_cooking, restaurant_script.cooking_state_ready:
+			if customer_state != customer_script.state_waiting_food or order_state != customer_script.order_state_pending:
+				return _value_error("unserved cooking job for '%s' has an invalid customer state" % customer_id)
+		restaurant_script.cooking_state_served:
+			if customer_state != customer_script.state_eating or order_state != customer_script.order_state_served:
+				return _value_error("served cooking job for '%s' has an invalid customer state" % customer_id)
+		restaurant_script.cooking_state_paid:
+			if customer_state != customer_script.state_leaving or order_state != customer_script.order_state_served:
+				return _value_error("paid cooking job for '%s' has an invalid customer state" % customer_id)
+	var payment_collected: bool = bool(payment_value)
+	if payment_collected != (cooking_state == restaurant_script.cooking_state_paid):
+		return _value_error("payment state for cooking job '%s' is inconsistent" % customer_id)
+	return {
+		"ok": true,
+		"value": {
+			"recipe_id": recipe_id,
+			"quantity": int(quantity_result.get("value", 0)),
+			"state": cooking_state,
+			"cooking_elapsed": elapsed,
+			"cooking_duration": duration,
+			"payment_collected": payment_collected,
+		},
+		"error": "",
+	}
 
 
 func _validate_restaurant_customer(
@@ -1356,7 +1468,9 @@ func _build_save_state() -> Dictionary:
 	var restaurant_level_value: Variant = restaurant_state.get("restaurant_level", 0)
 	var restaurant_tables_value: Variant = restaurant_state.get("restaurant_tables", {})
 	var restaurant_customers_value: Variant = restaurant_state.get("restaurant_customers", {})
+	var restaurant_cooking_value: Variant = restaurant_state.get("restaurant_cooking", {})
 	state["restaurant_level"] = restaurant_level_value
+	state["kitchen_level"] = restaurant_state.get("kitchen_level", 0)
 	state["restaurant_tables"] = (
 		(restaurant_tables_value as Dictionary).duplicate(true)
 		if typeof(restaurant_tables_value) == TYPE_DICTIONARY
@@ -1369,9 +1483,13 @@ func _build_save_state() -> Dictionary:
 	)
 	state["restaurant_customer_sequence"] = restaurant_state.get("restaurant_customer_sequence", 0)
 	state["restaurant_spawn_elapsed"] = restaurant_state.get("restaurant_spawn_elapsed", 0.0)
+	state["restaurant_cooking"] = (
+		(restaurant_cooking_value as Dictionary).duplicate(true)
+		if typeof(restaurant_cooking_value) == TYPE_DICTIONARY
+		else restaurant_cooking_value
+	)
 	state["coop_level"] = 1
 	state["cow_barn_level"] = 1
-	state["kitchen_level"] = 0
 	state["beverage_counter"] = 0
 	state["staff"] = {}
 	state["unlocked_recipes"] = []
@@ -1413,10 +1531,12 @@ func create_new_game() -> void:
 	_apply_aquaculture_save_state({"aquaculture": {}})
 	_apply_restaurant_save_state({
 		"restaurant_level": 0,
+		"kitchen_level": 0,
 		"restaurant_tables": {},
 		"restaurant_customers": {},
 		"restaurant_customer_sequence": 0,
 		"restaurant_spawn_elapsed": 0.0,
+		"restaurant_cooking": {},
 	})
 
 
@@ -1491,20 +1611,24 @@ func _get_restaurant_save_state() -> Dictionary:
 	if current_scene == null or not current_scene.has_method("get_restaurant_save_state"):
 		return {
 			"restaurant_level": 0,
+			"kitchen_level": 0,
 			"restaurant_tables": {},
 			"restaurant_customers": {},
 			"restaurant_customer_sequence": 0,
 			"restaurant_spawn_elapsed": 0.0,
+			"restaurant_cooking": {},
 		}
 	var restaurant_state_value: Variant = current_scene.call("get_restaurant_save_state")
 	if typeof(restaurant_state_value) != TYPE_DICTIONARY:
 		push_error("save_manager: current scene returned an invalid restaurant save state")
 		return {
 			"restaurant_level": restaurant_state_value,
+			"kitchen_level": 0,
 			"restaurant_tables": {},
 			"restaurant_customers": {},
 			"restaurant_customer_sequence": 0,
 			"restaurant_spawn_elapsed": 0.0,
+			"restaurant_cooking": {},
 		}
 	return restaurant_state_value as Dictionary
 

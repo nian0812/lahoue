@@ -51,6 +51,15 @@ does not provide exact timing values, so Phase 8 uses conservative functional de
 These values can be rebalanced without changing the customer/order state machine or
 save format.
 
+## phase 9 cooking data defaults
+
+The source specification leaves every recipe cooking time unresolved. Phase 9 assigns
+a temporary 10-second cooking time only to recipes that already have complete,
+validated ingredient data. Recipes with unresolved ingredients remain unavailable.
+
+This is a technical gameplay default, not final balance, and can be changed in
+`data/recipes.json` without changing the cooking state machine or save format.
+
 ## test
 
 1. Open `project.godot` in Godot 4.x.

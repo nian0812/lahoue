@@ -3,15 +3,19 @@ extends Node2D
 const farm_tile_script: Script = preload("res://scripts/farming/farm_tile.gd")
 const animal_script: Script = preload("res://scripts/animals/animal.gd")
 const animal_scene: PackedScene = preload("res://scenes/animals/animal.tscn")
+const aquaculture_container_script: Script = preload("res://scripts/aquaculture/aquaculture_container.gd")
 
 var farm_tiles_by_id: Dictionary = {}
 var animals_by_id: Dictionary = {}
 var default_animal_templates: Dictionary = {}
+var aquaculture_containers_by_id: Dictionary = {}
+var default_aquaculture_templates: Dictionary = {}
 
 
 func _ready() -> void:
 	_cache_farm_tiles()
 	_cache_animals()
+	_cache_aquaculture_containers()
 
 	if not data_manager.is_ready:
 		push_error("main_world: cannot start gameplay because required game data failed to load")
@@ -71,6 +75,50 @@ func apply_farming_save_state(state: Dictionary) -> void:
 
 func has_farm_tile(tile_id: String) -> bool:
 	return farm_tiles_by_id.has(tile_id)
+
+
+func get_aquaculture_save_state() -> Dictionary:
+	var aquaculture: Dictionary = {}
+	for container_id_value: Variant in aquaculture_containers_by_id:
+		var container_id: String = String(container_id_value)
+		var container: Variant = aquaculture_containers_by_id[container_id]
+		aquaculture[container_id] = container.call("get_save_state")
+	return {"aquaculture": aquaculture}
+
+
+func apply_aquaculture_save_state(state: Dictionary) -> void:
+	for container_id_value: Variant in aquaculture_containers_by_id:
+		var container_id: String = String(container_id_value)
+		var container: Variant = aquaculture_containers_by_id[container_id]
+		var template: Dictionary = default_aquaculture_templates.get(container_id, {}) as Dictionary
+		container.set("aquaculture_id", String(template.get("aquaculture_id", "")))
+		container.set("position", template.get("position", Vector2.ZERO))
+		container.call("reset_container")
+
+	var aquaculture_value: Variant = state.get("aquaculture", {})
+	if typeof(aquaculture_value) != TYPE_DICTIONARY:
+		return
+
+	var aquaculture: Dictionary = aquaculture_value as Dictionary
+	for container_id_value: Variant in aquaculture:
+		var container_id: String = String(container_id_value)
+		if not aquaculture_containers_by_id.has(container_id):
+			continue
+		var saved_state_value: Variant = aquaculture[container_id_value]
+		if typeof(saved_state_value) != TYPE_DICTIONARY:
+			continue
+		aquaculture_containers_by_id[container_id].call("apply_save_state", saved_state_value as Dictionary)
+
+
+func has_aquaculture_container(container_id: String) -> bool:
+	return aquaculture_containers_by_id.has(container_id)
+
+
+func is_valid_aquaculture_assignment(container_id: String, aquaculture_id: String) -> bool:
+	if not default_aquaculture_templates.has(container_id):
+		return false
+	var template: Dictionary = default_aquaculture_templates[container_id] as Dictionary
+	return String(template.get("aquaculture_id", "")) == aquaculture_id
 
 
 func get_animal_save_state() -> Dictionary:
@@ -253,6 +301,28 @@ func _cache_animals() -> void:
 		}
 
 
+func _cache_aquaculture_containers() -> void:
+	aquaculture_containers_by_id.clear()
+	default_aquaculture_templates.clear()
+	for child: Node in $aquaculture.get_children():
+		if child.get_script() != aquaculture_container_script:
+			continue
+
+		var container_id: String = String(child.get("container_id"))
+		if not _is_valid_aquaculture_container_id(container_id):
+			push_error("main_world: aquaculture container '%s' has an invalid id" % child.name)
+			continue
+		if aquaculture_containers_by_id.has(container_id):
+			push_error("main_world: duplicate aquaculture container id '%s'" % container_id)
+			continue
+
+		aquaculture_containers_by_id[container_id] = child
+		default_aquaculture_templates[container_id] = {
+			"aquaculture_id": String(child.get("aquaculture_id")),
+			"position": (child as Node2D).position,
+		}
+
+
 func _restore_default_animals() -> void:
 	for instance_id_value: Variant in animals_by_id.keys():
 		var instance_id: String = String(instance_id_value)
@@ -326,6 +396,14 @@ func _is_valid_animal_instance_id(instance_id: String) -> bool:
 		not instance_id.is_empty()
 		and instance_id == instance_id.to_lower()
 		and instance_id.is_valid_identifier()
+	)
+
+
+func _is_valid_aquaculture_container_id(container_id: String) -> bool:
+	return (
+		not container_id.is_empty()
+		and container_id == container_id.to_lower()
+		and container_id.is_valid_identifier()
 	)
 
 

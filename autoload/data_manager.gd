@@ -146,6 +146,19 @@ func get_crop_growth_time_seconds(crop_id: String) -> float:
 	return growth_time if is_finite(growth_time) and growth_time > 0.0 else 0.0
 
 
+func get_aquaculture_growth_time_seconds(aquaculture_id: String) -> float:
+	var aquaculture_value: Variant = get_entry("aquaculture", aquaculture_id)
+	if typeof(aquaculture_value) != TYPE_DICTIONARY:
+		return 0.0
+
+	var growth_time_value: Variant = (aquaculture_value as Dictionary).get("growth_time")
+	if typeof(growth_time_value) != TYPE_INT and typeof(growth_time_value) != TYPE_FLOAT:
+		return 0.0
+
+	var growth_time: float = float(growth_time_value)
+	return growth_time if is_finite(growth_time) and growth_time > 0.0 else 0.0
+
+
 func get_level_exp(level: int) -> int:
 	var progression: Dictionary = get_dataset("progression")
 	if progression.is_empty():

@@ -12,6 +12,7 @@ const temporary_save_path: String = "user://savegame.tmp.json"
 const save_version: int = 1
 const max_safe_json_integer: int = 9007199254740991
 const animal_script: Script = preload("res://scripts/animals/animal.gd")
+const aquaculture_container_script: Script = preload("res://scripts/aquaculture/aquaculture_container.gd")
 
 
 func has_save() -> bool:
@@ -258,8 +259,11 @@ func _validate_save_state(state: Dictionary) -> Dictionary:
 	if not animal_error.is_empty():
 		return _validation_error(animal_error)
 
+	var aquaculture_error: String = _validate_aquaculture_state(state, normalized_state)
+	if not aquaculture_error.is_empty():
+		return _validation_error(aquaculture_error)
+
 	var dictionary_fields: Array[String] = [
-		"aquaculture",
 		"staff"
 	]
 	for field: String in dictionary_fields:
@@ -734,6 +738,161 @@ func _validate_pending_animal_product(
 	}
 
 
+func _validate_aquaculture_state(state: Dictionary, normalized_state: Dictionary) -> String:
+	var aquaculture_value: Variant = state.get("aquaculture")
+	if typeof(aquaculture_value) != TYPE_DICTIONARY:
+		return "field 'aquaculture' must be a dictionary"
+
+	var aquaculture: Dictionary = aquaculture_value as Dictionary
+	var normalized_aquaculture: Dictionary = {}
+	var current_scene: Node = get_tree().current_scene
+
+	for container_id_value: Variant in aquaculture:
+		if typeof(container_id_value) != TYPE_STRING:
+			return "aquaculture container ids must be strings"
+		var container_id: String = String(container_id_value)
+		if container_id.is_empty() or container_id != container_id.to_lower() or not container_id.is_valid_identifier():
+			return "aquaculture container id '%s' is invalid" % container_id
+		if current_scene != null and current_scene.has_method("has_aquaculture_container") and not bool(current_scene.call("has_aquaculture_container", container_id)):
+			return "aquaculture state contains unknown container '%s'" % container_id
+
+		var saved_container_value: Variant = aquaculture[container_id_value]
+		if typeof(saved_container_value) != TYPE_DICTIONARY:
+			return "aquaculture state for '%s' must be a dictionary" % container_id
+		var saved_container: Dictionary = saved_container_value as Dictionary
+
+		var aquaculture_id_value: Variant = saved_container.get("aquaculture_id")
+		if typeof(aquaculture_id_value) != TYPE_STRING or String(aquaculture_id_value).is_empty():
+			return "aquaculture_id for '%s' must be a non-empty string" % container_id
+		var aquaculture_id: String = String(aquaculture_id_value)
+		if current_scene != null and current_scene.has_method("is_valid_aquaculture_assignment") and not bool(current_scene.call("is_valid_aquaculture_assignment", container_id, aquaculture_id)):
+			return "aquaculture_id '%s' does not belong to container '%s'" % [aquaculture_id, container_id]
+		var aquaculture_data_value: Variant = data_manager.get_entry("aquaculture", aquaculture_id)
+		if typeof(aquaculture_data_value) != TYPE_DICTIONARY:
+			return "container '%s' references unknown aquaculture_id '%s'" % [container_id, aquaculture_id]
+		var aquaculture_data: Dictionary = aquaculture_data_value as Dictionary
+		var definition_error: String = _validate_aquaculture_definition(aquaculture_id, aquaculture_data)
+		if not definition_error.is_empty():
+			return definition_error
+
+		var position_value: Variant = saved_container.get("position")
+		if typeof(position_value) != TYPE_DICTIONARY:
+			return "position for aquaculture container '%s' must be a dictionary" % container_id
+		var position_result: Dictionary = _validate_aquaculture_position(position_value as Dictionary, container_id)
+		if not bool(position_result.get("ok", false)):
+			return String(position_result.get("error", "invalid aquaculture position"))
+
+		var state_value: Variant = saved_container.get("state")
+		if typeof(state_value) != TYPE_STRING:
+			return "state for aquaculture container '%s' must be a string" % container_id
+		var container_state: String = String(state_value)
+		if not aquaculture_container_script.is_valid_state(container_state):
+			return "state for aquaculture container '%s' is invalid" % container_id
+
+		var timer_value: Variant = saved_container.get("growth_timer")
+		if typeof(timer_value) != TYPE_INT and typeof(timer_value) != TYPE_FLOAT:
+			return "growth_timer for aquaculture container '%s' must be a number" % container_id
+		var growth_timer: float = float(timer_value)
+		var growth_time: float = data_manager.get_aquaculture_growth_time_seconds(aquaculture_id)
+		if not is_finite(growth_timer) or growth_timer < 0.0 or growth_timer > growth_time:
+			return "growth_timer for aquaculture container '%s' is outside the valid range" % container_id
+
+		var collected_value: Variant = saved_container.get("product_collected")
+		if typeof(collected_value) != TYPE_BOOL:
+			return "product_collected for aquaculture container '%s' must be a boolean" % container_id
+		var product_collected: bool = bool(collected_value)
+		var pending_value: Variant = saved_container.get("pending_product")
+		if typeof(pending_value) != TYPE_DICTIONARY:
+			return "pending_product for aquaculture container '%s' must be a dictionary" % container_id
+		var pending_product: Dictionary = pending_value as Dictionary
+		var normalized_pending: Dictionary = {}
+
+		match container_state:
+			aquaculture_container_script.state_empty:
+				if not is_zero_approx(growth_timer) or not pending_product.is_empty() or not product_collected:
+					return "empty aquaculture container '%s' has inconsistent cycle data" % container_id
+			aquaculture_container_script.state_growing:
+				if growth_timer >= growth_time or not pending_product.is_empty() or product_collected:
+					return "growing aquaculture container '%s' has inconsistent cycle data" % container_id
+			aquaculture_container_script.state_ready:
+				if not is_equal_approx(growth_timer, growth_time) or pending_product.is_empty() or product_collected:
+					return "ready aquaculture container '%s' has inconsistent cycle data" % container_id
+				var product_result: Dictionary = _validate_pending_aquaculture_product(pending_product, aquaculture_data, container_id)
+				if not bool(product_result.get("ok", false)):
+					return String(product_result.get("error", "invalid pending aquaculture product"))
+				normalized_pending = product_result.get("value", {}) as Dictionary
+
+		normalized_aquaculture[container_id] = {
+			"aquaculture_id": aquaculture_id,
+			"position": position_result.get("value", {}),
+			"state": container_state,
+			"growth_timer": growth_timer,
+			"pending_product": normalized_pending,
+			"product_collected": product_collected,
+		}
+
+	normalized_state["aquaculture"] = normalized_aquaculture
+	return ""
+
+
+func _validate_aquaculture_definition(aquaculture_id: String, aquaculture_data: Dictionary) -> String:
+	var required_level_result: Dictionary = _read_integer_value(aquaculture_data.get("required_level"), "required_level for aquaculture '%s'" % aquaculture_id, 1)
+	if not bool(required_level_result.get("ok", false)):
+		return String(required_level_result.get("error", "invalid aquaculture required_level"))
+	if data_manager.get_aquaculture_growth_time_seconds(aquaculture_id) <= 0.0:
+		return "growth_time for aquaculture '%s' must be greater than zero" % aquaculture_id
+	var yield_result: Dictionary = _read_integer_value(aquaculture_data.get("yield"), "yield for aquaculture '%s'" % aquaculture_id, 1)
+	if not bool(yield_result.get("ok", false)):
+		return String(yield_result.get("error", "invalid aquaculture yield"))
+	var exp_result: Dictionary = _read_integer_value(aquaculture_data.get("exp"), "EXP for aquaculture '%s'" % aquaculture_id, 0)
+	if not bool(exp_result.get("ok", false)):
+		return String(exp_result.get("error", "invalid aquaculture EXP"))
+
+	var item_id_value: Variant = aquaculture_data.get("item_id")
+	if typeof(item_id_value) != TYPE_STRING or String(item_id_value).is_empty():
+		return "item_id for aquaculture '%s' must be a non-empty string" % aquaculture_id
+	var item_value: Variant = data_manager.get_entry("items", String(item_id_value))
+	if typeof(item_value) != TYPE_DICTIONARY:
+		return "aquaculture '%s' references unknown item '%s'" % [aquaculture_id, item_id_value]
+	if String((item_value as Dictionary).get("category", "")) != "seafood":
+		return "aquaculture '%s' product must be a seafood item" % aquaculture_id
+	return ""
+
+
+func _validate_aquaculture_position(position: Dictionary, container_id: String) -> Dictionary:
+	var normalized_position: Dictionary = {}
+	for axis: String in ["x", "y"]:
+		var axis_value: Variant = position.get(axis)
+		if typeof(axis_value) != TYPE_INT and typeof(axis_value) != TYPE_FLOAT:
+			return _value_error("position.%s for aquaculture container '%s' must be a number" % [axis, container_id])
+		var axis_number: float = float(axis_value)
+		if not is_finite(axis_number):
+			return _value_error("position.%s for aquaculture container '%s' must be finite" % [axis, container_id])
+		normalized_position[axis] = axis_number
+	return {"ok": true, "value": normalized_position, "error": ""}
+
+
+func _validate_pending_aquaculture_product(product: Dictionary, aquaculture_data: Dictionary, container_id: String) -> Dictionary:
+	var item_id_value: Variant = product.get("item_id")
+	if typeof(item_id_value) != TYPE_STRING or String(item_id_value) != String(aquaculture_data.get("item_id", "")):
+		return _value_error("pending product item for aquaculture container '%s' does not match data" % container_id)
+	var amount_result: Dictionary = _read_integer_value(product.get("amount"), "pending product amount for aquaculture container '%s'" % container_id, 1)
+	if not bool(amount_result.get("ok", false)):
+		return amount_result
+	var exp_result: Dictionary = _read_integer_value(product.get("exp"), "pending product EXP for aquaculture container '%s'" % container_id, 0)
+	if not bool(exp_result.get("ok", false)):
+		return exp_result
+	return {
+		"ok": true,
+		"value": {
+			"item_id": String(item_id_value),
+			"amount": int(amount_result.get("value", 0)),
+			"exp": int(exp_result.get("value", 0)),
+		},
+		"error": "",
+	}
+
+
 func _read_integer_field(state: Dictionary, field: String, minimum: int) -> Dictionary:
 	if not state.has(field):
 		return _value_error("missing required field '%s'" % field)
@@ -907,7 +1066,13 @@ func _build_save_state() -> Dictionary:
 		else animal_age_value
 	)
 	state["animals_initialized"] = true
-	state["aquaculture"] = {}
+	var aquaculture_state: Dictionary = _get_aquaculture_save_state()
+	var aquaculture_value: Variant = aquaculture_state.get("aquaculture", {})
+	state["aquaculture"] = (
+		(aquaculture_value as Dictionary).duplicate(true)
+		if typeof(aquaculture_value) == TYPE_DICTIONARY
+		else aquaculture_value
+	)
 	state["coop_level"] = 1
 	state["cow_barn_level"] = 1
 	state["restaurant_level"] = 0
@@ -926,6 +1091,7 @@ func _apply_save_state(state: Dictionary) -> void:
 	inventory_manager.apply_save_state(state)
 	_apply_farming_save_state(state)
 	_apply_animal_save_state(state)
+	_apply_aquaculture_save_state(state)
 
 
 func create_new_game() -> void:
@@ -948,6 +1114,7 @@ func create_new_game() -> void:
 		"animal_age": {},
 		"animals_initialized": false
 	})
+	_apply_aquaculture_save_state({"aquaculture": {}})
 
 
 func _get_farming_save_state() -> Dictionary:
@@ -996,6 +1163,24 @@ func _apply_animal_save_state(state: Dictionary) -> void:
 	var current_scene: Node = get_tree().current_scene
 	if current_scene != null and current_scene.has_method("apply_animal_save_state"):
 		current_scene.call("apply_animal_save_state", state)
+
+
+func _get_aquaculture_save_state() -> Dictionary:
+	var current_scene: Node = get_tree().current_scene
+	if current_scene == null or not current_scene.has_method("get_aquaculture_save_state"):
+		return {"aquaculture": {}}
+
+	var aquaculture_state_value: Variant = current_scene.call("get_aquaculture_save_state")
+	if typeof(aquaculture_state_value) != TYPE_DICTIONARY:
+		push_error("save_manager: current scene returned an invalid aquaculture save state")
+		return {"aquaculture": aquaculture_state_value}
+	return aquaculture_state_value as Dictionary
+
+
+func _apply_aquaculture_save_state(state: Dictionary) -> void:
+	var current_scene: Node = get_tree().current_scene
+	if current_scene != null and current_scene.has_method("apply_aquaculture_save_state"):
+		current_scene.call("apply_aquaculture_save_state", state)
 
 
 func _fail_save(reason: String) -> bool:

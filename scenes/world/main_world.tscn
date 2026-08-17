@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3]
+[gd_scene load_steps=21 format=3]
 
 [ext_resource type="Script" path="res://scripts/world/main_world.gd" id="1_main"]
 [ext_resource type="Script" path="res://scripts/player/player.gd" id="2_player"]
@@ -12,6 +12,10 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/interaction_prompt.tscn" id="10_prompt"]
 [ext_resource type="PackedScene" path="res://scenes/ui/notification_popup.tscn" id="11_notification"]
 [ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="12_pause"]
+[ext_resource type="PackedScene" path="res://scenes/ui/inventory_panel.tscn" id="13_inventory"]
+[ext_resource type="PackedScene" path="res://scenes/ui/shop_panel.tscn" id="14_shop"]
+[ext_resource type="PackedScene" path="res://scenes/ui/recipe_panel.tscn" id="15_recipe"]
+[ext_resource type="PackedScene" path="res://scenes/ui/restaurant_panel.tscn" id="16_rest"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_player"]
 radius = 18.0
@@ -152,3 +156,11 @@ script = ExtResource("8_ui_manager")
 [node name="notification_popup" parent="ui" instance=ExtResource("11_notification")]
 
 [node name="pause_menu" parent="ui" instance=ExtResource("12_pause")]
+
+[node name="inventory_panel" parent="ui" instance=ExtResource("13_inventory")]
+
+[node name="shop_panel" parent="ui" instance=ExtResource("14_shop")]
+
+[node name="recipe_panel" parent="ui" instance=ExtResource("15_recipe")]
+
+[node name="restaurant_panel" parent="ui" instance=ExtResource("16_rest")]

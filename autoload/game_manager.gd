@@ -55,7 +55,7 @@ func _process(delta: float) -> void:
 		finish_day()
 
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if not gameplay_active:
 		return
 

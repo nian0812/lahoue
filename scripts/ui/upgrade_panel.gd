@@ -88,18 +88,18 @@ func _refresh_data() -> void:
 	for sys_id in systems:
 		var current_lvl: int = main_world.call("get_upgrade_level", sys_id)
 		var max_lvl: int = data_manager.get_progression_max_level(sys_id)
-		
+
 		# If system is locked/hidden (e.g., restaurant level 0 before unlock level)
 		if current_lvl == 0 and not main_world.call("can_upgrade_system", sys_id):
 			# Also check if it's completely unavailable
 			var unlock_lvl: int = 1
 			if sys_id == "restaurant" or sys_id == "kitchen":
 				unlock_lvl = data_manager.get_restaurant_unlock_level()
-			
+
 			if game_manager.level < unlock_lvl:
 				_build_locked_row(sys_id, unlock_lvl)
 				continue
-		
+
 		_build_upgrade_row(sys_id, current_lvl, max_lvl, main_world)
 
 
@@ -178,11 +178,11 @@ func _build_upgrade_row(sys_id: String, current_lvl: int, max_lvl: int, main_wor
 		var target_lvl: int = current_lvl + 1
 		var cost: int = data_manager.get_progression_upgrade_cost(sys_id, target_lvl)
 		var can_upgrade: bool = main_world.call("can_upgrade_system", sys_id)
-		
+
 		var next_effect: int = data_manager.get_progression_effect(sys_id, target_lvl)
 		if next_effect > current_effect:
 			effect_lbl.text += " -> %d" % next_effect
-		
+
 		var cost_lbl: Label = Label.new()
 		cost_lbl.text = vnd_format.format(cost)
 		cost_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
@@ -203,6 +203,20 @@ func _build_upgrade_row(sys_id: String, current_lvl: int, max_lvl: int, main_wor
 		max_lbl.text = "MAX LEVEL"
 		max_lbl.modulate = Color(0.4, 0.8, 0.4)
 		hbox_bottom.add_child(max_lbl)
+
+	row.mouse_entered.connect(func() -> void:
+		row.modulate = Color(1.2, 1.2, 1.2)
+		var t_data: Dictionary = {"title": sys_id.capitalize().replace("_", " "), "description": "System Upgrade"}
+		var ui: Node = get_parent()
+		if ui and ui.has_method("show_tooltip"):
+			ui.call("show_tooltip", t_data, row.global_position)
+	)
+	row.mouse_exited.connect(func() -> void:
+		row.modulate = Color.WHITE
+		var ui: Node = get_parent()
+		if ui and ui.has_method("hide_tooltip"):
+			ui.call("hide_tooltip")
+	)
 
 	list_container.add_child(row)
 

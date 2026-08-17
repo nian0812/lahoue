@@ -135,7 +135,7 @@ func _refresh_hired(rest: Node) -> void:
 		has_staff = true
 		var staff: Node = staffs_dict[sid]
 		var type_id: String = String(staff.get("staff_type_id"))
-		
+
 		var row: PanelContainer = PanelContainer.new()
 		var style: StyleBoxFlat = StyleBoxFlat.new()
 		style.bg_color = Color(0.1, 0.08, 0.06, 0.4)
@@ -162,7 +162,7 @@ func _refresh_hired(rest: Node) -> void:
 		state_lbl.modulate = Color(0.8, 0.8, 0.8)
 		state_lbl.add_theme_font_size_override("font_size", 14)
 		vbox.add_child(state_lbl)
-		
+
 		staff_container.add_child(row)
 
 	if not has_staff:
@@ -180,7 +180,7 @@ func _update_staff_states() -> void:
 	if not main_world: return
 	var rest: Node = main_world.get_node_or_null("restaurant")
 	if not rest: return
-	
+
 	var staffs_dict: Dictionary = rest.get("staffs_by_id")
 	for child: Node in staff_container.get_children():
 		var lbls: Array[Node] = child.find_children("state_*", "Label", true, false)
@@ -208,14 +208,14 @@ func _refresh_hire_options(rest: Node) -> void:
 
 	var ds: Dictionary = data_manager.get_dataset("staff")
 	var entries: Dictionary = ds.get("entries", {})
-	
+
 	for type_id_val: Variant in entries:
 		var type_id: String = String(type_id_val)
 		var data: Dictionary = entries[type_id_val] as Dictionary
-		
+
 		var req_lvl: int = int(data.get("unlock_level", 0))
 		var cost: int = data_manager.get_staff_hire_cost(type_id)
-		
+
 		var row: PanelContainer = PanelContainer.new()
 		var style: StyleBoxFlat = StyleBoxFlat.new()
 		style.bg_color = Color(0.1, 0.08, 0.06, 0.4)
@@ -263,10 +263,10 @@ func _refresh_hire_options(rest: Node) -> void:
 
 		var hire_btn: Button = Button.new()
 		hire_btn.text = "Hire"
-		
+
 		var can_afford: bool = game_manager.money >= cost
 		var level_ok: bool = game_manager.level >= req_lvl
-		
+
 		if not level_ok:
 			hire_btn.disabled = true
 			hire_btn.text = "Lv %d" % req_lvl
@@ -274,7 +274,7 @@ func _refresh_hire_options(rest: Node) -> void:
 		elif not can_afford:
 			hire_btn.disabled = true
 			cost_lbl.modulate = Color(0.8, 0.3, 0.3)
-			
+
 		hire_btn.pressed.connect(_on_hire_pressed.bind(type_id, rest))
 		hbox_bottom.add_child(hire_btn)
 

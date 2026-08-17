@@ -15,8 +15,16 @@ var restaurant_panel: Control
 var upgrade_panel: Control
 var staff_panel: Control
 var achievement_panel: Control
+var level_up_popup: Control
+var day_summary_panel: Control
+var tooltip_node: Control
 
 var active_panel: Control = null
+var player_node: Node2D = null
+
+var floating_text_scene: PackedScene = preload("res://scenes/ui/floating_text.tscn")
+var _last_exp: int = -1
+var _last_level: int = -1
 
 
 func _ready() -> void:
@@ -38,12 +46,16 @@ func _ready() -> void:
 	upgrade_panel = get_node_or_null("upgrade_panel") as Control
 	staff_panel = get_node_or_null("staff_panel") as Control
 	achievement_panel = get_node_or_null("achievement_panel") as Control
+	level_up_popup = get_node_or_null("level_up_popup") as Control
+	day_summary_panel = get_node_or_null("day_summary_panel") as Control
+	tooltip_node = get_node_or_null("tooltip_panel") as Control
 
 	# Apply theme and initial visibility
 	var all_nodes: Array[Control] = [
 		hud_node, prompt_node, notification_node, pause_node,
 		inventory_panel, shop_panel, recipe_panel, restaurant_panel,
-		upgrade_panel, staff_panel, achievement_panel
+		upgrade_panel, staff_panel, achievement_panel, level_up_popup, day_summary_panel,
+		tooltip_node
 	]
 	for node: Control in all_nodes:
 		if node != null:
@@ -97,14 +109,47 @@ func _toggle_panel(panel: Control) -> void:
 			_close_active_panel()
 		active_panel = panel
 		panel.visible = true
+
+		# Open animation
+		panel.modulate.a = 0
+		panel.scale = Vector2.ONE * 0.95
+		panel.pivot_offset = panel.size / 2
+		var tw: Tween = create_tween()
+		tw.set_parallel(true)
+		tw.tween_property(panel, "modulate:a", 1.0, 0.15).set_trans(Tween.TRANS_SINE)
+		tw.tween_property(panel, "scale", Vector2.ONE, 0.2).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+
 		if panel.has_method("refresh"):
 			panel.call("refresh")
 
 
 func _close_active_panel() -> void:
 	if active_panel != null:
-		active_panel.visible = false
+		var panel_to_close: Control = active_panel
 		active_panel = null
+
+		# Close animation
+		var tw: Tween = create_tween()
+		tw.set_parallel(true)
+		tw.tween_property(panel_to_close, "modulate:a", 0.0, 0.1).set_trans(Tween.TRANS_SINE)
+		tw.tween_property(panel_to_close, "scale", Vector2.ONE * 0.95, 0.1).set_trans(Tween.TRANS_SINE)
+		tw.set_parallel(false)
+		tw.tween_callback(func() -> void:
+			panel_to_close.visible = false
+			panel_to_close.modulate.a = 1.0
+			panel_to_close.scale = Vector2.ONE
+		)
+
+		if tooltip_node:
+			tooltip_node.call("hide_tooltip")
+
+func show_tooltip(data: Dictionary, pos: Vector2) -> void:
+	if tooltip_node:
+		tooltip_node.call("show_tooltip", data, pos)
+
+func hide_tooltip() -> void:
+	if tooltip_node:
+		tooltip_node.call("hide_tooltip")
 
 
 func _setup_player() -> void:
@@ -115,6 +160,8 @@ func _setup_player() -> void:
 	var player: Node = parent.get_node_or_null("player")
 	if player == null:
 		return
+
+	player_node = player as Node2D
 
 	if hud_node != null and hud_node.has_method("set_player"):
 		hud_node.call("set_player", player)
@@ -134,6 +181,8 @@ func _connect_notification_signals() -> void:
 		inventory_manager.item_purchased.connect(_on_item_purchased)
 	if not inventory_manager.warehouse_upgraded.is_connected(_on_warehouse_upgraded):
 		inventory_manager.warehouse_upgraded.connect(_on_warehouse_upgraded)
+	if not inventory_manager.item_added.is_connected(_on_item_added):
+		inventory_manager.item_added.connect(_on_item_added)
 
 	# Level change
 	if not game_manager.level_changed.is_connected(_on_level_changed_notify):
@@ -170,11 +219,22 @@ func _connect_notification_signals() -> void:
 func _on_item_sold(p_item_id: Variant, p_amount: Variant, p_total: Variant) -> void:
 	var price_text: String = vnd_format.format(int(p_total))
 	notification_node.call("show_notification", "Sold: +%s" % price_text, "success")
+	if player_node:
+		spawn_floating_text("+%s" % price_text, _get_randomized_player_pos(), Color(0.4, 0.8, 0.4))
 
 
 func _on_item_purchased(p_item_id: Variant, p_amount: Variant, p_total: Variant) -> void:
 	var name_text: String = vnd_format.format_item_name(String(p_item_id))
 	notification_node.call("show_notification", "Bought %d %s" % [int(p_amount), name_text], "info")
+	if player_node:
+		var price_text: String = vnd_format.format(int(p_total))
+		spawn_floating_text("-%s" % price_text, _get_randomized_player_pos(), Color(0.8, 0.3, 0.3))
+
+
+func _on_item_added(p_item_id: Variant, p_amount: Variant) -> void:
+	if player_node:
+		var name_text: String = vnd_format.format_item_name(String(p_item_id))
+		spawn_floating_text("+%d %s" % [int(p_amount), name_text], _get_randomized_player_pos(), Color(1.0, 1.0, 0.8))
 
 
 func _on_warehouse_upgraded(p_level: Variant, p_capacity: Variant) -> void:
@@ -182,13 +242,40 @@ func _on_warehouse_upgraded(p_level: Variant, p_capacity: Variant) -> void:
 
 
 func _on_level_changed_notify(new_lvl: Variant) -> void:
-	notification_node.call("show_notification", "Level Up! You reached Lv %d" % int(new_lvl), "success")
+	var lvl: int = int(new_lvl)
+	if _last_level > 0 and lvl > _last_level:
+		if level_up_popup and level_up_popup.has_method("show_level_up"):
+			level_up_popup.call("show_level_up", _last_level, lvl)
+	else:
+		notification_node.call("show_notification", "Level %d Reached" % lvl, "success")
+	_last_level = lvl
+
 	if active_panel != null and active_panel.has_method("refresh"):
 		active_panel.call("refresh")
 
-func _on_exp_changed(_exp: Variant, _lvl: Variant) -> void:
+	# Removed duplicate _on_exp_changed here
+func _on_exp_changed(new_exp: Variant, _lvl: Variant) -> void:
+	var current_exp: int = int(new_exp)
+	if _last_exp >= 0 and current_exp > _last_exp:
+		if player_node:
+			spawn_floating_text("+%d EXP" % (current_exp - _last_exp), _get_randomized_player_pos(), Color(0.3, 0.6, 1.0))
+	_last_exp = current_exp
 	if active_panel == upgrade_panel and upgrade_panel != null:
 		upgrade_panel.call("refresh")
+
+func _get_randomized_player_pos() -> Vector2:
+	if player_node:
+		var pos: Vector2 = player_node.global_position
+		pos.x += randf_range(-30, 30)
+		pos.y -= randf_range(20, 50)
+		return pos
+	return Vector2.ZERO
+
+func spawn_floating_text(text: String, global_pos: Vector2, color: Color = Color.WHITE) -> void:
+	var ft: Node2D = floating_text_scene.instantiate() as Node2D
+	ft.global_position = global_pos
+	get_parent().add_child(ft)
+	ft.call("display", text, color)
 
 
 func _on_achievement_unlocked(p_id: Variant) -> void:

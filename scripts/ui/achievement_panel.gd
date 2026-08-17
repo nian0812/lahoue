@@ -88,7 +88,7 @@ func _refresh_data() -> void:
 		var a_desc: String = String(def.get("description", ""))
 		var condition: Dictionary = def.get("condition", {})
 		var target: int = int(condition.get("target", 1))
-		
+
 		var reward_raw: Variant = def.get("reward")
 		var reward: Dictionary = reward_raw as Dictionary if typeof(reward_raw) == TYPE_DICTIONARY else {}
 
@@ -158,7 +158,7 @@ func _refresh_data() -> void:
 		prog_lbl.text = " %d / %d" % [progress, target]
 		prog_lbl.add_theme_font_size_override("font_size", 14)
 		hbox_bottom.add_child(prog_lbl)
-		
+
 		# If reward exists, display it
 		if not reward.is_empty():
 			var r_lbl: Label = Label.new()
@@ -176,5 +176,24 @@ func _refresh_data() -> void:
 			r_lbl.add_theme_font_size_override("font_size", 14)
 			r_lbl.modulate = Color(0.8, 0.7, 0.4)
 			hbox_bottom.add_child(r_lbl)
+		else:
+			var lbl: Label = Label.new()
+			lbl.text = "Incomplete"
+			lbl.modulate = Color(0.8, 0.4, 0.4)
+			hbox_bottom.add_child(lbl)
+
+		row.mouse_entered.connect(func() -> void:
+			row.modulate = Color(1.2, 1.2, 1.2)
+			var t_data: Dictionary = {"title": "Achievement", "description": a_desc}
+			var ui: Node = get_parent()
+			if ui and ui.has_method("show_tooltip"):
+				ui.call("show_tooltip", t_data, row.global_position)
+		)
+		row.mouse_exited.connect(func() -> void:
+			row.modulate = Color.WHITE
+			var ui: Node = get_parent()
+			if ui and ui.has_method("hide_tooltip"):
+				ui.call("hide_tooltip")
+		)
 
 		list_container.add_child(row)

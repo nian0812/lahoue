@@ -162,7 +162,7 @@ func _refresh_list() -> void:
 
 		var item_data: Dictionary = item_data_variant as Dictionary
 		var category: String = String(item_data.get("category", "other"))
-		
+
 		# Map unknown categories to 'other'
 		if not ["seed", "farm", "animal_products", "seafood"].has(category):
 			category = "other"
@@ -182,7 +182,7 @@ func _add_empty_message(text: String) -> void:
 	lbl.text = text
 	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	lbl.modulate = Color(1, 1, 1, 0.5)
-	
+
 	var margin: MarginContainer = MarginContainer.new()
 	margin.add_theme_constant_override("margin_top", 40)
 	margin.add_child(lbl)
@@ -202,7 +202,7 @@ func _add_item_row(item_id: String, amount: int, item_data: Dictionary) -> void:
 	style.content_margin_top = 8
 	style.content_margin_bottom = 8
 	row.add_theme_stylebox_override("panel", style)
-	
+
 	var hbox: HBoxContainer = HBoxContainer.new()
 	hbox.add_theme_constant_override("separation", 16)
 	row.add_child(hbox)

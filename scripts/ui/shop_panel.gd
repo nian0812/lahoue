@@ -51,7 +51,7 @@ func _build_ui() -> void:
 	scroll_seeds.name = "Seeds"
 	scroll_seeds.custom_minimum_size = Vector2(500, 300)
 	tab_container.add_child(scroll_seeds)
-	
+
 	var margin_seeds: MarginContainer = MarginContainer.new()
 	margin_seeds.add_theme_constant_override("margin_top", 8)
 	margin_seeds.add_theme_constant_override("margin_bottom", 8)
@@ -130,7 +130,7 @@ func _refresh_seeds() -> void:
 		var buy_price: int = int(item_data.get("buy_price", 0))
 		var req_level: int = data_manager.get_item_required_level(seed_id)
 		var owned: int = inventory_manager.get_amount(seed_id)
-		
+
 		var can_afford: bool = game_manager.money >= buy_price
 		var level_ok: bool = game_manager.level >= req_level
 		var has_cap: bool = inventory_manager.can_add(1)
@@ -157,16 +157,32 @@ func _refresh_seeds() -> void:
 		var buy_btn: Button = Button.new()
 		buy_btn.text = "Buy"
 		buy_btn.custom_minimum_size = Vector2(60, 0)
-		
+
 		if not level_ok:
 			buy_btn.disabled = true
 			buy_btn.text = "Lv %d" % req_level
 			row.modulate = Color(1, 1, 1, 0.5)
 		elif not can_afford or not has_cap:
 			buy_btn.disabled = true
-			
+
 		buy_btn.pressed.connect(_on_buy_seed.bind(seed_id))
 		hbox.add_child(buy_btn)
+
+		row.mouse_entered.connect(func() -> void:
+			row.modulate = Color(1.2, 1.2, 1.2)
+			var t_data: Dictionary = {"title": vnd_format.format_item_name(seed_id), "description": "Category: Seed"}
+			if buy_price > 0:
+				t_data["cost"] = vnd_format.format(buy_price)
+			var ui: Node = get_parent()
+			if ui and ui.has_method("show_tooltip"):
+				ui.call("show_tooltip", t_data, row.global_position)
+		)
+		row.mouse_exited.connect(func() -> void:
+			row.modulate = Color.WHITE
+			var ui: Node = get_parent()
+			if ui and ui.has_method("hide_tooltip"):
+				ui.call("hide_tooltip")
+		)
 
 		seeds_container.add_child(row)
 
@@ -218,16 +234,16 @@ func _refresh_animals() -> void:
 		var buy_price: int = int(animal_data.get("purchase_price", 0))
 		var req_level: int = data_manager.get_animal_required_level(animal_id)
 		var housing_id: String = String(animal_data.get("housing", ""))
-		
+
 		# We must use get_node("/root/main_world") to check housing
 		var main_world: Node = get_tree().root.get_node_or_null("main_world")
-		
+
 		var can_afford: bool = game_manager.money >= buy_price
 		var level_ok: bool = game_manager.level >= req_level
 		var has_cap: bool = false
 		var curr_count: int = 0
 		var max_cap: int = 0
-		
+
 		if main_world and main_world.has_method("_get_animal_housing_count"):
 			curr_count = main_world.call("_get_animal_housing_count", housing_id)
 			max_cap = data_manager.get_animal_housing_capacity(housing_id, main_world.call("get_upgrade_level", housing_id))
@@ -255,14 +271,14 @@ func _refresh_animals() -> void:
 		var buy_btn: Button = Button.new()
 		buy_btn.text = "Buy"
 		buy_btn.custom_minimum_size = Vector2(60, 0)
-		
+
 		if not level_ok:
 			buy_btn.disabled = true
 			buy_btn.text = "Lv %d" % req_level
 			row.modulate = Color(1, 1, 1, 0.5)
 		elif not can_afford or not has_cap:
 			buy_btn.disabled = true
-			
+
 		buy_btn.pressed.connect(_on_buy_animal.bind(animal_id))
 		hbox.add_child(buy_btn)
 
@@ -273,14 +289,14 @@ func _on_buy_animal(animal_id: String) -> void:
 	var main_world: Node = get_tree().root.get_node_or_null("main_world")
 	if not main_world:
 		return
-	
+
 	var instance_id: String = "%s_%d" % [animal_id, Time.get_ticks_msec()]
 	var spawn_pos: Vector2 = Vector2.ZERO
 	# Use player position if available
 	var player: Node2D = main_world.get_node_or_null("player") as Node2D
 	if player:
 		spawn_pos = player.position
-		
+
 	var animal: Node = main_world.call("purchase_animal", instance_id, animal_id, spawn_pos) as Node
 	if animal != null:
 		var ui_manager: Node = get_parent()

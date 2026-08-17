@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3]
+[gd_scene load_steps=27 format=3]
 
 [ext_resource type="Script" path="res://scripts/world/main_world.gd" id="1_main"]
 [ext_resource type="Script" path="res://scripts/player/player.gd" id="2_player"]
@@ -19,6 +19,9 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/upgrade_panel.tscn" id="17_upg"]
 [ext_resource type="PackedScene" path="res://scenes/ui/staff_panel.tscn" id="18_stf"]
 [ext_resource type="PackedScene" path="res://scenes/ui/achievement_panel.tscn" id="19_ach"]
+[ext_resource type="PackedScene" path="res://scenes/ui/level_up_popup.tscn" id="20_lvlup"]
+[ext_resource type="PackedScene" path="res://scenes/ui/day_summary_panel.tscn" id="21_day"]
+[ext_resource type="PackedScene" path="res://scenes/ui/tooltip_panel.tscn" id="22_tt"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_player"]
 radius = 18.0
@@ -173,3 +176,9 @@ script = ExtResource("8_ui_manager")
 [node name="staff_panel" parent="ui" instance=ExtResource("18_stf")]
 
 [node name="achievement_panel" parent="ui" instance=ExtResource("19_ach")]
+
+[node name="level_up_popup" parent="ui" instance=ExtResource("20_lvlup")]
+
+[node name="day_summary_panel" parent="ui" instance=ExtResource("21_day")]
+
+[node name="tooltip_panel" parent="ui" instance=ExtResource("22_tt")]

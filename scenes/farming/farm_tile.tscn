@@ -1,9 +1,16 @@
 [gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/farming/farm_tile.gd" id="1_tile"]
+[ext_resource type="Shader" path="res://scenes/farming/crop_wind.gdshader" id="2_shader"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tile"]
 size = Vector2(60, 60)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_crop"]
+shader = ExtResource("2_shader")
+shader_parameter/wind_speed = 2.0
+shader_parameter/wind_strength = 0.05
+shader_parameter/plant_height = 1.0
 
 [node name="farm_tile" type="Area2D"]
 collision_layer = 4
@@ -17,6 +24,7 @@ color = Color(0.34, 0.19, 0.09, 1)
 
 [node name="crop" type="Polygon2D" parent="."]
 visible = false
+material = SubResource("ShaderMaterial_crop")
 polygon = PackedVector2Array(0, -23, 18, -8, 13, 20, -13, 20, -18, -8)
 color = Color(0.24, 0.68, 0.25, 1)
 

@@ -61,6 +61,20 @@ func _ready() -> void:
 
 	_update_visual()
 
+	# Start randomized idle timer offset to prevent synced animation
+	_idle_offset = randf() * 10.0
+
+
+var _idle_offset: float = 0.0
+func _process(delta: float) -> void:
+	if not game_manager.gameplay_active or current_state == state_completed:
+		return
+
+	_idle_offset += delta
+	# Subtle breathing/bobbing
+	body.scale.y = 1.0 + sin(_idle_offset * 2.0) * 0.05
+	body.scale.x = 1.0 + cos(_idle_offset * 1.5) * 0.02
+
 
 func _initialize_from_data() -> void:
 	is_configured = _validate_configuration()

@@ -42,10 +42,19 @@ func _build_menu() -> void:
 
 	# Title
 	var title: Label = Label.new()
-	title.text = "PAUSED"
-	title.add_theme_font_size_override("font_size", 22)
+	title.text = "LaHoue"
+	title.add_theme_font_size_override("font_size", 32)
+	title.add_theme_color_override("font_color", Color(0.8, 0.7, 0.4))
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	vbox.add_child(title)
+
+	# Slogan
+	var slogan: Label = Label.new()
+	slogan.text = "On ne fait pas d'omelette sans casser des œufs."
+	slogan.add_theme_font_size_override("font_size", 14)
+	slogan.add_theme_color_override("font_color", Color(0.6, 0.6, 0.5))
+	slogan.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	vbox.add_child(slogan)
 
 	# Divider
 	var divider: HSeparator = HSeparator.new()

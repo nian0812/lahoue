@@ -387,6 +387,25 @@ func _cache_farm_tiles() -> void:
 		farm_tiles_by_id[tile_id] = child
 		_connect_signal_once(child, "crop_harvested", _on_crop_harvested)
 
+		# Add VFX hooks
+		if not child.is_connected("crop_planted", _on_crop_planted_vfx):
+			child.connect("crop_planted", _on_crop_planted_vfx.bind(child))
+		if not child.is_connected("crop_harvested", _on_crop_harvested_vfx):
+			child.connect("crop_harvested", _on_crop_harvested_vfx.bind(child))
+
+func _on_crop_planted_vfx(_t_id: String, _c_id: String, tile: Node) -> void:
+	if tile is Node2D:
+		_spawn_vfx(tile.global_position)
+
+func _on_crop_harvested_vfx(_t_id: String, _c_id: String, _i_id: String, _amt: int, tile: Node) -> void:
+	if tile is Node2D:
+		_spawn_vfx(tile.global_position)
+
+var vfx_scene: PackedScene = preload("res://scenes/world/vfx_particles.tscn")
+func _spawn_vfx(pos: Vector2) -> void:
+	var vfx: CPUParticles2D = vfx_scene.instantiate() as CPUParticles2D
+	vfx.global_position = pos
+	add_child(vfx)
 
 func _cache_animals() -> void:
 	animals_by_id.clear()

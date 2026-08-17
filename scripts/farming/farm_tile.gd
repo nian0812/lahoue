@@ -184,6 +184,7 @@ func _update_visual() -> void:
 	if not is_node_ready():
 		return
 
+	var tw: Tween
 	match current_state:
 		farm_state.EMPTY:
 			soil.color = Color(0.34, 0.19, 0.09, 1.0)
@@ -191,10 +192,12 @@ func _update_visual() -> void:
 		farm_state.PLANTED:
 			soil.color = Color(0.28, 0.16, 0.08, 1.0)
 			crop_visual.color = Color(0.24, 0.68, 0.25, 1.0)
-			crop_visual.scale = Vector2(0.65, 0.65)
 			crop_visual.visible = true
+			tw = create_tween()
+			tw.tween_property(crop_visual, "scale", Vector2(0.65, 0.65), 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 		farm_state.READY:
 			soil.color = Color(0.42, 0.24, 0.1, 1.0)
 			crop_visual.color = Color(0.96, 0.77, 0.18, 1.0)
-			crop_visual.scale = Vector2.ONE
 			crop_visual.visible = true
+			tw = create_tween()
+			tw.tween_property(crop_visual, "scale", Vector2.ONE, 0.4).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)

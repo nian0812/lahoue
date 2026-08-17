@@ -12,6 +12,10 @@ var shop_panel: Control
 var recipe_panel: Control
 var restaurant_panel: Control
 
+var upgrade_panel: Control
+var staff_panel: Control
+var achievement_panel: Control
+
 var active_panel: Control = null
 
 
@@ -31,16 +35,21 @@ func _ready() -> void:
 	recipe_panel = get_node_or_null("recipe_panel") as Control
 	restaurant_panel = get_node_or_null("restaurant_panel") as Control
 
+	upgrade_panel = get_node_or_null("upgrade_panel") as Control
+	staff_panel = get_node_or_null("staff_panel") as Control
+	achievement_panel = get_node_or_null("achievement_panel") as Control
+
 	# Apply theme and initial visibility
 	var all_nodes: Array[Control] = [
 		hud_node, prompt_node, notification_node, pause_node,
-		inventory_panel, shop_panel, recipe_panel, restaurant_panel
+		inventory_panel, shop_panel, recipe_panel, restaurant_panel,
+		upgrade_panel, staff_panel, achievement_panel
 	]
 	for node: Control in all_nodes:
 		if node != null:
 			node.theme = theme_res
 
-	for panel: Control in [inventory_panel, shop_panel, recipe_panel, restaurant_panel]:
+	for panel: Control in [inventory_panel, shop_panel, recipe_panel, restaurant_panel, upgrade_panel, staff_panel, achievement_panel]:
 		if panel != null:
 			panel.visible = false
 
@@ -67,6 +76,15 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("open_restaurant"):
 		_toggle_panel(restaurant_panel)
 		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("open_upgrade"):
+		_toggle_panel(upgrade_panel)
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("open_staff"):
+		_toggle_panel(staff_panel)
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("open_achievements"):
+		_toggle_panel(achievement_panel)
+		get_viewport().set_input_as_handled()
 
 
 func _toggle_panel(panel: Control) -> void:
@@ -80,7 +98,7 @@ func _toggle_panel(panel: Control) -> void:
 		active_panel = panel
 		panel.visible = true
 		if panel.has_method("refresh"):
-			panel.refresh()
+			panel.call("refresh")
 
 
 func _close_active_panel() -> void:
@@ -110,12 +128,18 @@ func _connect_notification_signals() -> void:
 		return
 
 	# Inventory events
-	inventory_manager.item_sold.connect(_on_item_sold)
-	inventory_manager.item_purchased.connect(_on_item_purchased)
-	inventory_manager.warehouse_upgraded.connect(_on_warehouse_upgraded)
+	if not inventory_manager.item_sold.is_connected(_on_item_sold):
+		inventory_manager.item_sold.connect(_on_item_sold)
+	if not inventory_manager.item_purchased.is_connected(_on_item_purchased):
+		inventory_manager.item_purchased.connect(_on_item_purchased)
+	if not inventory_manager.warehouse_upgraded.is_connected(_on_warehouse_upgraded):
+		inventory_manager.warehouse_upgraded.connect(_on_warehouse_upgraded)
 
 	# Level change
-	game_manager.level_changed.connect(_on_level_changed_notify)
+	if not game_manager.level_changed.is_connected(_on_level_changed_notify):
+		game_manager.level_changed.connect(_on_level_changed_notify)
+	if not game_manager.exp_changed.is_connected(_on_exp_changed):
+		game_manager.exp_changed.connect(_on_exp_changed)
 
 	# Achievement unlock
 	var parent: Node = get_parent()
@@ -124,19 +148,23 @@ func _connect_notification_signals() -> void:
 
 	var tracker: Node = parent.get_node_or_null("achievement_tracker")
 	if tracker != null and tracker.has_signal("achievement_unlocked"):
-		tracker.connect("achievement_unlocked", _on_achievement_unlocked)
+		if not tracker.is_connected("achievement_unlocked", _on_achievement_unlocked):
+			tracker.connect("achievement_unlocked", _on_achievement_unlocked)
 
 	# Restaurant events
 	var restaurant: Node = parent.get_node_or_null("restaurant")
 	if restaurant != null:
 		if restaurant.has_signal("staff_hired"):
-			restaurant.connect("staff_hired", _on_staff_hired)
+			if not restaurant.is_connected("staff_hired", _on_staff_hired):
+				restaurant.connect("staff_hired", _on_staff_hired)
 		if restaurant.has_signal("upgrade_purchased"):
-			restaurant.connect("upgrade_purchased", _on_upgrade_purchased)
+			if not restaurant.is_connected("upgrade_purchased", _on_upgrade_purchased):
+				restaurant.connect("upgrade_purchased", _on_upgrade_purchased)
 
 	# World-level upgrades (animal housing, aquaculture)
 	if parent.has_signal("upgrade_purchased"):
-		parent.connect("upgrade_purchased", _on_upgrade_purchased)
+		if not parent.is_connected("upgrade_purchased", _on_upgrade_purchased):
+			parent.connect("upgrade_purchased", _on_upgrade_purchased)
 
 
 func _on_item_sold(p_item_id: Variant, p_amount: Variant, p_total: Variant) -> void:
@@ -153,10 +181,14 @@ func _on_warehouse_upgraded(p_level: Variant, p_capacity: Variant) -> void:
 	notification_node.call("show_notification", "Warehouse → Lv %d (Cap %d)" % [int(p_level), int(p_capacity)], "success")
 
 
-func _on_level_changed_notify(p_level: Variant) -> void:
-	if int(p_level) <= 1:
-		return
-	notification_node.call("show_notification", "Level Up! → Lv %d" % int(p_level), "success")
+func _on_level_changed_notify(new_lvl: Variant) -> void:
+	notification_node.call("show_notification", "Level Up! You reached Lv %d" % int(new_lvl), "success")
+	if active_panel != null and active_panel.has_method("refresh"):
+		active_panel.call("refresh")
+
+func _on_exp_changed(_exp: Variant, _lvl: Variant) -> void:
+	if active_panel == upgrade_panel and upgrade_panel != null:
+		upgrade_panel.call("refresh")
 
 
 func _on_achievement_unlocked(p_id: Variant) -> void:

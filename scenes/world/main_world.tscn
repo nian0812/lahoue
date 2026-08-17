@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=17 format=3]
 
 [ext_resource type="Script" path="res://scripts/world/main_world.gd" id="1_main"]
 [ext_resource type="Script" path="res://scripts/player/player.gd" id="2_player"]
@@ -7,6 +7,11 @@
 [ext_resource type="PackedScene" path="res://scenes/aquaculture/aquaculture_container.tscn" id="5_aquaculture"]
 [ext_resource type="PackedScene" path="res://scenes/restaurant/restaurant.tscn" id="6_restaurant"]
 [ext_resource type="Script" path="res://scripts/achievements/achievement_tracker.gd" id="7_achievement"]
+[ext_resource type="Script" path="res://scripts/ui/ui_manager.gd" id="8_ui_manager"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="9_hud"]
+[ext_resource type="PackedScene" path="res://scenes/ui/interaction_prompt.tscn" id="10_prompt"]
+[ext_resource type="PackedScene" path="res://scenes/ui/notification_popup.tscn" id="11_notification"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="12_pause"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_player"]
 radius = 18.0
@@ -138,3 +143,12 @@ position = Vector2(1952, 540)
 shape = SubResource("RectangleShape2D_vertical_boundary")
 
 [node name="ui" type="CanvasLayer" parent="."]
+script = ExtResource("8_ui_manager")
+
+[node name="hud" parent="ui" instance=ExtResource("9_hud")]
+
+[node name="interaction_prompt" parent="ui" instance=ExtResource("10_prompt")]
+
+[node name="notification_popup" parent="ui" instance=ExtResource("11_notification")]
+
+[node name="pause_menu" parent="ui" instance=ExtResource("12_pause")]

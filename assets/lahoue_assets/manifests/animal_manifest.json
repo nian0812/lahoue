@@ -1,0 +1,25 @@
+{
+  "count": 5,
+  "animals": {
+    "layer_chicken": {
+      "file": "animals/layer_chicken.png",
+      "category": "farm_animal"
+    },
+    "meat_chicken": {
+      "file": "animals/meat_chicken.png",
+      "category": "farm_animal"
+    },
+    "pig": {
+      "file": "animals/pig.png",
+      "category": "farm_animal"
+    },
+    "dairy_cow": {
+      "file": "animals/dairy_cow.png",
+      "category": "farm_animal"
+    },
+    "beef_cow": {
+      "file": "animals/beef_cow.png",
+      "category": "farm_animal"
+    }
+  }
+}

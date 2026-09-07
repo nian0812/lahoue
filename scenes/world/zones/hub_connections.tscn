@@ -1,0 +1,44 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/buildings/market.tscn" id="1_market"]
+[ext_resource type="PackedScene" path="res://scenes/premium_market/premium_market.tscn" id="2_premium"]
+[ext_resource type="PackedScene" path="res://scenes/buildings/warehouse.tscn" id="3_warehouse"]
+[ext_resource type="PackedScene" path="res://scenes/buildings/upgrade_board.tscn" id="4_upgrade"]
+[ext_resource type="PackedScene" path="res://scenes/buildings/truck_depot.tscn" id="5_truck"]
+[ext_resource type="PackedScene" path="res://scenes/buildings/vip_area.tscn" id="6_vip"]
+[ext_resource type="PackedScene" path="res://scenes/world/zones/resort_zone.tscn" id="7_resort"]
+[ext_resource type="PackedScene" path="res://scenes/world/visual/zone_ground_visual.tscn" id="8_ground"]
+
+[node name="hub" type="Node2D"]
+metadata/role = "zone_connections"
+
+[node name="GroundVisual" type="Node2D" parent="."]
+metadata/visual_only = true
+
+[node name="GroundLayers" type="Node2D" parent="GroundVisual"]
+
+[node name="VillageGround" parent="GroundVisual/GroundLayers" instance=ExtResource("8_ground")]
+profile = 4
+area_rect = Rect2(265, 220, 310, 570)
+detail_seed = 53
+
+[node name="market" parent="." instance=ExtResource("1_market")]
+position = Vector2(340, 310)
+
+[node name="premium_market" parent="." instance=ExtResource("2_premium")]
+position = Vector2(500, 280)
+
+[node name="warehouse" parent="." instance=ExtResource("3_warehouse")]
+position = Vector2(340, 450)
+
+[node name="upgrade_board" parent="." instance=ExtResource("4_upgrade")]
+position = Vector2(340, 590)
+
+[node name="truck_depot" parent="." instance=ExtResource("5_truck")]
+position = Vector2(500, 730)
+
+[node name="vip_area" parent="." instance=ExtResource("6_vip")]
+position = Vector2(340, 730)
+
+[node name="resort" parent="." instance=ExtResource("7_resort")]
+position = Vector2(500, 590)

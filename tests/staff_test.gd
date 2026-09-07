@@ -25,10 +25,11 @@ func _run_tests() -> void:
 	_cleanup_save_files()
 	save_manager.create_new_game()
 	game_manager.stop_gameplay()
+	_expect(game_manager.spend_money(game_manager.get_wallet_balance()), "staff wallet fixture could not be reset")
 	var restaurant: Node = world.get_node("restaurant")
 	var staff_data: Dictionary = data_manager.get_staff_type("waiter")
 	_expect(not staff_data.is_empty(), "waiter data did not load from staff.json/progression.json")
-	_expect(int(staff_data.get("hire_cost", 0)) == 40000, "waiter hire cost did not use progression staff data")
+	_expect(int(staff_data.get("hire_cost", 0)) == 200000, "waiter hire cost did not use progression staff data")
 	_expect(int(staff_data.get("unlock_level", 0)) == data_manager.get_restaurant_unlock_level(), "waiter unlock level is inconsistent")
 	_expect((staff_data.get("allowed_jobs", []) as Array).has(staff_script.job_clean), "waiter job capability data is incomplete")
 	_expect(restaurant.call("hire_staff", "locked_waiter", "waiter") == null, "locked restaurant hired staff")
@@ -51,12 +52,15 @@ func _run_tests() -> void:
 	var staff_02: Node = restaurant.call("hire_staff", "waiter_02", "waiter") as Node
 	_expect(staff_02 != null, "second staff fixture could not be hired")
 	_expect(String(staff_01.get("current_state")) == staff_script.state_idle, "new staff did not start IDLE")
+	var staff_label: Label = staff_01.get_node_or_null("staff_label") as Label
+	_expect(staff_label != null and staff_label.text == "Waiter", "visible staff role label is missing")
 	staff_01.connect("state_changed", _on_staff_state_changed)
 
 	var customer: Node = restaurant.call("spawn_customer", "staff_customer", "garlic_egg_rice") as Node
 	_expect(customer != null, "staff customer could not spawn")
 	await get_tree().process_frame
 	await get_tree().process_frame
+	_finish_customer_entry(restaurant, customer)
 	_expect(customer != null and String(customer.get("current_state")) == customer_script.state_waiting_food, "staff customer has no pending order")
 	_expect(inventory_manager.add_item("rice", 1), "rice fixture could not be added")
 	_expect(inventory_manager.add_item("egg", 1), "egg fixture could not be added")
@@ -130,6 +134,9 @@ func _run_tests() -> void:
 	_expect(timeout_customer != null, "job-failure customer could not spawn")
 	await get_tree().process_frame
 	await get_tree().process_frame
+	_finish_customer_entry(restaurant, timeout_customer)
+	_expect(inventory_manager.add_item("rice", 1), "job-failure rice fixture could not be added")
+	_expect(inventory_manager.add_item("egg", 1), "job-failure egg fixture could not be added")
 	_expect(bool(restaurant.call("assign_staff_job", "waiter_01", staff_script.job_cook, "staff_timeout")), "job-failure fixture could not be assigned")
 	timeout_customer.call("advance_patience", float(timeout_customer.get("patience_limit")))
 	_expect(String(staff_01.get("current_state")) == staff_script.state_returning, "failed job did not reset staff immediately")
@@ -137,6 +144,38 @@ func _run_tests() -> void:
 	var timeout_save_validation: Dictionary = save_manager.call("_validate_save_state", save_manager.call("_build_save_state")) as Dictionary
 	_expect(bool(timeout_save_validation.get("ok", false)), "failed customer job left an unsaveable runtime state")
 	_expect(bool(restaurant.call("advance_staff", 2.0)), "failed job staff did not return home")
+
+	var auto_customer_01: Node = restaurant.call("spawn_customer", "staff_auto_01", "garlic_egg_rice") as Node
+	var auto_customer_02: Node = restaurant.call("spawn_customer", "staff_auto_02", "garlic_egg_rice") as Node
+	_expect(auto_customer_01 != null and auto_customer_02 != null, "automatic staff customers could not spawn")
+	await get_tree().process_frame
+	await get_tree().process_frame
+	_finish_customer_entry(restaurant, auto_customer_01)
+	_finish_customer_entry(restaurant, auto_customer_02)
+	_expect(inventory_manager.add_item("rice", 2), "automatic cooking rice fixture could not be added")
+	_expect(inventory_manager.add_item("egg", 2), "automatic cooking egg fixture could not be added")
+	var rice_before_auto_cook: int = inventory_manager.get_amount("rice")
+	var egg_before_auto_cook: int = inventory_manager.get_amount("egg")
+	_expect(bool(restaurant.call("dispatch_staff_jobs")), "automatic cook job was not dispatched")
+	_expect((restaurant.get("staff_job_claims") as Dictionary).size() == 1, "kitchen capacity allowed multiple automatic cook claims")
+	_expect(not bool(restaurant.call("dispatch_staff_jobs")), "automatic dispatcher duplicated an owned cook job")
+	_expect(bool(restaurant.call("advance_staff", 2.0)), "automatic cook staff did not reach the kitchen")
+	_expect(inventory_manager.get_amount("rice") == rice_before_auto_cook - 1, "automatic cooking removed rice more than once")
+	_expect(inventory_manager.get_amount("egg") == egg_before_auto_cook - 1, "automatic cooking removed egg more than once")
+	_expect(not bool(restaurant.call("dispatch_staff_jobs")), "automatic cooking exceeded the active kitchen slot limit")
+	var auto_cooking_job: Dictionary = restaurant.call("get_cooking_job", "staff_auto_01") as Dictionary
+	_expect(not auto_cooking_job.is_empty(), "automatic cook job did not start existing cooking flow")
+	_expect(bool(restaurant.call("advance_cooking", float(auto_cooking_job.get("cooking_duration", 0.0)))), "automatic cooking timer did not complete")
+	_expect(bool(restaurant.call("dispatch_staff_jobs")), "automatic serve job was not dispatched")
+	_expect(bool(restaurant.call("advance_staff", 2.0)), "automatic serving staff did not reach the customer")
+	_expect(String(auto_customer_01.get("current_state")) == customer_script.state_eating, "automatic serving did not serve the customer")
+	var wallet_before_auto_payment: int = game_manager.get_wallet_balance()
+	_expect(bool(restaurant.call("dispatch_staff_jobs")), "automatic payment job was not dispatched")
+	_expect(bool(restaurant.call("advance_staff", 2.0)), "automatic payment staff did not reach the customer")
+	_expect(game_manager.get_wallet_balance() == wallet_before_auto_payment + expected_revenue, "automatic payment revenue is incorrect")
+	_expect(not bool(restaurant.call("finish_customer_meal", "staff_auto_01")), "automatic staff flow allowed duplicate payment")
+	_expect(game_manager.get_wallet_balance() == wallet_before_auto_payment + expected_revenue, "duplicate automatic payment changed wallet")
+	_expect(restaurant.call("remove_customer", "staff_auto_02"), "automatic capacity fixture customer could not be removed")
 
 	_expect(observed_states.has(staff_script.state_moving), "state machine never entered MOVING")
 	_expect(observed_states.has(staff_script.state_handling_order), "state machine never entered HANDLING_ORDER")
@@ -147,8 +186,11 @@ func _run_tests() -> void:
 
 	var legacy_state: Dictionary = save_manager.call("_build_save_state") as Dictionary
 	legacy_state.erase("staff")
+	legacy_state.erase("building_ownership")
+	legacy_state.erase("purchased_farm_plots")
+	legacy_state.erase("pond_levels")
 	var legacy_validation: Dictionary = save_manager.call("_validate_save_state", legacy_state) as Dictionary
-	_expect(bool(legacy_validation.get("ok", false)), "legacy v1 save without staff state is incompatible")
+	_expect(bool(legacy_validation.get("ok", false)), "legacy v1 save without staff state is incompatible: %s" % String(legacy_validation.get("error", "")))
 	if bool(legacy_validation.get("ok", false)):
 		world.apply_restaurant_save_state(legacy_validation.get("state", {}) as Dictionary)
 	_expect((restaurant.get("staffs_by_id") as Dictionary).is_empty(), "legacy save created phantom staff")
@@ -162,10 +204,21 @@ func _unlock_restaurant() -> void:
 	for level_value: int in range(game_manager.level, unlock_level):
 		required_exp += data_manager.get_level_exp(level_value)
 	game_manager.add_exp(required_exp)
+	game_manager.money = data_manager.get_progression_upgrade_cost("restaurant", 1)
+	world.call("upgrade_system", "restaurant")
 
 
 func _on_staff_state_changed(_staff_id: String, state: String) -> void:
 	observed_states.append(state)
+
+
+func _finish_customer_entry(restaurant: Node, customer: Node) -> void:
+	if customer == null:
+		return
+	customer.set("is_walking_in", false)
+	var empty_path: Array[Vector2] = []
+	customer.set("walk_path", empty_path)
+	restaurant.call("_on_customer_arrived_at_table", String(customer.get("customer_id")))
 
 
 func _finish_tests() -> void:

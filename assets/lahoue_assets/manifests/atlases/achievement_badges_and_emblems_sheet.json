@@ -1,0 +1,193 @@
+{
+  "atlas_id": "achievement_badges_and_emblems_sheet",
+  "image": "ui/achievements/achievement_badges_and_emblems_sheet.png",
+  "canvas": {
+    "width": 1536,
+    "height": 1024
+  },
+  "coordinate_system": "top_left_origin_pixels",
+  "components": [
+    {
+      "semantic_id": "achievement_badge_01",
+      "x": 0,
+      "y": 0,
+      "width": 219,
+      "height": 256
+    },
+    {
+      "semantic_id": "achievement_badge_02",
+      "x": 219,
+      "y": 0,
+      "width": 220,
+      "height": 256
+    },
+    {
+      "semantic_id": "achievement_badge_03",
+      "x": 439,
+      "y": 0,
+      "width": 219,
+      "height": 256
+    },
+    {
+      "semantic_id": "achievement_badge_04",
+      "x": 658,
+      "y": 0,
+      "width": 220,
+      "height": 256
+    },
+    {
+      "semantic_id": "achievement_badge_05",
+      "x": 878,
+      "y": 0,
+      "width": 219,
+      "height": 256
+    },
+    {
+      "semantic_id": "achievement_badge_06",
+      "x": 1097,
+      "y": 0,
+      "width": 220,
+      "height": 256
+    },
+    {
+      "semantic_id": "achievement_badge_07",
+      "x": 1317,
+      "y": 0,
+      "width": 219,
+      "height": 256
+    },
+    {
+      "semantic_id": "achievement_badge_08",
+      "x": 0,
+      "y": 256,
+      "width": 219,
+      "height": 256
+    },
+    {
+      "semantic_id": "achievement_badge_09",
+      "x": 219,
+      "y": 256,
+      "width": 220,
+      "height": 256
+    },
+    {
+      "semantic_id": "achievement_badge_10",
+      "x": 439,
+      "y": 256,
+      "width": 219,
+      "height": 256
+    },
+    {
+      "semantic_id": "achievement_badge_11",
+      "x": 658,
+      "y": 256,
+      "width": 220,
+      "height": 256
+    },
+    {
+      "semantic_id": "achievement_badge_12",
+      "x": 878,
+      "y": 256,
+      "width": 219,
+      "height": 256
+    },
+    {
+      "semantic_id": "achievement_badge_13",
+      "x": 1097,
+      "y": 256,
+      "width": 220,
+      "height": 256
+    },
+    {
+      "semantic_id": "achievement_badge_14",
+      "x": 1317,
+      "y": 256,
+      "width": 219,
+      "height": 256
+    },
+    {
+      "semantic_id": "achievement_badge_15",
+      "x": 0,
+      "y": 512,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "semantic_id": "achievement_badge_16",
+      "x": 256,
+      "y": 512,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "semantic_id": "achievement_badge_17",
+      "x": 512,
+      "y": 512,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "semantic_id": "achievement_badge_18",
+      "x": 768,
+      "y": 512,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "semantic_id": "achievement_badge_19",
+      "x": 1024,
+      "y": 512,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "semantic_id": "achievement_badge_20",
+      "x": 1280,
+      "y": 512,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "semantic_id": "progression_emblem_01",
+      "x": 0,
+      "y": 768,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "semantic_id": "progression_emblem_02",
+      "x": 256,
+      "y": 768,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "semantic_id": "progression_emblem_03",
+      "x": 512,
+      "y": 768,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "semantic_id": "progression_emblem_04",
+      "x": 768,
+      "y": 768,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "semantic_id": "progression_emblem_05",
+      "x": 1024,
+      "y": 768,
+      "width": 256,
+      "height": 256
+    },
+    {
+      "semantic_id": "progression_emblem_06",
+      "x": 1280,
+      "y": 768,
+      "width": 256,
+      "height": 256
+    }
+  ]
+}

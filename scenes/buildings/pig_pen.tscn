@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/visual/manifest_sprite.gd" id="1_visual"]
+[ext_resource type="PackedScene" path="res://scenes/world/visual/contact_shadow.tscn" id="2_shadow"]
+
+[node name="LogicRoot" type="Node2D"]
+metadata/pivot_convention = "ground_contact"
+metadata/footprint = Rect2(-55, -90, 110, 90)
+
+[node name="ContactShadow" parent="." instance=ExtResource("2_shadow")]
+shadow_size = Vector2(98, 25)
+shadow_offset = Vector2(0, -2)
+opacity = 0.17
+
+[node name="VisualRoot" type="Node2D" parent="."]
+script = ExtResource("1_visual")
+semantic_id = "pig_pen"
+target_rect = Rect2(-55, -90, 110, 90)
+placeholder_paths = PackedStringArray("body")
+
+[node name="body" type="Polygon2D" parent="VisualRoot"]
+polygon = PackedVector2Array(-45, -90, 45, -90, 55, 0, -55, 0)
+color = Color(0.42, 0.28, 0.2, 1)
+
+[node name="SpawnAnchor" type="Marker2D" parent="."]
+position = Vector2(0, -45)

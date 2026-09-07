@@ -20,145 +20,168 @@ func _run_tests() -> void:
 	save_manager.create_new_game()
 	game_manager.stop_gameplay()
 	var restaurant: Node = world.get_node("restaurant")
-	var maximum_player_level: int = data_manager.get_max_player_level()
-	_expect(maximum_player_level == 10, "maximum player level did not come from progression data")
-	for system_id: String in ["warehouse", "coop", "cow_barn", "aquaculture", "restaurant", "kitchen"]:
-		_expect(data_manager.get_progression_max_level(system_id) > 0, "upgrade system '%s' has no data-driven maximum" % system_id)
-	_expect(data_manager.get_progression_max_level("unknown") == 0, "unknown upgrade system has a maximum")
 
-	_expect(data_manager.get_crop_required_level("wheat") == 2, "farm unlock did not come from crops data")
-	_expect(data_manager.get_animal_required_level("cow") == 2, "animal unlock did not come from animals data")
-	_expect(data_manager.get_aquaculture_required_level("fish") == 3, "aquaculture unlock did not come from aquaculture data")
-	_expect(not bool(restaurant.call("is_available")), "restaurant was unlocked at player level 1")
-	_expect(int(data_manager.get_staff_type("waiter").get("unlock_level", 0)) == 4, "staff unlock did not come from staff data")
+	_expect(data_manager.get_max_player_level() == 55, "maximum player level is not 55")
+	var expected_maximums: Dictionary = {
+		"warehouse": 7, "coop": 5, "pig_pen": 5,
+		"cow_barn": 5, "restaurant": 10, "kitchen": 10, "resort": 5,
+	}
+	for system_id: String in expected_maximums:
+		_expect(data_manager.get_progression_max_level(system_id) == int(expected_maximums[system_id]), "wrong maximum for '%s'" % system_id)
+	var warehouse_specs: Dictionary = {
+		1: {"capacity": 75, "level": 1}, 2: {"capacity": 150, "level": 5},
+		3: {"capacity": 300, "level": 10}, 4: {"capacity": 500, "level": 18},
+		5: {"capacity": 750, "level": 28}, 6: {"capacity": 1000, "level": 38},
+		7: {"capacity": 1500, "level": 50},
+	}
+	for warehouse_level: int in warehouse_specs:
+		var spec: Dictionary = warehouse_specs[warehouse_level] as Dictionary
+		_expect(data_manager.get_warehouse_capacity(warehouse_level) == int(spec["capacity"]), "Warehouse Lv%d capacity is wrong" % warehouse_level)
+		_expect(data_manager.get_system_required_player_level("warehouse", warehouse_level) == int(spec["level"]), "Warehouse Lv%d player-level permission is wrong" % warehouse_level)
+	_expect(data_manager.get_crop_required_level("corn") == 4, "Corn unlock is not Lv4")
+	_expect(data_manager.get_animal_required_level("pig") == 7, "Pig unlock is not Lv7")
+	_expect(data_manager.get_aquaculture_required_level("fish") == 10, "Fish unlock is not Lv10")
+	_expect(data_manager.get_staff_type("waiter").get("unlock_level", 0) == 5, "Waiter unlock is not Lv5")
+	_expect(data_manager.get_premium_market_unlock_level() == 35, "Premium unlock is not Lv35")
 
 	var first_threshold: int = data_manager.get_level_exp(1)
-	_expect(first_threshold == 100, "level-1 EXP threshold is wrong")
-	_expect(game_manager.add_exp(first_threshold - 1), "valid EXP could not be added")
-	_expect(game_manager.level == 1 and game_manager.current_exp == first_threshold - 1, "player leveled too early")
-	_expect(game_manager.add_exp(1), "EXP threshold boundary failed")
-	_expect(game_manager.level == 2 and game_manager.current_exp == 0, "EXP threshold did not level player")
-	_expect(data_manager.get_crop_required_level("wheat") <= game_manager.level, "level 2 did not unlock farming data")
-	_expect(data_manager.get_animal_required_level("cow") <= game_manager.level, "level 2 did not unlock animal data")
-	var exp_snapshot: int = game_manager.current_exp
-	_expect(not game_manager.add_exp(0) and not game_manager.add_exp(-1), "invalid EXP was accepted")
-	_expect(game_manager.current_exp == exp_snapshot, "invalid EXP changed progression")
-	_expect(game_manager.add_exp(data_manager.get_level_exp(2)), "level 3 EXP could not be applied")
-	_expect(game_manager.level == 3 and data_manager.get_aquaculture_required_level("fish") <= game_manager.level, "aquaculture did not unlock at level 3")
-	_expect(game_manager.add_exp(data_manager.get_level_exp(3)), "restaurant unlock EXP could not be applied")
-	_expect(game_manager.level == 4 and bool(restaurant.call("is_available")), "restaurant did not unlock at level 4")
+	_expect(first_threshold == 100, "Lv1 EXP threshold is wrong")
+	_expect(game_manager.add_exp(first_threshold - 1), "valid EXP was rejected")
+	_expect(game_manager.level == 1 and game_manager.current_exp == first_threshold - 1, "player leveled early")
+	_expect(game_manager.add_exp(1), "EXP boundary was rejected")
+	_expect(game_manager.level == 2 and game_manager.current_exp == 0, "EXP boundary did not reach Lv2")
 
-	var invalid_wallet: int = 4321
-	game_manager.money = invalid_wallet
-	_expect(not bool(world.call("upgrade_system", "unknown")), "unknown upgrade was accepted")
-	_expect(game_manager.money == invalid_wallet, "invalid upgrade changed wallet")
+	game_manager.level = 2
+	game_manager.money = 300000
+	_expect(not bool(world.call("upgrade_system", "coop")), "Coop ignored Lv3 permission")
+	game_manager.level = 3
+	_expect(bool(world.call("upgrade_system", "coop")), "Coop purchase failed at Lv3")
+	_expect(int(world.get("coop_level")) == 1 and int(world.call("get_upgrade_effect", "coop")) == 5, "Coop Lv1 capacity is wrong")
 
-	var warehouse_cost: int = data_manager.get_progression_upgrade_cost("warehouse", 2)
-	game_manager.money = warehouse_cost - 1
-	_expect(not bool(world.call("upgrade_system", "warehouse")), "warehouse upgraded with insufficient funds")
-	_expect(inventory_manager.warehouse_level == 1 and game_manager.money == warehouse_cost - 1, "failed warehouse upgrade was not atomic")
-	game_manager.money = warehouse_cost
-	_expect(bool(world.call("upgrade_system", "warehouse")), "warehouse upgrade purchase failed")
-	_expect(inventory_manager.warehouse_level == 2 and inventory_manager.get_capacity() == 150, "warehouse capacity did not upgrade")
-	_expect(game_manager.money == 0, "warehouse upgrade charged the wrong amount")
+	game_manager.level = 6
+	game_manager.money = 500000
+	_expect(not bool(world.call("upgrade_system", "pig_pen")), "Pig Pen ignored Lv7 permission")
+	game_manager.level = 7
+	_expect(bool(world.call("upgrade_system", "pig_pen")), "Pig Pen purchase failed at Lv7")
+	_expect(int(world.call("get_upgrade_effect", "pig_pen")) == 3, "Pig Pen Lv1 capacity is wrong")
 
-	_expect(_fund_and_upgrade("coop"), "coop upgrade purchase failed")
-	_expect(int(world.get("coop_level")) == 2 and int(world.call("get_upgrade_effect", "coop")) == 10, "coop capacity did not upgrade")
-	var cow_cost: int = data_manager.get_progression_upgrade_cost("cow_barn", 2)
-	game_manager.money = cow_cost - 1
-	_expect(not bool(world.call("upgrade_system", "cow_barn")), "cow barn upgraded with insufficient funds")
-	_expect(int(world.get("cow_barn_level")) == 1 and game_manager.money == cow_cost - 1, "failed cow barn transaction mutated state")
-	_expect(_fund_and_upgrade("cow_barn"), "cow barn upgrade purchase failed")
-	_expect(int(world.call("get_upgrade_effect", "cow_barn")) == 4, "cow barn capacity did not upgrade")
-	_expect(_fund_and_upgrade("aquaculture"), "aquaculture upgrade purchase failed")
-	_expect(int(world.get("aquaculture_level")) == 2 and int(world.call("get_upgrade_effect", "aquaculture")) == 2, "aquaculture area capacity did not upgrade")
+	game_manager.level = 11
+	game_manager.money = 1000000
+	_expect(not bool(world.call("upgrade_system", "cow_barn")), "Cow Barn ignored Lv12 permission")
+	game_manager.level = 12
+	_expect(bool(world.call("upgrade_system", "cow_barn")), "Cow Barn purchase failed at Lv12")
+	_expect(int(world.call("get_upgrade_effect", "cow_barn")) == 2, "Cow Barn Lv1 capacity is wrong")
 
-	_expect(_fund_and_upgrade("restaurant"), "restaurant upgrade purchase failed")
-	_expect(int(restaurant.get("restaurant_level")) == 2, "restaurant level did not upgrade")
-	_expect((restaurant.get("tables_by_id") as Dictionary).size() == 5, "restaurant table capacity did not upgrade")
-	_expect(_fund_and_upgrade("kitchen"), "kitchen upgrade purchase failed")
-	_expect(int(restaurant.get("kitchen_level")) == 2, "kitchen level did not upgrade")
-	_expect(data_manager.get_kitchen_cooking_slots(2) == 2 and data_manager.get_kitchen_speed_percent(2) == 85, "kitchen upgrade effects are wrong")
+	game_manager.level = 4
+	game_manager.money = 1000000
+	_expect(not bool(world.call("upgrade_system", "restaurant")), "Restaurant ignored Lv5 permission")
+	game_manager.level = 5
+	_expect(bool(world.call("upgrade_system", "restaurant")), "Restaurant purchase failed at Lv5")
+	_expect(bool(world.call("is_building_owned", "restaurant")), "Restaurant ownership was not recorded")
+	_expect(int(restaurant.get("restaurant_level")) == 1 and int(restaurant.get("kitchen_level")) == 1, "Restaurant/Kitchen did not start synchronized")
+	_expect((restaurant.get("tables_by_id") as Dictionary).size() == 2, "Restaurant Lv1 does not have 2 tables")
+	game_manager.level = 10
+	game_manager.money = 500000
+	_expect(bool(world.call("upgrade_system", "restaurant")), "Restaurant Lv2 upgrade failed")
+	_expect(int(restaurant.get("kitchen_level")) == 2 and (restaurant.get("tables_by_id") as Dictionary).size() == 3, "Restaurant Lv2 effects are wrong")
+	_expect(not bool(world.call("upgrade_system", "kitchen")), "Kitchen upgraded separately from Restaurant")
 
-	for system_id: String in ["warehouse", "coop", "cow_barn", "aquaculture", "restaurant", "kitchen"]:
+	inventory_manager.set_warehouse_level(1)
+	game_manager.level = 4
+	game_manager.money = 100000
+	_expect(not bool(world.call("upgrade_system", "warehouse")), "Warehouse Lv2 ignored Lv5 permission")
+	game_manager.level = 5
+	_expect(bool(world.call("upgrade_system", "warehouse")), "Warehouse Lv2 upgrade failed")
+	_expect(inventory_manager.get_capacity() == 150, "Warehouse Lv2 capacity is not 150")
+
+	game_manager.level = 9
+	game_manager.money = 500000
+	_expect(not bool(world.call("upgrade_pond", "aquaculture_fish")), "Fish Pond ignored Lv10 permission")
+	game_manager.level = 10
+	_expect(bool(world.call("upgrade_pond", "aquaculture_fish")), "Fish Pond purchase failed")
+	game_manager.money = 300000
+	_expect(bool(world.call("upgrade_pond", "aquaculture_fish")), "Fish Pond Lv2 upgrade failed")
+	_expect(int(world.call("get_pond_level", "aquaculture_fish")) == 2, "Fish Pond level did not change")
+	_expect(is_equal_approx(data_manager.get_pond_cycle_time("fish", 2), data_manager.get_aquaculture_growth_time_seconds("fish") * 0.9), "Fish Pond Lv2 speed is wrong")
+
+	game_manager.money = data_manager.get_farm_plot_purchase_cost()
+	_expect(bool(world.call("purchase_next_farm_plot")), "second farm plot purchase failed")
+	_expect((world.get("purchased_farm_plots") as Array).size() == 2, "farm plot ownership count is wrong")
+
+	game_manager.level = 34
+	game_manager.money = 10000000
+	_expect(not bool(world.call("purchase_building", "vip_area")), "VIP Area ignored Lv35 permission")
+	game_manager.level = 35
+	_expect(bool(world.call("purchase_building", "vip_area")), "VIP Area purchase failed")
+	_expect(is_equal_approx(float(world.call("get_recipe_payout_multiplier", "st25_wagyu_rice")), 1.5), "VIP payout multiplier is wrong")
+
+	game_manager.level = 44
+	game_manager.money = 50000000
+	_expect(not bool(world.call("upgrade_system", "resort")), "Resort ignored Lv45 permission")
+	game_manager.level = 45
+	_expect(bool(world.call("upgrade_system", "resort")), "Resort purchase failed")
+	var resort_income: int = int(data_manager.get_progression_level_data("resort", 1).get("booking_income", 0))
+	var wallet_before_booking: int = game_manager.money
+	var exp_before_booking: int = game_manager.current_exp
+	_expect(bool(world.call("advance_resort", 60.0)), "Resort booking did not advance")
+	_expect(game_manager.money == wallet_before_booking + resort_income, "Resort booking paid the wrong income")
+	_expect(game_manager.current_exp == exp_before_booking + game_manager.calculate_sales_exp(resort_income), "Resort payout granted the wrong Sales EXP")
+
+	for system_id: String in ["warehouse", "coop", "pig_pen", "cow_barn", "restaurant", "resort"]:
 		while int(world.call("get_upgrade_level", system_id)) < data_manager.get_progression_max_level(system_id):
-			_expect(_fund_and_upgrade(system_id), "system '%s' could not reach its configured maximum" % system_id)
-		var maximum_level: int = data_manager.get_progression_max_level(system_id)
-		var maximum_effect: int = data_manager.get_progression_effect(system_id, maximum_level)
-		_expect(int(world.call("get_upgrade_level", system_id)) == maximum_level, "system '%s' maximum level is wrong" % system_id)
-		_expect(int(world.call("get_upgrade_effect", system_id)) == maximum_effect, "system '%s' maximum effect is wrong" % system_id)
-		game_manager.money = 999999999
-		var wallet_before_max_attempt: int = game_manager.money
-		_expect(not bool(world.call("upgrade_system", system_id)), "system '%s' upgraded beyond maximum" % system_id)
-		_expect(game_manager.money == wallet_before_max_attempt, "max-level upgrade attempt changed wallet for '%s'" % system_id)
-	_expect((restaurant.get("tables_by_id") as Dictionary).size() == data_manager.get_restaurant_table_capacity(5), "maximum restaurant capacity is not active")
+			var target_level: int = int(world.call("get_upgrade_level", system_id)) + 1
+			game_manager.level = data_manager.get_system_required_player_level(system_id, target_level)
+			game_manager.money = data_manager.get_progression_upgrade_cost(system_id, target_level)
+			_expect(bool(world.call("upgrade_system", system_id)), "'%s' could not purchase level %d" % [system_id, target_level])
+		var wallet_before_max: int = game_manager.money
+		_expect(not bool(world.call("upgrade_system", system_id)), "'%s' upgraded beyond maximum" % system_id)
+		_expect(game_manager.money == wallet_before_max, "max-level attempt changed wallet for '%s'" % system_id)
 
-	while game_manager.level < maximum_player_level:
-		_expect(game_manager.add_exp(data_manager.get_level_exp(game_manager.level)), "player could not reach maximum level")
-	_expect(game_manager.level == maximum_player_level, "player exceeded or missed maximum level")
-	var max_level_exp_before: int = game_manager.current_exp
-	_expect(game_manager.add_exp(data_manager.get_level_exp(maximum_player_level)), "maximum-level EXP was rejected")
-	_expect(game_manager.level == maximum_player_level and game_manager.current_exp > max_level_exp_before, "maximum-level EXP changed level incorrectly")
+	for container_id: String in ["aquaculture_fish", "aquaculture_shrimp", "aquaculture_crab", "aquaculture_squid", "aquaculture_octopus"]:
+		var container: Node = (world.get("aquaculture_containers_by_id") as Dictionary).get(container_id) as Node
+		var aquaculture_id: String = String(container.get("aquaculture_id"))
+		game_manager.level = data_manager.get_pond_unlock_level(aquaculture_id)
+		while int(world.call("get_pond_level", container_id)) < data_manager.get_pond_max_level(aquaculture_id):
+			var current_level: int = int(world.call("get_pond_level", container_id))
+			game_manager.money = data_manager.get_pond_purchase_cost(aquaculture_id) if current_level == 0 else data_manager.get_pond_upgrade_cost(aquaculture_id, current_level + 1)
+			_expect(bool(world.call("upgrade_pond", container_id)), "'%s' Pond could not reach level %d" % [aquaculture_id, current_level + 1])
+		_expect(not bool(world.call("upgrade_pond", container_id)), "'%s' Pond upgraded beyond maximum" % aquaculture_id)
+
+	game_manager.level = 55
+	game_manager.current_exp = 0
+	_expect(game_manager.add_exp(data_manager.get_level_exp(55)), "Lv55 EXP was rejected")
+	_expect(game_manager.level == 55, "player exceeded Lv55")
+	_expect((restaurant.get("tables_by_id") as Dictionary).size() == 20 and int(restaurant.get("kitchen_level")) == 10, "Restaurant/Kitchen maximum effects are wrong")
+	_expect(inventory_manager.get_capacity() == 1500, "Warehouse maximum capacity is wrong")
 
 	game_manager.money = 24680
-	_expect(save_manager.save_game(), "upgrade state could not be saved")
-	inventory_manager.set_warehouse_level(1)
-	world.call("apply_progression_save_state", {"coop_level": 1, "cow_barn_level": 1, "aquaculture_level": 1})
-	restaurant.call("apply_save_state", {
-		"restaurant_level": 1,
-		"kitchen_level": 1,
-		"restaurant_tables": {},
-		"restaurant_customers": {},
-		"restaurant_customer_sequence": 0,
-		"restaurant_spawn_elapsed": 0.0,
-		"restaurant_cooking": {},
-		"staff": {},
-	})
-	game_manager.level = 1
-	game_manager.current_exp = 0
-	game_manager.money = 0
-	_expect(save_manager.load_game(), "upgrade state could not be loaded")
-	_expect(game_manager.level == maximum_player_level and game_manager.money == 24680, "player progression did not restore")
-	_expect(inventory_manager.warehouse_level == data_manager.get_progression_max_level("warehouse"), "warehouse level did not restore")
-	_expect(int(world.get("coop_level")) == data_manager.get_progression_max_level("coop"), "coop level did not restore")
-	_expect(int(world.get("cow_barn_level")) == data_manager.get_progression_max_level("cow_barn"), "cow barn level did not restore")
-	_expect(int(world.get("aquaculture_level")) == data_manager.get_progression_max_level("aquaculture"), "aquaculture level did not restore")
-	_expect(int(restaurant.get("restaurant_level")) == data_manager.get_progression_max_level("restaurant"), "restaurant level did not restore")
-	_expect(int(restaurant.get("kitchen_level")) == data_manager.get_progression_max_level("kitchen"), "kitchen level did not restore")
-	_expect((restaurant.get("tables_by_id") as Dictionary).size() == 20, "restaurant table capacity did not restore")
+	_expect(save_manager.save_game(), "maximum progression state could not be saved")
+	save_manager.create_new_game()
+	game_manager.stop_gameplay()
+	_expect(save_manager.load_game(), "maximum progression state could not be loaded")
+	_expect(game_manager.level == 55 and game_manager.money == 24680, "Lv55 player state did not restore")
+	_expect(inventory_manager.warehouse_level == 7 and int(world.get("resort_level")) == 5, "maximum system levels did not restore")
+	_expect(int(world.get_node("restaurant").get("restaurant_level")) == 10, "Restaurant level did not restore")
 
-	var invalid_level_state: Dictionary = save_manager.call("_build_save_state") as Dictionary
-	invalid_level_state["coop_level"] = data_manager.get_progression_max_level("coop") + 1
-	_expect(not bool((save_manager.call("_validate_save_state", invalid_level_state) as Dictionary).get("ok", false)), "save accepted an undefined upgrade level")
-	var invalid_capacity_state: Dictionary = save_manager.call("_build_save_state") as Dictionary
-	invalid_capacity_state["coop_level"] = 1
-	var crowded_animals: Dictionary = invalid_capacity_state.get("animals", {}) as Dictionary
-	var crowded_age: Dictionary = invalid_capacity_state.get("animal_age", {}) as Dictionary
-	var chicken_state: Dictionary = (crowded_animals.get("chicken_01", {}) as Dictionary).duplicate(true)
-	for chicken_number: int in range(2, 7):
-		var chicken_id: String = "capacity_chicken_%02d" % chicken_number
-		crowded_animals[chicken_id] = chicken_state.duplicate(true)
-		crowded_age[chicken_id] = int(crowded_age.get("chicken_01", 0))
-	invalid_capacity_state["animals"] = crowded_animals
-	invalid_capacity_state["animal_age"] = crowded_age
-	_expect(not bool((save_manager.call("_validate_save_state", invalid_capacity_state) as Dictionary).get("ok", false)), "save accepted animals beyond housing capacity")
+	var invalid_state: Dictionary = save_manager.call("_build_save_state") as Dictionary
+	invalid_state["coop_level"] = 6
+	_expect(not bool((save_manager.call("_validate_save_state", invalid_state) as Dictionary).get("ok", false)), "save accepted undefined Coop level")
+	var legacy_warehouse_state: Dictionary = save_manager.call("_build_save_state") as Dictionary
+	legacy_warehouse_state["warehouse_level"] = 10
+	var legacy_warehouse_result: Dictionary = save_manager.call("_validate_save_state", legacy_warehouse_state) as Dictionary
+	_expect(bool(legacy_warehouse_result.get("ok", false)), "legacy Warehouse Lv10 save did not migrate")
+	_expect(int((legacy_warehouse_result.get("state", {}) as Dictionary).get("warehouse_level", 0)) == 7, "legacy Warehouse level did not migrate to Lv7")
+	legacy_warehouse_state["warehouse_level"] = 11
+	_expect(not bool((save_manager.call("_validate_save_state", legacy_warehouse_state) as Dictionary).get("ok", false)), "save accepted an impossible legacy Warehouse level")
 	var legacy_state: Dictionary = save_manager.call("_build_save_state") as Dictionary
-	legacy_state.erase("aquaculture_level")
-	var legacy_validation: Dictionary = save_manager.call("_validate_save_state", legacy_state) as Dictionary
-	_expect(bool(legacy_validation.get("ok", false)), "Phase 10 v1 save without aquaculture level is incompatible")
-	_expect(int((legacy_validation.get("state", {}) as Dictionary).get("aquaculture_level", 0)) == 1, "legacy aquaculture level did not migrate safely")
+	legacy_state.erase("building_ownership")
+	legacy_state.erase("purchased_farm_plots")
+	legacy_state.erase("pond_levels")
+	legacy_state.erase("resort_level")
+	legacy_state.erase("resort_state")
+	_expect(bool((save_manager.call("_validate_save_state", legacy_state) as Dictionary).get("ok", false)), "legacy progression state did not migrate")
 
 	_finish_tests()
-
-
-func _fund_and_upgrade(system_id: String) -> bool:
-	var target_level: int = int(world.call("get_upgrade_level", system_id)) + 1
-	var cost: int = data_manager.get_progression_upgrade_cost(system_id, target_level)
-	if cost <= 0:
-		return false
-	game_manager.money = cost
-	var upgraded: bool = bool(world.call("upgrade_system", system_id))
-	return upgraded and game_manager.money == 0
 
 
 func _finish_tests() -> void:

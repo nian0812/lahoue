@@ -47,6 +47,7 @@ func _run_tests() -> void:
 	customer.connect("state_changed", _on_customer_state_changed)
 	await get_tree().process_frame
 	await get_tree().process_frame
+	_finish_customer_entry(restaurant, customer)
 	_expect(customer_states == [customer_script.state_seated, customer_script.state_ordering, customer_script.state_waiting_food], "customer did not follow ENTER -> SEATED -> ORDERING -> WAITING_FOOD")
 	_expect(String(customer.get("current_state")) == customer_script.state_waiting_food, "customer did not wait for food")
 
@@ -88,10 +89,12 @@ func _run_tests() -> void:
 	_expect(saved_customer != null, "save/load customer creation failed")
 	await get_tree().process_frame
 	await get_tree().process_frame
+	_finish_customer_entry(restaurant, saved_customer)
 	_expect(String(saved_customer.get("current_state")) == customer_script.state_waiting_food, "save fixture did not reach WAITING_FOOD")
 	_expect(bool(saved_customer.call("advance_patience", 17.5)), "patience did not advance")
 	var saved_table_id: String = String(saved_customer.get("table_id"))
-	restaurant.set("customer_spawn_elapsed", 12.25)
+	var saved_spawn_elapsed: float = float(settings.get("spawn_interval_seconds", 0.0)) * 0.5
+	restaurant.set("customer_spawn_elapsed", saved_spawn_elapsed)
 	game_manager.money = 123
 	game_manager.reputation = 2.0
 	_expect(save_manager.save_game(), "customer/order state could not be saved")
@@ -109,7 +112,7 @@ func _run_tests() -> void:
 	_expect(String(loaded_customer.get("current_state")) == customer_script.state_waiting_food, "customer lifecycle state was not restored")
 	_expect(String(loaded_customer.get("table_id")) == saved_table_id, "customer/table association was not restored")
 	_expect(is_equal_approx(float(loaded_customer.get("patience_elapsed")), 17.5), "patience timer was not restored")
-	_expect(is_equal_approx(float(restaurant.get("customer_spawn_elapsed")), 12.25), "customer spawn timer was not restored")
+	_expect(is_equal_approx(float(restaurant.get("customer_spawn_elapsed")), saved_spawn_elapsed), "customer spawn timer was not restored")
 	_expect(String((loaded_customer.get("order") as Dictionary).get("recipe_id", "")) == "garlic_egg_rice", "loaded order lost its recipe id")
 	var loaded_table: Node = (restaurant.get("tables_by_id") as Dictionary).get(saved_table_id) as Node
 	_expect(String(loaded_table.get("occupant_id")) == "customer_phase8_save", "loaded table occupant is wrong")
@@ -155,6 +158,7 @@ func _run_tests() -> void:
 	_expect(validation_customer != null, "validation customer creation failed")
 	await get_tree().process_frame
 	await get_tree().process_frame
+	_finish_customer_entry(restaurant, validation_customer)
 	var invalid_recipe_state: Dictionary = save_manager.call("_build_save_state") as Dictionary
 	var invalid_customers: Dictionary = invalid_recipe_state.get("restaurant_customers", {}) as Dictionary
 	var invalid_customer: Dictionary = (invalid_customers.get("customer_phase8_validation", {}) as Dictionary).duplicate(true)
@@ -190,10 +194,21 @@ func _unlock_restaurant() -> void:
 	for level_value: int in range(game_manager.level, unlock_level):
 		required_exp += data_manager.get_level_exp(level_value)
 	game_manager.add_exp(required_exp)
+	game_manager.money = data_manager.get_progression_upgrade_cost("restaurant", 1)
+	world.call("upgrade_system", "restaurant")
 
 
 func _on_customer_state_changed(_customer_id: String, state: String) -> void:
 	customer_states.append(state)
+
+
+func _finish_customer_entry(restaurant: Node, customer: Node) -> void:
+	if customer == null:
+		return
+	customer.set("is_walking_in", false)
+	var empty_path: Array[Vector2] = []
+	customer.set("walk_path", empty_path)
+	restaurant.call("_on_customer_arrived_at_table", String(customer.get("customer_id")))
 
 
 func _finish_tests() -> void:

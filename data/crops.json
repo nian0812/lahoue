@@ -1,61 +1,23 @@
 {
   "schema_version": 1,
   "entries": {
-    "rice": {
-      "required_level": 1,
-      "seed_item": "rice_seed",
-      "harvest_item": "rice",
-      "growth_time": 30.0,
-      "yield": 3,
-      "exp": 8
-    },
-    "corn": {
-      "required_level": 1,
-      "seed_item": "corn_seed",
-      "harvest_item": "corn",
-      "growth_time": 35.0,
-      "yield": 3,
-      "exp": 9
-    },
-    "tomato": {
-      "required_level": 1,
-      "seed_item": "tomato_seed",
-      "harvest_item": "tomato",
-      "growth_time": 30.0,
-      "yield": 3,
-      "exp": 8
-    },
-    "cabbage": {
-      "required_level": 1,
-      "seed_item": "cabbage_seed",
-      "harvest_item": "cabbage",
-      "growth_time": 35.0,
-      "yield": 2,
-      "exp": 9
-    },
-    "wheat": {
-      "required_level": 2,
-      "seed_item": "wheat_seed",
-      "harvest_item": "wheat",
-      "growth_time": 30.0,
-      "yield": 3,
-      "exp": 10
-    },
-    "tea": {
-      "required_level": 2,
-      "seed_item": "tea_seed",
-      "harvest_item": "tea_leaf",
-      "growth_time": 45.0,
-      "yield": 2,
-      "exp": 12
-    },
-    "coffee": {
-      "required_level": 2,
-      "seed_item": "coffee_seed",
-      "harvest_item": "coffee_bean",
-      "growth_time": 60.0,
-      "yield": 2,
-      "exp": 15
-    }
+    "rice": {"required_level": 1, "seed_item": "rice", "harvest_item": "rice", "growth_time": 30.0, "yield": 3, "exp": 8},
+    "wheat": {"required_level": 1, "seed_item": "wheat", "harvest_item": "wheat", "growth_time": 32.0, "yield": 3, "exp": 8},
+    "corn": {"required_level": 4, "seed_item": "corn", "harvest_item": "corn", "growth_time": 35.0, "yield": 3, "exp": 10},
+    "cucumber": {"required_level": 7, "seed_item": "cucumber", "harvest_item": "cucumber", "growth_time": 38.0, "yield": 3, "exp": 12},
+    "green_onion": {"required_level": 9, "seed_item": "green_onion", "harvest_item": "green_onion", "growth_time": 40.0, "yield": 3, "exp": 14},
+    "tomato": {"required_level": 12, "seed_item": "tomato", "harvest_item": "tomato", "growth_time": 44.0, "yield": 3, "exp": 16},
+    "chili": {"required_level": 15, "seed_item": "chili", "harvest_item": "chili", "growth_time": 48.0, "yield": 3, "exp": 18},
+    "carrot": {"required_level": 18, "seed_item": "carrot", "harvest_item": "carrot", "growth_time": 52.0, "yield": 3, "exp": 20},
+    "potato": {"required_level": 20, "seed_item": "potato", "harvest_item": "potato", "growth_time": 56.0, "yield": 3, "exp": 22},
+    "soybean": {"required_level": 23, "seed_item": "soybean", "harvest_item": "soybean", "growth_time": 60.0, "yield": 3, "exp": 24},
+    "garlic": {"required_level": 25, "seed_item": "garlic", "harvest_item": "garlic", "growth_time": 64.0, "yield": 3, "exp": 26},
+    "coconut": {"required_level": 27, "seed_item": "coconut", "harvest_item": "coconut", "growth_time": 90.0, "yield": 3, "exp": 30},
+    "lemongrass": {"required_level": 29, "seed_item": "lemongrass", "harvest_item": "lemongrass", "growth_time": 68.0, "yield": 3, "exp": 28},
+    "tea": {"required_level": 31, "seed_item": "tea_leaf", "harvest_item": "tea_leaf", "growth_time": 75.0, "yield": 3, "exp": 32},
+    "peanut": {"required_level": 33, "seed_item": "peanut", "harvest_item": "peanut", "growth_time": 78.0, "yield": 3, "exp": 34},
+    "sugarcane": {"required_level": 36, "seed_item": "sugarcane", "harvest_item": "sugarcane", "growth_time": 82.0, "yield": 3, "exp": 36},
+    "coffee": {"required_level": 38, "seed_item": "coffee_bean", "harvest_item": "coffee_bean", "growth_time": 90.0, "yield": 3, "exp": 40},
+    "banana": {"required_level": 42, "seed_item": "banana", "harvest_item": "banana", "growth_time": 100.0, "yield": 3, "exp": 44}
   }
 }

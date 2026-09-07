@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "settings": {
-    "spawn_interval_seconds": 30,
+    "spawn_interval_seconds": 8,
     "default_customer_type": "regular"
   },
   "entries": {

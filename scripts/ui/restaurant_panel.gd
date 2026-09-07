@@ -1,6 +1,7 @@
 extends PanelContainer
 
 const vnd_format: GDScript = preload("res://scripts/ui/vnd_formatter.gd")
+const ui_style: GDScript = preload("res://scripts/ui/ui_style.gd")
 
 var tables_container: VBoxContainer
 var orders_container: VBoxContainer
@@ -35,10 +36,11 @@ func _build_ui() -> void:
 
 	var header: HBoxContainer = HBoxContainer.new()
 	vbox.add_child(header)
+	header.add_child(ui_style.make_icon_slot("restaurant"))
 
 	var title: Label = Label.new()
 	title.text = "RESTAURANT"
-	title.add_theme_font_size_override("font_size", 22)
+	title.theme_type_variation = &"PanelTitle"
 	header.add_child(title)
 
 	var close_btn: Button = Button.new()
@@ -53,7 +55,7 @@ func _build_ui() -> void:
 	var split: HSplitContainer = HSplitContainer.new()
 	split.name = "split"
 	split.size_flags_vertical = SIZE_EXPAND_FILL
-	split.custom_minimum_size = Vector2(800, 400)
+	split.custom_minimum_size = Vector2(0, 220)
 	vbox.add_child(split)
 
 	# Left side: Tables
@@ -63,7 +65,7 @@ func _build_ui() -> void:
 
 	var t_title: Label = Label.new()
 	t_title.text = "Tables Overview"
-	t_title.add_theme_font_size_override("font_size", 18)
+	t_title.theme_type_variation = &"SectionTitle"
 	tables_vbox.add_child(t_title)
 
 	var tables_scroll: ScrollContainer = ScrollContainer.new()
@@ -82,7 +84,7 @@ func _build_ui() -> void:
 
 	var o_title: Label = Label.new()
 	o_title.text = "Active Orders"
-	o_title.add_theme_font_size_override("font_size", 18)
+	o_title.theme_type_variation = &"SectionTitle"
 	right_vbox.add_child(o_title)
 
 	var orders_scroll: ScrollContainer = ScrollContainer.new()
@@ -102,10 +104,11 @@ func _build_ui() -> void:
 
 
 func _on_close_pressed() -> void:
-	visible = false
 	var ui_manager: Node = get_parent()
-	if ui_manager and ui_manager.get("active_panel") == self:
-		ui_manager.set("active_panel", null)
+	if ui_manager and ui_manager.has_method("_close_active_panel"):
+		ui_manager.call("_close_active_panel")
+	else:
+		visible = false
 
 
 func _refresh_data() -> void:
@@ -117,8 +120,13 @@ func _refresh_data() -> void:
 		return
 
 	if not rest.call("is_available"):
-		header_lbl.text = "Restaurant is locked. Level up to unlock."
-		header_lbl.modulate = Color(0.8, 0.3, 0.3)
+		var unlock_level: int = data_manager.get_restaurant_unlock_level()
+		if game_manager.level < unlock_level:
+			header_lbl.text = "Restaurant — Locked by Level\nRequires Level %d" % unlock_level
+			header_lbl.theme_type_variation = &"StatusLocked"
+		else:
+			header_lbl.text = "Restaurant — Available to Purchase\nPurchase: %s" % vnd_format.format_vnd(data_manager.get_progression_upgrade_cost("restaurant", 1))
+			header_lbl.theme_type_variation = &"StatusSuccess"
 		var split: Node = get_node_or_null("MarginContainer/VBoxContainer/split")
 		if split:
 			split.visible = false
@@ -132,8 +140,9 @@ func _refresh_data() -> void:
 
 	var r_level: int = rest.get("restaurant_level")
 	var k_level: int = rest.get("kitchen_level")
-	header_lbl.text = "Restaurant Lv %d | Kitchen Lv %d" % [r_level, k_level]
-	header_lbl.modulate = Color(1, 1, 1)
+	var table_capacity: int = data_manager.get_restaurant_table_capacity(r_level)
+	header_lbl.text = "Restaurant Lv%d • Tables: %d | Kitchen Lv%d • Slots: %d" % [r_level, table_capacity, k_level, data_manager.get_kitchen_cooking_slots(k_level)]
+	header_lbl.theme_type_variation = &"StatusInfo"
 
 	var slots: int = data_manager.get_kitchen_cooking_slots(k_level)
 	var active_cooks: int = rest.call("_get_active_cooking_count")
@@ -172,18 +181,7 @@ func _refresh_tables(rest: Node) -> void:
 		var state: String = String(tbl.get("current_state"))
 		var occ: String = String(tbl.get("occupant_id"))
 
-		var row: PanelContainer = PanelContainer.new()
-		var style: StyleBoxFlat = StyleBoxFlat.new()
-		style.bg_color = Color(0.1, 0.08, 0.06, 0.4)
-		style.corner_radius_top_left = 4
-		style.corner_radius_top_right = 4
-		style.corner_radius_bottom_right = 4
-		style.corner_radius_bottom_left = 4
-		style.content_margin_left = 12
-		style.content_margin_right = 12
-		style.content_margin_top = 8
-		style.content_margin_bottom = 8
-		row.add_theme_stylebox_override("panel", style)
+		var row: PanelContainer = ui_style.make_card()
 
 		var hbox: HBoxContainer = HBoxContainer.new()
 		row.add_child(hbox)
@@ -214,6 +212,9 @@ func _refresh_orders(rest: Node) -> void:
 	for child in orders_container.get_children():
 		child.queue_free()
 
+	var main_world: Node = get_tree().current_scene
+	if main_world == null:
+		return
 	var cust_dict: Dictionary = rest.get("customers_by_id")
 	var jobs: Dictionary = rest.get("cooking_jobs")
 	var has_orders: bool = false
@@ -230,35 +231,37 @@ func _refresh_orders(rest: Node) -> void:
 
 		var recipe_id: String = String(order.get("recipe_id", ""))
 		var qty: int = int(order.get("quantity", 0))
-		var r_name: String = vnd_format.format_item_name(recipe_id)
+		var recipe_data: Dictionary = data_manager.get_entry("recipes", recipe_id) as Dictionary
+		var r_name: String = String(recipe_data.get("name", recipe_id.replace("_", " ").capitalize()))
+		var is_premium: bool = String(recipe_data.get("category", "")) == "premium"
 
-		var row: PanelContainer = PanelContainer.new()
-		var style: StyleBoxFlat = StyleBoxFlat.new()
-		style.bg_color = Color(0.1, 0.08, 0.06, 0.4)
-		style.corner_radius_top_left = 4
-		style.corner_radius_top_right = 4
-		style.corner_radius_bottom_right = 4
-		style.corner_radius_bottom_left = 4
-		style.content_margin_left = 12
-		style.content_margin_right = 12
-		style.content_margin_top = 8
-		style.content_margin_bottom = 8
-		row.add_theme_stylebox_override("panel", style)
+		var row: PanelContainer = ui_style.make_card(&"PremiumCard" if is_premium else &"Card")
 
 		var vbox: VBoxContainer = VBoxContainer.new()
 		row.add_child(vbox)
 
 		var hbox: HBoxContainer = HBoxContainer.new()
 		vbox.add_child(hbox)
+		hbox.add_child(ui_style.make_dish_icon_slot(recipe_id, true))
 
 		var name_lbl: Label = Label.new()
-		name_lbl.text = "Cust: #%s" % cid.trim_prefix("customer_").left(6)
+		name_lbl.text = "Customer: #%s" % cid.trim_prefix("customer_").left(8)
 		name_lbl.size_flags_horizontal = SIZE_EXPAND_FILL
 		hbox.add_child(name_lbl)
+		if is_premium:
+			var premium_badge: Label = Label.new()
+			premium_badge.text = "VIP • PREMIUM" if is_equal_approx(float(main_world.call("get_recipe_payout_multiplier", recipe_id)), 1.5) else "PREMIUM"
+			premium_badge.theme_type_variation = &"Premium"
+			hbox.add_child(premium_badge)
 
 		var r_lbl: Label = Label.new()
-		r_lbl.text = "%s x%d" % [r_name, qty]
+		r_lbl.text = "Dish: %s • Qty: %d" % [r_name, qty]
 		hbox.add_child(r_lbl)
+		var payout: int = roundi(float(recipe_data.get("selling_price", 0)) * float(main_world.call("get_recipe_payout_multiplier", recipe_id))) * qty
+		var payout_lbl: Label = Label.new()
+		payout_lbl.text = "Payout: %s • State: %s" % [vnd_format.format_vnd(payout), state.replace("_", " ").capitalize()]
+		payout_lbl.theme_type_variation = &"StatusInfo"
+		vbox.add_child(payout_lbl)
 
 		var action_hbox: HBoxContainer = HBoxContainer.new()
 		action_hbox.alignment = BoxContainer.ALIGNMENT_END
@@ -269,7 +272,16 @@ func _refresh_orders(rest: Node) -> void:
 				var cook_btn: Button = Button.new()
 				cook_btn.text = "Cook"
 				cook_btn.pressed.connect(func() -> void:
-					rest.call("start_cooking", cid)
+					if not rest.call("start_cooking", cid):
+						var k_level: int = rest.get("kitchen_level")
+						var slots: int = data_manager.get_kitchen_cooking_slots(k_level)
+						var active_cooks: int = rest.call("_get_active_cooking_count")
+						var ui_mgr: Node = get_tree().root.get_node_or_null("main_world/ui")
+						if ui_mgr and ui_mgr.get("notification_node"):
+							if active_cooks >= slots:
+								ui_mgr.get("notification_node").call("show_notification", "Kitchen is full!", "error")
+							else:
+								ui_mgr.get("notification_node").call("show_notification", "No ingredients", "error")
 					refresh()
 				)
 				action_hbox.add_child(cook_btn)

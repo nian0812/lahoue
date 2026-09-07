@@ -1,0 +1,214 @@
+{
+  "atlas_id": "logistics_props_atlas",
+  "image": "world/props/logistics_props_atlas.png",
+  "canvas": {
+    "width": 1536,
+    "height": 1024
+  },
+  "coordinate_system": "top_left_origin_pixels",
+  "components": [
+    {
+      "x": 29,
+      "y": 100,
+      "width": 135,
+      "height": 155,
+      "semantic_id": "single_wooden_cargo_crate"
+    },
+    {
+      "x": 185,
+      "y": 64,
+      "width": 174,
+      "height": 194,
+      "semantic_id": "large_reinforced_cargo_crate"
+    },
+    {
+      "x": 376,
+      "y": 68,
+      "width": 159,
+      "height": 186,
+      "semantic_id": "stack_small_cargo_crates"
+    },
+    {
+      "x": 547,
+      "y": 47,
+      "width": 188,
+      "height": 211,
+      "semantic_id": "stack_mixed_cargo_boxes"
+    },
+    {
+      "x": 744,
+      "y": 89,
+      "width": 175,
+      "height": 175,
+      "semantic_id": "sack_cargo_bundle"
+    },
+    {
+      "x": 928,
+      "y": 72,
+      "width": 180,
+      "height": 190,
+      "semantic_id": "barrel_cargo_group"
+    },
+    {
+      "x": 1114,
+      "y": 118,
+      "width": 196,
+      "height": 129,
+      "semantic_id": "wooden_pallet"
+    },
+    {
+      "x": 1317,
+      "y": 62,
+      "width": 197,
+      "height": 200,
+      "semantic_id": "covered_cargo_pallet"
+    },
+    {
+      "x": 18,
+      "y": 295,
+      "width": 164,
+      "height": 189,
+      "semantic_id": "premium_imported_goods_crate"
+    },
+    {
+      "x": 194,
+      "y": 293,
+      "width": 171,
+      "height": 190,
+      "semantic_id": "international_cargo_crate"
+    },
+    {
+      "x": 380,
+      "y": 292,
+      "width": 162,
+      "height": 190,
+      "semantic_id": "refrigerated_cold_goods_box"
+    },
+    {
+      "x": 555,
+      "y": 308,
+      "width": 169,
+      "height": 171,
+      "semantic_id": "seafood_cargo_box"
+    },
+    {
+      "x": 736,
+      "y": 303,
+      "width": 159,
+      "height": 174,
+      "semantic_id": "farm_produce_cargo_box"
+    },
+    {
+      "x": 905,
+      "y": 309,
+      "width": 158,
+      "height": 172,
+      "semantic_id": "restaurant_supply_cargo_box"
+    },
+    {
+      "x": 1072,
+      "y": 271,
+      "width": 241,
+      "height": 230,
+      "semantic_id": "truck_loading_point"
+    },
+    {
+      "x": 1316,
+      "y": 268,
+      "width": 220,
+      "height": 230,
+      "semantic_id": "truck_unloading_point"
+    },
+    {
+      "x": 17,
+      "y": 518,
+      "width": 309,
+      "height": 214,
+      "semantic_id": "empty_cargo_staging_area"
+    },
+    {
+      "x": 321,
+      "y": 515,
+      "width": 307,
+      "height": 221,
+      "semantic_id": "loaded_cargo_staging_area"
+    },
+    {
+      "x": 631,
+      "y": 516,
+      "width": 169,
+      "height": 210,
+      "semantic_id": "shipment_ready_marker"
+    },
+    {
+      "x": 815,
+      "y": 516,
+      "width": 153,
+      "height": 208,
+      "semantic_id": "shipment_in_progress_marker"
+    },
+    {
+      "x": 978,
+      "y": 516,
+      "width": 179,
+      "height": 210,
+      "semantic_id": "delivery_complete_marker"
+    },
+    {
+      "x": 1169,
+      "y": 504,
+      "width": 124,
+      "height": 203,
+      "semantic_id": "cargo_hand_trolley"
+    },
+    {
+      "x": 1310,
+      "y": 528,
+      "width": 207,
+      "height": 192,
+      "semantic_id": "heavy_utility_cart"
+    },
+    {
+      "x": 34,
+      "y": 724,
+      "width": 209,
+      "height": 237,
+      "semantic_id": "rustic_pallet_jack"
+    },
+    {
+      "x": 256,
+      "y": 750,
+      "width": 299,
+      "height": 229,
+      "semantic_id": "loading_ramp"
+    },
+    {
+      "x": 555,
+      "y": 745,
+      "width": 166,
+      "height": 229,
+      "semantic_id": "cargo_scale"
+    },
+    {
+      "x": 755,
+      "y": 744,
+      "width": 243,
+      "height": 230,
+      "semantic_id": "cargo_inspection_table"
+    },
+    {
+      "x": 1020,
+      "y": 740,
+      "width": 216,
+      "height": 236,
+      "semantic_id": "shipping_label_board"
+    },
+    {
+      "x": 1310,
+      "y": 738,
+      "width": 190,
+      "height": 241,
+      "semantic_id": "cargo_destination_sign"
+    }
+  ]
+}

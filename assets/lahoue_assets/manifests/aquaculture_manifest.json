@@ -1,0 +1,25 @@
+{
+  "count": 5,
+  "aquaculture": {
+    "fish": {
+      "file": "aquaculture/fish.png",
+      "category": "aquaculture_species"
+    },
+    "shrimp": {
+      "file": "aquaculture/shrimp.png",
+      "category": "aquaculture_species"
+    },
+    "crab": {
+      "file": "aquaculture/crab.png",
+      "category": "aquaculture_species"
+    },
+    "squid": {
+      "file": "aquaculture/squid.png",
+      "category": "aquaculture_species"
+    },
+    "octopus": {
+      "file": "aquaculture/octopus.png",
+      "category": "aquaculture_species"
+    }
+  }
+}

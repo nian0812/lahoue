@@ -1,7 +1,9 @@
 extends Control
 
-const max_visible: int = 4
-const display_duration: float = 3.5
+const ui_style: GDScript = preload("res://scripts/ui/ui_style.gd")
+
+const max_visible: int = 3
+const display_duration: float = 2.8
 
 var notification_container: VBoxContainer
 
@@ -25,14 +27,26 @@ func show_notification(text: String, type: String = "info") -> void:
 	var margin: MarginContainer = MarginContainer.new()
 	margin.mouse_filter = MOUSE_FILTER_IGNORE
 	panel.add_child(margin)
+	var content: HBoxContainer = HBoxContainer.new()
+	content.add_theme_constant_override("separation", 8)
+	content.mouse_filter = MOUSE_FILTER_IGNORE
+	margin.add_child(content)
+	var icon_id: String = "info_ping_bar"
+	match type:
+		"success": icon_id = "success_check_bar"
+		"warning": icon_id = "warning_alert_bar"
+		"error": icon_id = "error_close_bar"
+	content.add_child(ui_style.make_ui_icon_slot("notifications", icon_id, false))
 
 	var label: Label = Label.new()
 	label.text = text
 	label.add_theme_font_size_override("font_size", 13)
 	label.add_theme_color_override("font_color", Color(0.96, 0.93, 0.87, 1.0))
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.custom_minimum_size = Vector2(250, 0)
+	label.size_flags_horizontal = SIZE_EXPAND_FILL
 	label.mouse_filter = MOUSE_FILTER_IGNORE
-	margin.add_child(label)
+	content.add_child(label)
 
 	notification_container.add_child(panel)
 
@@ -51,9 +65,9 @@ func _build_container() -> void:
 	add_child(notification_container)
 	notification_container.anchor_left = 1.0
 	notification_container.anchor_right = 1.0
-	notification_container.offset_left = -300
-	notification_container.offset_top = 44
-	notification_container.offset_right = -8
+	notification_container.offset_left = -332
+	notification_container.offset_top = 78
+	notification_container.offset_right = -12
 	notification_container.add_theme_constant_override("separation", 4)
 	notification_container.mouse_filter = MOUSE_FILTER_IGNORE
 

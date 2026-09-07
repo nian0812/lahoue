@@ -1,0 +1,107 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/zone_root.gd" id="1_zone"]
+[ext_resource type="Script" path="res://scripts/world/marker_route.gd" id="2_route"]
+[ext_resource type="Script" path="res://scripts/visual/manifest_sprite.gd" id="3_visual"]
+[ext_resource type="PackedScene" path="res://scenes/world/visual/zone_ground_visual.tscn" id="4_ground"]
+[ext_resource type="PackedScene" path="res://scenes/world/visual/route_surface_visual.tscn" id="5_route_visual"]
+
+[node name="ZoneRoot" type="Node2D"]
+script = ExtResource("1_zone")
+zone_id = "logistics"
+local_bounds = Rect2(0, 0, 1920, 1080)
+metadata/visual_travel_distance = 1460.0
+
+[node name="Ground" type="Node2D" parent="."]
+[node name="GroundLayers" type="Node2D" parent="Ground"]
+[node name="GroundVisual" parent="Ground/GroundLayers" instance=ExtResource("4_ground")]
+profile = 6
+area_rect = Rect2(425, 675, 610, 190)
+detail_seed = 67
+[node name="Roads" type="Node2D" parent="."]
+
+[node name="TruckRouteSurface" parent="Roads" instance=ExtResource("5_route_visual")]
+route_path = NodePath("../../Paths/TruckRoute")
+surface_width = 52.0
+edge_color = Color(0.254902, 0.25098, 0.207843, 1)
+surface_color = Color(0.431373, 0.4, 0.32549, 1)
+tire_wear = true
+
+[node name="road_visual" type="Polygon2D" parent="Roads"]
+visible = false
+z_index = -5
+polygon = PackedVector2Array(460, 730, 1340, 730, 1340, 930, 1920, 930, 1920, 970, 1300, 970, 1300, 770, 460, 770)
+color = Color(0.35, 0.3, 0.25, 1)
+
+[node name="walkway_visual" type="Polygon2D" parent="Roads"]
+z_index = -6
+polygon = PackedVector2Array(1440, 780, 1480, 780, 1480, 950, 1440, 950)
+color = Color(0.45, 0.4, 0.35, 1)
+
+[node name="depot_road_artwork" type="Node2D" parent="Roads"]
+visible = false
+script = ExtResource("3_visual")
+atlas_id = "road_tiles_kit"
+semantic_id = "paved_road_straight"
+target_rect = Rect2(850, 704, 100, 70)
+artwork_z_index = -4
+
+[node name="shipping_road_artwork" type="Node2D" parent="Roads"]
+script = ExtResource("3_visual")
+atlas_id = "road_tiles_kit"
+semantic_id = "paved_transition_tile"
+target_rect = Rect2(1510, 900, 140, 70)
+artwork_z_index = -4
+
+[node name="walkway_artwork" type="Node2D" parent="Roads"]
+script = ExtResource("3_visual")
+atlas_id = "road_tiles_kit"
+semantic_id = "stone_path_straight"
+target_rect = Rect2(1432, 800, 56, 72)
+artwork_z_index = -4
+
+[node name="Props" type="Node2D" parent="."]
+
+[node name="loading_point_artwork" type="Node2D" parent="Props"]
+script = ExtResource("3_visual")
+atlas_id = "logistics_props_atlas"
+semantic_id = "truck_loading_point"
+target_rect = Rect2(540, 700, 72, 64)
+
+[node name="cargo_crates_artwork" type="Node2D" parent="Props"]
+script = ExtResource("3_visual")
+atlas_id = "logistics_props_atlas"
+semantic_id = "stack_small_cargo_crates"
+target_rect = Rect2(610, 710, 48, 50)
+[node name="Buildings" type="Node2D" parent="."]
+[node name="Interactables" type="Node2D" parent="."]
+[node name="NPCMarkers" type="Node2D" parent="."]
+[node name="TruckSpawn01" type="Marker2D" parent="NPCMarkers"]
+position = Vector2(460, 740)
+[node name="TruckSpawn02" type="Marker2D" parent="NPCMarkers"]
+position = Vector2(460, 780)
+[node name="TruckSpawn03" type="Marker2D" parent="NPCMarkers"]
+position = Vector2(460, 820)
+
+[node name="Paths" type="Node2D" parent="."]
+[node name="TruckRoute" type="Path2D" parent="Paths"]
+script = ExtResource("2_route")
+[node name="RoutePoint01" type="Marker2D" parent="Paths/TruckRoute"]
+position = Vector2(460, 740)
+[node name="RoutePoint02" type="Marker2D" parent="Paths/TruckRoute"]
+position = Vector2(1300, 740)
+[node name="RoutePoint03" type="Marker2D" parent="Paths/TruckRoute"]
+position = Vector2(1300, 950)
+[node name="RoutePoint04" type="Marker2D" parent="Paths/TruckRoute"]
+position = Vector2(1920, 950)
+[node name="TruckVisuals" type="Node2D" parent="Paths"]
+
+[node name="ExpansionAnchors" type="Node2D" parent="."]
+[node name="North" type="Marker2D" parent="ExpansionAnchors"]
+position = Vector2(960, 650)
+[node name="East" type="Marker2D" parent="ExpansionAnchors"]
+position = Vector2(1920, 840)
+[node name="South" type="Marker2D" parent="ExpansionAnchors"]
+position = Vector2(960, 1080)
+[node name="West" type="Marker2D" parent="ExpansionAnchors"]
+position = Vector2(0, 840)

@@ -6,10 +6,13 @@ signal data_load_failed(path: String, reason: String)
 const progression_effect_fields: Dictionary = {
 	"warehouse": "capacity",
 	"coop": "capacity",
+	"pig_pen": "capacity",
 	"cow_barn": "capacity",
 	"aquaculture": "areas",
 	"restaurant": "tables",
 	"kitchen": "cooking_slots",
+	"truck": "delivery_time",
+	"resort": "rooms",
 }
 
 const data_paths: Dictionary = {
@@ -29,9 +32,13 @@ const achievement_metric_modes: Dictionary = {
 	"animal_products_collected": "increment",
 	"aquaculture_products_collected": "increment",
 	"cooking_orders_completed": "increment",
+	"customer_orders_served": "increment",
 	"restaurant_orders_paid": "increment",
 	"items_sold": "increment",
 	"money_earned": "increment",
+	"truck_shipments_completed": "increment",
+	"import_shipments_completed": "increment",
+	"staff_roles_owned": "maximum",
 	"upgrades_purchased": "increment",
 	"player_level": "maximum",
 }
@@ -177,6 +184,7 @@ func validate_achievement_definitions(dataset: Dictionary) -> Dictionary:
 			"achievement_id": achievement_id,
 			"name": String(definition.get("name", achievement_id)),
 			"description": String(definition.get("description", "")),
+			"progress_label": String(definition.get("progress_label", "Progress")),
 			"condition": {"metric": metric, "mode": mode, "target": target},
 			"reward": reward,
 		}
@@ -279,6 +287,33 @@ func get_item_buy_price(item_id: String) -> int:
 func get_item_sell_price(item_id: String) -> int:
 	return _get_item_price(item_id, "sell_price")
 
+func get_item_source_level(item_id: String) -> int:
+	var item_value: Variant = get_entry("items", item_id)
+	if typeof(item_value) != TYPE_DICTIONARY:
+		return 1
+	var lvl: int = _read_positive_integer((item_value as Dictionary).get("required_level"))
+	if lvl > 0:
+		return lvl
+	var crops: Dictionary = get_dataset("crops").get("entries", {})
+	for cid: String in crops:
+		if String(crops[cid].get("harvest_item", "")) == item_id:
+			return _read_positive_integer(crops[cid].get("required_level"))
+	var animals: Dictionary = get_dataset("animals").get("entries", {})
+	for aid: String in animals:
+		var d: Variant = animals[aid].get("daily_product")
+		if typeof(d) == TYPE_DICTIONARY and String((d as Dictionary).get("item_id", "")) == item_id:
+			return _read_positive_integer(animals[aid].get("required_level"))
+		var e: Variant = animals[aid].get("end_of_life_product")
+		if typeof(e) == TYPE_DICTIONARY and String((e as Dictionary).get("item_id", "")) == item_id:
+			return _read_positive_integer(animals[aid].get("required_level"))
+		var p: String = String(animals[aid].get("primary_product", ""))
+		if p == item_id:
+			return _read_positive_integer(animals[aid].get("required_level"))
+	var aqua: Dictionary = get_dataset("aquaculture").get("entries", {})
+	for aid: String in aqua:
+		if String(aqua[aid].get("item_id", "")) == item_id:
+			return _read_positive_integer(aqua[aid].get("required_level"))
+	return 1
 
 func get_item_required_level(item_id: String) -> int:
 	var item_value: Variant = get_entry("items", item_id)
@@ -290,8 +325,8 @@ func get_item_required_level(item_id: String) -> int:
 	if required_level_value != null:
 		return _read_positive_integer(required_level_value)
 
-	if String(item_data.get("category", "")) == "seed":
-		var crop_id: String = get_crop_id_for_seed(item_id)
+	var crop_id: String = get_crop_id_for_seed(item_id)
+	if not crop_id.is_empty():
 		var crop_value: Variant = get_entry("crops", crop_id)
 		if typeof(crop_value) != TYPE_DICTIONARY:
 			return 0
@@ -409,9 +444,11 @@ func get_staff_type(staff_type_id: String) -> Dictionary:
 	var unlock_level: int = _read_positive_integer(staff_data.get("unlock_level"))
 	var movement_speed: float = _read_positive_number(staff_data.get("movement_speed"))
 	var cleaning_time: float = _read_positive_number(staff_data.get("cleaning_time_seconds"))
+	var max_count: int = _read_positive_integer(staff_data.get("max_count"))
 	var jobs_value: Variant = staff_data.get("allowed_jobs")
 	var hire_cost: int = get_staff_hire_cost(staff_type_id)
-	if unlock_level <= 0 or movement_speed <= 0.0 or cleaning_time <= 0.0 or hire_cost <= 0:
+	var daily_salary: int = get_staff_daily_salary(staff_type_id)
+	if unlock_level <= 0 or movement_speed <= 0.0 or cleaning_time <= 0.0 or max_count <= 0 or hire_cost <= 0 or daily_salary <= 0:
 		return {}
 	if typeof(jobs_value) != TYPE_ARRAY or (jobs_value as Array).is_empty():
 		return {}
@@ -420,7 +457,15 @@ func get_staff_type(staff_type_id: String) -> Dictionary:
 		if typeof(job_value) != TYPE_STRING:
 			return {}
 		var job_type: String = String(job_value)
-		if not ["cook", "serve", "payment", "clean"].has(job_type) or allowed_jobs.has(job_type):
+		if not [
+			"cook",
+			"serve",
+			"payment",
+			"clean",
+			"harvest",
+			"collect_animal",
+			"collect_aquaculture",
+		].has(job_type) or allowed_jobs.has(job_type):
 			return {}
 		allowed_jobs.append(job_type)
 	return {
@@ -428,17 +473,89 @@ func get_staff_type(staff_type_id: String) -> Dictionary:
 		"unlock_level": unlock_level,
 		"movement_speed": movement_speed,
 		"cleaning_time_seconds": cleaning_time,
+		"max_count": max_count,
 		"allowed_jobs": allowed_jobs,
 		"hire_cost": hire_cost,
+		"daily_salary": daily_salary,
 	}
 
 
 func get_staff_hire_cost(staff_type_id: String) -> int:
 	var progression: Dictionary = get_dataset("progression")
-	var salaries_value: Variant = progression.get("staff_salary", {})
+	var costs_value: Variant = progression.get("staff_hire_costs", {})
+	if typeof(costs_value) != TYPE_DICTIONARY:
+		return 0
+	return _read_positive_integer((costs_value as Dictionary).get(staff_type_id))
+
+
+func get_staff_daily_salary(staff_type_id: String) -> int:
+	var progression: Dictionary = get_dataset("progression")
+	var salaries_value: Variant = progression.get("staff_daily_salaries", {})
 	if typeof(salaries_value) != TYPE_DICTIONARY:
 		return 0
 	return _read_positive_integer((salaries_value as Dictionary).get(staff_type_id))
+
+
+func get_premium_market_unlock_level() -> int:
+	var progression: Dictionary = get_dataset("progression")
+	var market_value: Variant = progression.get("premium_market", {})
+	if typeof(market_value) != TYPE_DICTIONARY:
+		return 0
+	return _read_positive_integer((market_value as Dictionary).get("unlock_level"))
+
+
+func get_helicopter_level_data(level: int) -> Dictionary:
+	if level <= 0:
+		return {}
+	var progression: Dictionary = get_dataset("progression")
+	var market_value: Variant = progression.get("premium_market", {})
+	if typeof(market_value) != TYPE_DICTIONARY:
+		return {}
+	var levels_value: Variant = (market_value as Dictionary).get("helicopter_levels", {})
+	if typeof(levels_value) != TYPE_DICTIONARY:
+		return {}
+	var level_value: Variant = (levels_value as Dictionary).get(str(level), {})
+	if typeof(level_value) != TYPE_DICTIONARY:
+		return {}
+	var level_data: Dictionary = level_value as Dictionary
+	if (
+		_read_positive_number(level_data.get("shipping_time")) <= 0.0
+		or _read_positive_integer(level_data.get("capacity")) <= 0
+		or _read_positive_number(level_data.get("visual_speed")) <= 0.0
+	):
+		return {}
+	return level_data.duplicate(true)
+
+
+func get_max_helicopter_level() -> int:
+	var maximum: int = 0
+	while not get_helicopter_level_data(maximum + 1).is_empty():
+		maximum += 1
+	return maximum
+
+
+func get_premium_import_item_ids() -> Array[String]:
+	var result: Array[String] = []
+	var entries: Dictionary = get_dataset("items").get("entries", {}) as Dictionary
+	for item_id_value: Variant in entries:
+		var item_id: String = String(item_id_value)
+		var item_data: Dictionary = entries[item_id_value] as Dictionary
+		if (
+			String(item_data.get("category", "")) == "import"
+			and _read_positive_integer(item_data.get("required_level")) == get_premium_market_unlock_level()
+			and get_item_buy_price(item_id) > 0
+		):
+			result.append(item_id)
+	result.sort()
+	return result
+
+
+func get_item_display_name(item_id: String) -> String:
+	var item_value: Variant = get_entry("items", item_id)
+	if typeof(item_value) != TYPE_DICTIONARY:
+		return ""
+	var configured_name: String = String((item_value as Dictionary).get("display_name", ""))
+	return configured_name if not configured_name.is_empty() else item_id.replace("_", " ").capitalize()
 
 
 func get_level_exp(level: int) -> int:
@@ -484,9 +601,134 @@ func get_warehouse_upgrade_cost(target_level: int) -> int:
 
 
 func get_animal_housing_capacity(housing_id: String, level: int = 1) -> int:
-	if housing_id != "coop" and housing_id != "cow_barn":
+	if not ["coop", "pig_pen", "cow_barn"].has(housing_id):
 		return 0
 	return get_progression_effect(housing_id, level)
+
+
+func get_system_unlock_level(system_id: String) -> int:
+	var progression: Dictionary = get_dataset("progression")
+	var system_value: Variant = progression.get(system_id, {})
+	if typeof(system_value) != TYPE_DICTIONARY:
+		return 0
+	return _read_positive_integer((system_value as Dictionary).get("unlock_level", 1))
+
+
+func get_system_required_player_level(system_id: String, target_level: int) -> int:
+	var level_data: Dictionary = get_progression_level_data(system_id, target_level)
+	if level_data.is_empty():
+		return 0
+	return _read_positive_integer(level_data.get("required_player_level", get_system_unlock_level(system_id)))
+
+
+func get_farm_plot_maximum() -> int:
+	var settings: Dictionary = get_dataset("progression").get("farm_plots", {}) as Dictionary
+	return _read_positive_integer(settings.get("maximum"))
+
+
+func get_farm_plot_purchase_cost() -> int:
+	var settings: Dictionary = get_dataset("progression").get("farm_plots", {}) as Dictionary
+	return _read_positive_integer(settings.get("purchase_cost"))
+
+
+func get_farm_plot_limit(player_level: int) -> int:
+	var settings: Dictionary = get_dataset("progression").get("farm_plots", {}) as Dictionary
+	var limits_value: Variant = settings.get("level_limits", {})
+	if typeof(limits_value) != TYPE_DICTIONARY:
+		return 0
+	var allowed: int = 0
+	for level_value: Variant in limits_value as Dictionary:
+		var level_string: String = String(level_value)
+		if not level_string.is_valid_int():
+			return 0
+		var required_level: int = int(level_string)
+		var limit: int = _read_positive_integer((limits_value as Dictionary)[level_value])
+		if required_level <= 0 or limit <= 0:
+			return 0
+		if player_level >= required_level:
+			allowed = maxi(allowed, limit)
+	return mini(allowed, get_farm_plot_maximum())
+
+
+func get_next_farm_plot_limit_level(player_level: int, owned_count: int) -> int:
+	var settings: Dictionary = get_dataset("progression").get("farm_plots", {}) as Dictionary
+	var limits_value: Variant = settings.get("level_limits", {})
+	if typeof(limits_value) != TYPE_DICTIONARY:
+		return 0
+	var next_level: int = 0
+	for level_value: Variant in limits_value as Dictionary:
+		var level_string: String = String(level_value)
+		if not level_string.is_valid_int():
+			continue
+		var required_level: int = int(level_string)
+		var limit: int = _read_positive_integer((limits_value as Dictionary)[level_value])
+		if required_level > player_level and limit > owned_count and (next_level == 0 or required_level < next_level):
+			next_level = required_level
+	return next_level
+
+
+func get_pond_unlock_level(aquaculture_id: String) -> int:
+	var ponds: Dictionary = get_dataset("progression").get("ponds", {}) as Dictionary
+	var pond: Dictionary = ponds.get(aquaculture_id, {}) as Dictionary
+	return _read_positive_integer(pond.get("unlock_level"))
+
+
+func get_pond_purchase_cost(aquaculture_id: String) -> int:
+	var ponds: Dictionary = get_dataset("progression").get("ponds", {}) as Dictionary
+	var pond: Dictionary = ponds.get(aquaculture_id, {}) as Dictionary
+	return _read_positive_integer(pond.get("purchase_cost"))
+
+
+func get_pond_level_data(aquaculture_id: String, pond_level: int) -> Dictionary:
+	if pond_level <= 0:
+		return {}
+	var ponds: Dictionary = get_dataset("progression").get("ponds", {}) as Dictionary
+	var pond: Dictionary = ponds.get(aquaculture_id, {}) as Dictionary
+	var levels: Dictionary = pond.get("levels", {}) as Dictionary
+	var value: Variant = levels.get(str(pond_level), {})
+	return (value as Dictionary).duplicate(true) if typeof(value) == TYPE_DICTIONARY else {}
+
+
+func get_pond_max_level(aquaculture_id: String) -> int:
+	var maximum: int = 0
+	while not get_pond_level_data(aquaculture_id, maximum + 1).is_empty():
+		maximum += 1
+	return maximum
+
+
+func get_pond_upgrade_cost(aquaculture_id: String, target_level: int) -> int:
+	var data_value: Dictionary = get_pond_level_data(aquaculture_id, target_level)
+	if data_value.is_empty():
+		return -1
+	return _read_non_negative_integer(data_value.get("upgrade_cost"))
+
+
+func get_pond_cycle_time(aquaculture_id: String, pond_level: int) -> float:
+	var base_time: float = get_aquaculture_growth_time_seconds(aquaculture_id)
+	var speed_percent: int = _read_positive_integer(get_pond_level_data(aquaculture_id, pond_level).get("speed_percent"))
+	return base_time * float(speed_percent) / 100.0 if base_time > 0.0 and speed_percent > 0 else 0.0
+
+
+func get_building_purchase_data(building_id: String) -> Dictionary:
+	var purchases: Dictionary = get_dataset("progression").get("building_purchases", {}) as Dictionary
+	var value: Variant = purchases.get(building_id, {})
+	return (value as Dictionary).duplicate(true) if typeof(value) == TYPE_DICTIONARY else {}
+
+
+func get_building_unlock_level(building_id: String) -> int:
+	return _read_positive_integer(get_building_purchase_data(building_id).get("unlock_level"))
+
+
+func get_building_purchase_cost(building_id: String) -> int:
+	return _read_positive_integer(get_building_purchase_data(building_id).get("cost"))
+
+
+func get_vip_payout_multiplier() -> float:
+	var market: Dictionary = get_dataset("progression").get("premium_market", {}) as Dictionary
+	var value: Variant = market.get("vip_multiplier", 1.0)
+	if typeof(value) != TYPE_INT and typeof(value) != TYPE_FLOAT:
+		return 1.0
+	return maxf(float(value), 1.0)
 
 
 func get_aquaculture_area_capacity(level: int) -> int:
@@ -570,10 +812,6 @@ func _normalize_restaurant_recipe(recipe_id: String, player_level: int) -> Dicti
 		recipe_level = _read_positive_integer(required_level_value)
 		if recipe_level <= 0:
 			return {}
-	recipe_level = maxi(recipe_level, unlock_level)
-	if player_level < recipe_level:
-		return {}
-
 	var selling_price: int = _read_positive_integer(recipe.get("selling_price"))
 	var cooking_time: float = _read_positive_number(recipe.get("cooking_time"))
 	var ingredients_value: Variant = recipe.get("ingredients")
@@ -591,7 +829,11 @@ func _normalize_restaurant_recipe(recipe_id: String, player_level: int) -> Dicti
 		var amount: int = _read_positive_integer(ingredients[item_id_value])
 		if item_id.is_empty() or amount <= 0 or get_entry("items", item_id) == null:
 			return {}
+		recipe_level = maxi(recipe_level, get_item_source_level(item_id))
 		normalized_ingredients[item_id] = amount
+
+	if player_level < recipe_level:
+		return {}
 
 	return {
 		"recipe_id": recipe_id,

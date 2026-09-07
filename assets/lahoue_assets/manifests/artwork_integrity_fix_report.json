@@ -1,0 +1,25 @@
+{
+  "fixed_assets": {
+    "world/buildings/aquaculture_pond.png": {
+      "source": "/mnt/data/ghostwriter_images/generated/an_isometric_high_detail_3d_game_art_style_isolat_1.png"
+    },
+    "world/props/outdoor_dining_set_atlas.png": {
+      "sources": [
+        "/mnt/data/quán_cà_phê_sân_vườn_ấm_cúng.png",
+        "/mnt/data/sân_hiên_nhà_hàng_dưới_ô_kem.png",
+        "/mnt/data/sân_hiên_nhà_hàng_dưới_giàn_pergola.png",
+        "/mnt/data/sân_hiên_quán_cà_phê_phong_cách_isometric.png"
+      ],
+      "components": [
+        "outdoor_dining_set_square_table_umbrella",
+        "outdoor_dining_set_round_table_umbrella",
+        "outdoor_dining_set_pergola_dining_module",
+        "outdoor_dining_set_cafe_table_cantilever_umbrella"
+      ]
+    },
+    "crops/lemongrass_stage_3.png": {
+      "source": "/mnt/data/user-Uk27JeUXfV5MFmbHluWsllru/0d340b432edf424da8ae7807cdaa492f/mnt/data/ghostwriter_images/generated/a_clean_isolated_high_resolution_botanical_illus_3_batch_3.png",
+      "hash_different_from_stage_2": true
+    }
+  }
+}

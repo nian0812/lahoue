@@ -1,0 +1,221 @@
+{
+  "atlas_id": "world_interaction_production_markers_sheet",
+  "image": "ui/progression/world_interaction_production_markers_sheet.png",
+  "canvas": {
+    "width": 1374,
+    "height": 1145
+  },
+  "coordinate_system": "top_left_origin_pixels",
+  "components": [
+    {
+      "x": 25,
+      "y": 99,
+      "width": 194,
+      "height": 110,
+      "semantic_id": "generic_interaction_point"
+    },
+    {
+      "x": 261,
+      "y": 52,
+      "width": 188,
+      "height": 157,
+      "semantic_id": "interact_use_marker"
+    },
+    {
+      "x": 489,
+      "y": 45,
+      "width": 178,
+      "height": 168,
+      "semantic_id": "collect_marker"
+    },
+    {
+      "x": 714,
+      "y": 37,
+      "width": 175,
+      "height": 177,
+      "semantic_id": "harvest_ready_marker"
+    },
+    {
+      "x": 930,
+      "y": 55,
+      "width": 199,
+      "height": 164,
+      "semantic_id": "farm_plot_ready_marker"
+    },
+    {
+      "x": 1165,
+      "y": 38,
+      "width": 183,
+      "height": 175,
+      "semantic_id": "animal_product_ready_marker"
+    },
+    {
+      "x": 30,
+      "y": 261,
+      "width": 185,
+      "height": 181,
+      "semantic_id": "aquaculture_product_ready_marker"
+    },
+    {
+      "x": 257,
+      "y": 277,
+      "width": 179,
+      "height": 158,
+      "semantic_id": "restaurant_order_ready_marker"
+    },
+    {
+      "x": 487,
+      "y": 229,
+      "width": 177,
+      "height": 214,
+      "semantic_id": "cooking_ready_marker"
+    },
+    {
+      "x": 716,
+      "y": 316,
+      "width": 170,
+      "height": 126,
+      "semantic_id": "customer_waiting_marker"
+    },
+    {
+      "x": 938,
+      "y": 269,
+      "width": 181,
+      "height": 171,
+      "semantic_id": "payment_ready_marker"
+    },
+    {
+      "x": 1165,
+      "y": 257,
+      "width": 176,
+      "height": 192,
+      "semantic_id": "warehouse_storage_marker"
+    },
+    {
+      "x": 23,
+      "y": 487,
+      "width": 197,
+      "height": 172,
+      "semantic_id": "storage_full_marker"
+    },
+    {
+      "x": 249,
+      "y": 472,
+      "width": 198,
+      "height": 187,
+      "semantic_id": "truck_loading_marker"
+    },
+    {
+      "x": 469,
+      "y": 493,
+      "width": 206,
+      "height": 166,
+      "semantic_id": "truck_ready_marker"
+    },
+    {
+      "x": 708,
+      "y": 496,
+      "width": 193,
+      "height": 162,
+      "semantic_id": "shipment_ready_marker"
+    },
+    {
+      "x": 936,
+      "y": 500,
+      "width": 182,
+      "height": 160,
+      "semantic_id": "shipment_returned_marker"
+    },
+    {
+      "x": 1155,
+      "y": 503,
+      "width": 200,
+      "height": 156,
+      "semantic_id": "premium_trade_ready_marker"
+    },
+    {
+      "x": 41,
+      "y": 692,
+      "width": 162,
+      "height": 191,
+      "semantic_id": "vip_interaction_marker"
+    },
+    {
+      "x": 254,
+      "y": 689,
+      "width": 186,
+      "height": 190,
+      "semantic_id": "resort_interaction_marker"
+    },
+    {
+      "x": 486,
+      "y": 709,
+      "width": 167,
+      "height": 168,
+      "semantic_id": "staff_work_point_marker"
+    },
+    {
+      "x": 699,
+      "y": 698,
+      "width": 195,
+      "height": 187,
+      "semantic_id": "staff_home_idle_point_marker"
+    },
+    {
+      "x": 935,
+      "y": 683,
+      "width": 184,
+      "height": 203,
+      "semantic_id": "building_entrance_marker"
+    },
+    {
+      "x": 1163,
+      "y": 716,
+      "width": 191,
+      "height": 167,
+      "semantic_id": "customer_seat_table_marker"
+    },
+    {
+      "x": 32,
+      "y": 912,
+      "width": 180,
+      "height": 181,
+      "semantic_id": "production_in_progress_marker"
+    },
+    {
+      "x": 258,
+      "y": 908,
+      "width": 173,
+      "height": 186,
+      "semantic_id": "production_complete_marker"
+    },
+    {
+      "x": 479,
+      "y": 923,
+      "width": 182,
+      "height": 168,
+      "semantic_id": "locked_interaction_marker"
+    },
+    {
+      "x": 705,
+      "y": 940,
+      "width": 191,
+      "height": 155,
+      "semantic_id": "requirement_not_met_marker"
+    },
+    {
+      "x": 947,
+      "y": 915,
+      "width": 159,
+      "height": 178,
+      "semantic_id": "new_unlock_world_marker"
+    },
+    {
+      "x": 1165,
+      "y": 912,
+      "width": 180,
+      "height": 182,
+      "semantic_id": "important_objective_marker"
+    }
+  ]
+}

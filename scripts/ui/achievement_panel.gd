@@ -1,6 +1,7 @@
 extends PanelContainer
 
 const vnd_format: GDScript = preload("res://scripts/ui/vnd_formatter.gd")
+const ui_style: GDScript = preload("res://scripts/ui/ui_style.gd")
 
 var list_container: VBoxContainer
 
@@ -27,10 +28,11 @@ func _build_ui() -> void:
 
 	var header: HBoxContainer = HBoxContainer.new()
 	vbox.add_child(header)
+	header.add_child(ui_style.make_icon_slot("achievement"))
 
 	var title: Label = Label.new()
 	title.text = "ACHIEVEMENTS"
-	title.add_theme_font_size_override("font_size", 22)
+	title.theme_type_variation = &"PanelTitle"
 	header.add_child(title)
 
 	var close_btn: Button = Button.new()
@@ -41,7 +43,7 @@ func _build_ui() -> void:
 
 	var scroll: ScrollContainer = ScrollContainer.new()
 	scroll.size_flags_vertical = SIZE_EXPAND_FILL
-	scroll.custom_minimum_size = Vector2(600, 400)
+	scroll.custom_minimum_size = Vector2(0, 180)
 	vbox.add_child(scroll)
 
 	list_container = VBoxContainer.new()
@@ -51,10 +53,11 @@ func _build_ui() -> void:
 
 
 func _on_close_pressed() -> void:
-	visible = false
 	var ui_manager: Node = get_parent()
-	if ui_manager and ui_manager.get("active_panel") == self:
-		ui_manager.set("active_panel", null)
+	if ui_manager and ui_manager.has_method("_close_active_panel"):
+		ui_manager.call("_close_active_panel")
+	else:
+		visible = false
 
 
 func _refresh_data() -> void:
@@ -68,6 +71,7 @@ func _refresh_data() -> void:
 
 	var defs: Dictionary = tracker.get("definitions")
 	var states: Dictionary = tracker.get("achievement_states")
+	_add_empire_card()
 
 	if defs.is_empty():
 		var empty: Label = Label.new()
@@ -88,6 +92,7 @@ func _refresh_data() -> void:
 		var a_desc: String = String(def.get("description", ""))
 		var condition: Dictionary = def.get("condition", {})
 		var target: int = int(condition.get("target", 1))
+		var progress_label: String = String(def.get("progress_label", "Progress"))
 
 		var reward_raw: Variant = def.get("reward")
 		var reward: Dictionary = reward_raw as Dictionary if typeof(reward_raw) == TYPE_DICTIONARY else {}
@@ -96,18 +101,7 @@ func _refresh_data() -> void:
 		var is_unlocked: bool = bool(state.get("unlocked", false))
 		var is_claimed: bool = bool(state.get("reward_claimed", false))
 
-		var row: PanelContainer = PanelContainer.new()
-		var style: StyleBoxFlat = StyleBoxFlat.new()
-		style.bg_color = Color(0.1, 0.08, 0.06, 0.4)
-		style.corner_radius_top_left = 4
-		style.corner_radius_top_right = 4
-		style.corner_radius_bottom_right = 4
-		style.corner_radius_bottom_left = 4
-		style.content_margin_left = 12
-		style.content_margin_right = 12
-		style.content_margin_top = 8
-		style.content_margin_bottom = 8
-		row.add_theme_stylebox_override("panel", style)
+		var row: PanelContainer = ui_style.make_card()
 
 		if is_unlocked:
 			row.modulate = Color(1, 1, 1)
@@ -119,6 +113,7 @@ func _refresh_data() -> void:
 
 		var hbox_top: HBoxContainer = HBoxContainer.new()
 		vbox.add_child(hbox_top)
+		hbox_top.add_child(ui_style.make_achievement_icon_slot(a_id, true))
 
 		var name_lbl: Label = Label.new()
 		name_lbl.text = a_name
@@ -127,18 +122,22 @@ func _refresh_data() -> void:
 
 		var status_lbl: Label = Label.new()
 		if is_claimed:
-			status_lbl.text = "Completed"
+			status_lbl.text = "CLAIMED"
 			status_lbl.modulate = Color(0.4, 0.8, 0.4)
 		elif is_unlocked:
-			status_lbl.text = "Unlocked"
+			status_lbl.text = "COMPLETED"
 			status_lbl.modulate = Color(0.8, 0.8, 0.4)
+		elif progress > 0:
+			status_lbl.text = "IN PROGRESS"
+			status_lbl.modulate = Color(0.7, 0.7, 0.8)
 		else:
-			status_lbl.text = "Locked"
+			status_lbl.text = "LOCKED"
 			status_lbl.modulate = Color(0.8, 0.3, 0.3)
 		hbox_top.add_child(status_lbl)
 
 		var desc_lbl: Label = Label.new()
 		desc_lbl.text = a_desc
+		desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		desc_lbl.add_theme_font_size_override("font_size", 14)
 		desc_lbl.modulate = Color(0.8, 0.8, 0.8)
 		vbox.add_child(desc_lbl)
@@ -155,7 +154,7 @@ func _refresh_data() -> void:
 		hbox_bottom.add_child(pb)
 
 		var prog_lbl: Label = Label.new()
-		prog_lbl.text = " %d / %d" % [progress, target]
+		prog_lbl.text = " %s %d / %d" % [progress_label, progress, target]
 		prog_lbl.add_theme_font_size_override("font_size", 14)
 		hbox_bottom.add_child(prog_lbl)
 
@@ -165,7 +164,7 @@ func _refresh_data() -> void:
 			var r_type: String = String(reward.get("type", ""))
 			var r_amt: int = int(reward.get("amount", 0))
 			if r_type == "money":
-				r_lbl.text = "  Reward: %s" % vnd_format.format(r_amt)
+				r_lbl.text = "  Reward: %s" % vnd_format.format_vnd(r_amt)
 			elif r_type == "exp":
 				r_lbl.text = "  Reward: +%d EXP" % r_amt
 			elif r_type == "item":
@@ -182,6 +181,13 @@ func _refresh_data() -> void:
 			lbl.modulate = Color(0.8, 0.4, 0.4)
 			hbox_bottom.add_child(lbl)
 
+		if is_unlocked and not is_claimed:
+			var claim_btn: Button = Button.new()
+			claim_btn.name = "claim_%s" % a_id
+			claim_btn.text = "Claim"
+			claim_btn.pressed.connect(_on_claim_pressed.bind(tracker, a_id))
+			hbox_bottom.add_child(claim_btn)
+
 		row.mouse_entered.connect(func() -> void:
 			row.modulate = Color(1.2, 1.2, 1.2)
 			var t_data: Dictionary = {"title": "Achievement", "description": a_desc}
@@ -197,3 +203,30 @@ func _refresh_data() -> void:
 		)
 
 		list_container.add_child(row)
+
+
+func _add_empire_card() -> void:
+	var reached: bool = game_manager.level >= data_manager.get_max_player_level()
+	var row: PanelContainer = ui_style.make_card(&"PremiumCard" if reached else &"Card")
+	row.name = "lahoue_empire"
+	var content: HBoxContainer = HBoxContainer.new()
+	content.add_theme_constant_override("separation", 12)
+	row.add_child(content)
+	content.add_child(ui_style.make_icon_slot("premium"))
+	var text_box: VBoxContainer = VBoxContainer.new()
+	text_box.size_flags_horizontal = SIZE_EXPAND_FILL
+	content.add_child(text_box)
+	var title: Label = Label.new()
+	title.text = "LaHoue Empire"
+	title.theme_type_variation = &"PanelTitle" if reached else &"SectionTitle"
+	text_box.add_child(title)
+	var desc: Label = Label.new()
+	desc.text = "Level 55 reached — EXP: MAX" if reached else "Ultimate milestone • Requires Level 55"
+	desc.theme_type_variation = &"Premium" if reached else &"StatusLocked"
+	text_box.add_child(desc)
+	list_container.add_child(row)
+
+
+func _on_claim_pressed(tracker: Node, achievement_id: String) -> void:
+	if tracker != null and tracker.call("claim_reward", achievement_id):
+		_refresh_data()

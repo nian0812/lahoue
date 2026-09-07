@@ -1,0 +1,151 @@
+{
+  "atlas_id": "farm_warehouse_utility_props_atlas",
+  "image": "world/props/farm_warehouse_utility_props_atlas.png",
+  "canvas": {
+    "width": 1448,
+    "height": 1086
+  },
+  "coordinate_system": "top_left_origin_pixels",
+  "components": [
+    {
+      "x": 39,
+      "y": 85,
+      "width": 211,
+      "height": 213,
+      "semantic_id": "single_wooden_crate"
+    },
+    {
+      "x": 293,
+      "y": 5,
+      "width": 300,
+      "height": 311,
+      "semantic_id": "stacked_wooden_crates"
+    },
+    {
+      "x": 617,
+      "y": 78,
+      "width": 192,
+      "height": 239,
+      "semantic_id": "material_sack"
+    },
+    {
+      "x": 822,
+      "y": 34,
+      "width": 304,
+      "height": 292,
+      "semantic_id": "sack_stack"
+    },
+    {
+      "x": 1148,
+      "y": 124,
+      "width": 293,
+      "height": 189,
+      "semantic_id": "wooden_pallet"
+    },
+    {
+      "x": 50,
+      "y": 313,
+      "width": 180,
+      "height": 262,
+      "semantic_id": "barrel"
+    },
+    {
+      "x": 262,
+      "y": 339,
+      "width": 274,
+      "height": 231,
+      "semantic_id": "metal_storage_box"
+    },
+    {
+      "x": 575,
+      "y": 391,
+      "width": 192,
+      "height": 178,
+      "semantic_id": "wicker_basket"
+    },
+    {
+      "x": 766,
+      "y": 299,
+      "width": 218,
+      "height": 326,
+      "semantic_id": "hand_trolley"
+    },
+    {
+      "x": 1025,
+      "y": 325,
+      "width": 398,
+      "height": 301,
+      "semantic_id": "wheelbarrow"
+    },
+    {
+      "x": 29,
+      "y": 545,
+      "width": 251,
+      "height": 273,
+      "semantic_id": "shovel"
+    },
+    {
+      "x": 240,
+      "y": 566,
+      "width": 256,
+      "height": 266,
+      "semantic_id": "rake"
+    },
+    {
+      "x": 446,
+      "y": 570,
+      "width": 231,
+      "height": 256,
+      "semantic_id": "pitchfork"
+    },
+    {
+      "x": 677,
+      "y": 642,
+      "width": 231,
+      "height": 187,
+      "semantic_id": "watering_can"
+    },
+    {
+      "x": 947,
+      "y": 652,
+      "width": 165,
+      "height": 167,
+      "semantic_id": "metal_bucket"
+    },
+    {
+      "x": 1198,
+      "y": 664,
+      "width": 225,
+      "height": 151,
+      "semantic_id": "toolbox"
+    },
+    {
+      "x": 63,
+      "y": 828,
+      "width": 240,
+      "height": 237,
+      "semantic_id": "hose_reel"
+    },
+    {
+      "x": 395,
+      "y": 831,
+      "width": 329,
+      "height": 249,
+      "semantic_id": "utility_flat_cart"
+    },
+    {
+      "x": 769,
+      "y": 857,
+      "width": 218,
+      "height": 219,
+      "semantic_id": "hanging_utility_lamp"
+    },
+    {
+      "x": 1066,
+      "y": 797,
+      "width": 300,
+      "height": 289,
+      "semantic_id": "storage_shelf"
+    }
+  ]
+}

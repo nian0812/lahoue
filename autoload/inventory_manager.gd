@@ -71,8 +71,41 @@ func add_item(item_id: String, amount: int) -> bool:
 	return true
 
 
+func add_items_atomic(additions: Dictionary) -> bool:
+	if additions.is_empty():
+		return false
+	var total_amount: int = 0
+	for item_id_value: Variant in additions:
+		if typeof(item_id_value) != TYPE_STRING:
+			return false
+		var item_id: String = String(item_id_value)
+		var amount_value: Variant = additions[item_id_value]
+		if (
+			typeof(amount_value) != TYPE_INT
+			or int(amount_value) <= 0
+			or data_manager.get_entry("items", item_id) == null
+		):
+			return false
+		total_amount += int(amount_value)
+	if not can_add(total_amount):
+		return false
+	var next_items: Dictionary = items.duplicate(true)
+	for item_id_value: Variant in additions:
+		var item_id: String = String(item_id_value)
+		next_items[item_id] = int(next_items.get(item_id, 0)) + int(additions[item_id_value])
+	items = next_items
+	for item_id_value: Variant in additions:
+		item_added.emit(String(item_id_value), int(additions[item_id_value]))
+	inventory_changed.emit(items.duplicate(true))
+	_emit_capacity()
+	return true
+
+
 func can_purchase_item(item_id: String, amount: int = 1) -> bool:
 	if amount <= 0 or not can_add_item(item_id, amount):
+		return false
+	var item_value: Variant = data_manager.get_entry("items", item_id)
+	if typeof(item_value) != TYPE_DICTIONARY or String((item_value as Dictionary).get("category", "")) == "import":
 		return false
 	var unit_price: int = data_manager.get_item_buy_price(item_id)
 	if unit_price <= 0:
@@ -97,11 +130,19 @@ func purchase_item(item_id: String, amount: int = 1) -> bool:
 
 
 func purchase_seed(seed_item_id: String, amount: int = 1) -> bool:
-	var item_value: Variant = data_manager.get_entry("items", seed_item_id)
-	if typeof(item_value) != TYPE_DICTIONARY:
+	var crops: Dictionary = data_manager.get_dataset("crops")
+	var entries: Dictionary = crops.get("entries", {}) as Dictionary
+	var is_valid_seed: bool = false
+	
+	for crop_id_val: Variant in entries:
+		var crop_data: Dictionary = entries.get(crop_id_val) as Dictionary
+		if String(crop_data.get("seed_item", "")) == seed_item_id:
+			is_valid_seed = true
+			break
+			
+	if not is_valid_seed:
 		return false
-	if String((item_value as Dictionary).get("category", "")) != "seed":
-		return false
+		
 	return purchase_item(seed_item_id, amount)
 
 
@@ -176,6 +217,7 @@ func sell_item(item_id: String, amount: int = 1) -> bool:
 	if not game_manager.add_money(total_price):
 		add_item(item_id, amount)
 		return false
+	game_manager.grant_sales_exp(total_price)
 	item_sold.emit(item_id, amount, total_price)
 	return true
 
@@ -200,8 +242,11 @@ func set_warehouse_level(value: int) -> bool:
 func can_upgrade_warehouse() -> bool:
 	var target_level: int = warehouse_level + 1
 	var upgrade_cost: int = data_manager.get_warehouse_upgrade_cost(target_level)
+	var required_player_level: int = data_manager.get_system_required_player_level("warehouse", target_level)
 	return (
 		data_manager.get_warehouse_capacity(target_level) > 0
+		and required_player_level > 0
+		and game_manager.level >= required_player_level
 		and upgrade_cost > 0
 		and game_manager.can_afford(upgrade_cost)
 	)

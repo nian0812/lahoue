@@ -1,5 +1,9 @@
 extends Node2D
 
+const asset_catalog: GDScript = preload("res://scripts/visual/lahoue_asset_catalog.gd")
+const manifest_sprite: GDScript = preload("res://scripts/visual/manifest_sprite.gd")
+
+signal arrived_at_table(customer_id: String)
 signal state_changed(customer_id: String, state: String)
 signal order_created(customer_id: String, order: Dictionary)
 signal order_failed(customer_id: String, order: Dictionary, reason: String)
@@ -43,6 +47,11 @@ var leaving_duration: float = 0.0
 var timeout_reputation_change: float = 0.0
 var timeout_impact_applied: bool = false
 var restaurant: Node = null
+var walk_path: Array[Vector2] = []
+var walk_speed: float = 200.0
+var is_walking_in: bool = false
+var is_walking_out: bool = false
+
 
 
 func _ready() -> void:
@@ -54,12 +63,50 @@ func _process(delta: float) -> void:
 		return
 	if not game_manager.gameplay_active or get_tree().paused:
 		return
+		
+	if is_walking_in or is_walking_out:
+		if walk_path.size() == 0:
+			if is_walking_in:
+				is_walking_in = false
+				arrived_at_table.emit(customer_id)
+			elif is_walking_out:
+				is_walking_out = false
+				complete_departure()
+			return
+			
+		var step = walk_speed * delta
+		while step > 0.0 and walk_path.size() > 0:
+			var target = walk_path[0]
+			var dist = position.distance_to(target)
+			if step >= dist:
+				position = target
+				walk_path.pop_front()
+				step -= dist
+				if walk_path.is_empty():
+					if is_walking_in:
+						is_walking_in = false
+						arrived_at_table.emit(customer_id)
+					elif is_walking_out:
+						is_walking_out = false
+						complete_departure()
+					break
+			else:
+				if dist > 0.001:
+					position += position.direction_to(target) * step
+				step = 0.0
+		return
+		
 	if current_state == state_waiting_food:
 		advance_patience(delta)
-	elif current_state == state_leaving:
+	elif current_state == state_leaving and not is_walking_out:
 		leaving_elapsed = minf(leaving_elapsed + delta, leaving_duration)
 		if leaving_elapsed >= leaving_duration:
-			complete_departure()
+			is_walking_out = true
+			if restaurant and table_id != "":
+				restaurant.call_deferred("release_customer_table", customer_id, table_id)
+				table_id = ""
+			var exit_route: Variant = restaurant.call("get_customer_exit_route")
+			walk_path = exit_route as Array[Vector2]
 
 
 func configure(
@@ -78,6 +125,7 @@ func configure(
 	patience_limit = float(customer_data.get("patience_seconds", 0.0))
 	leaving_duration = float(customer_data.get("leaving_duration_seconds", 0.0))
 	timeout_reputation_change = float(customer_data.get("timeout_reputation_change", 0.0))
+	_refresh_visual()
 	return patience_limit > 0.0 and leaving_duration > 0.0 and timeout_reputation_change < 0.0
 
 
@@ -155,6 +203,9 @@ func complete_departure() -> bool:
 
 
 func get_save_state() -> Dictionary:
+	var path_arr = []
+	for p in walk_path:
+		path_arr.append({"x": p.x, "y": p.y})
 	return {
 		"customer_type_id": customer_type_id,
 		"position": {"x": position.x, "y": position.y},
@@ -168,6 +219,9 @@ func get_save_state() -> Dictionary:
 		"leaving_duration": leaving_duration,
 		"timeout_reputation_change": timeout_reputation_change,
 		"timeout_impact_applied": timeout_impact_applied,
+		"is_walking_in": is_walking_in,
+		"is_walking_out": is_walking_out,
+		"walk_path": path_arr
 	}
 
 
@@ -191,6 +245,13 @@ func apply_save_state(saved_state: Dictionary, controller: Node) -> bool:
 	leaving_duration = float(saved_state.get("leaving_duration", leaving_duration))
 	timeout_reputation_change = float(saved_state.get("timeout_reputation_change", timeout_reputation_change))
 	timeout_impact_applied = bool(saved_state.get("timeout_impact_applied", false))
+	is_walking_in = bool(saved_state.get("is_walking_in", false))
+	is_walking_out = bool(saved_state.get("is_walking_out", false))
+	var path_arr = saved_state.get("walk_path", [])
+	walk_path.clear()
+	for p in path_arr:
+		walk_path.append(Vector2(float(p.get("x", 0)), float(p.get("y", 0))))
+
 	_refresh_visual()
 	return true
 
@@ -244,14 +305,38 @@ func _set_state(value: String) -> void:
 func _refresh_visual() -> void:
 	if not is_instance_valid(customer_visual):
 		return
+	var artwork_color: Color = Color.WHITE
 	match current_state:
 		state_enter:
 			customer_visual.color = Color("#5d8fc7")
 		state_seated, state_ordering:
 			customer_visual.color = Color("#d3aa4b")
+			artwork_color = Color(1.0, 0.94, 0.72, 1.0)
 		state_waiting_food:
 			customer_visual.color = Color("#df7e45")
+			artwork_color = Color(1.0, 0.82, 0.7, 1.0)
 		state_eating:
 			customer_visual.color = Color("#65a85e")
+			artwork_color = Color(0.82, 1.0, 0.78, 1.0)
 		state_leaving:
 			customer_visual.color = Color("#777777")
+			artwork_color = Color(0.62, 0.62, 0.62, 1.0)
+	var artwork_root: Node = get_node_or_null("AssetVisualRoot")
+	if artwork_root != null:
+		var asset_id: String = asset_catalog.get_bound_id("customers", customer_type_id)
+		if not asset_id.is_empty() and String(artwork_root.get("semantic_id")) != asset_id:
+			artwork_root.call("set_semantic_id", asset_id)
+		artwork_root.call("set_artwork_modulate", artwork_color)
+	var indicator: Sprite2D = get_node_or_null("StateIndicator") as Sprite2D
+	if indicator != null:
+		var indicator_id: String = ""
+		match current_state:
+			state_enter, state_seated, state_ordering: indicator_id = "new_order_bubble"
+			state_waiting_food: indicator_id = "waiting_for_waiter_indicator"
+			state_eating: indicator_id = "food_served_eating_indicator"
+			state_leaving: indicator_id = "payment_collected_indicator"
+		var indicator_texture: Texture2D = asset_catalog.get_ui_texture("customer_indicators", indicator_id)
+		indicator.visible = indicator_texture != null
+		if indicator_texture != null:
+			indicator.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+			manifest_sprite.configure_sprite(indicator, indicator_texture, Rect2(-10.0, -10.0, 20.0, 20.0))

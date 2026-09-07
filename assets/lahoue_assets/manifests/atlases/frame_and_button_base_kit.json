@@ -1,0 +1,263 @@
+{
+  "atlas_id": "frame_and_button_base_kit",
+  "image": "ui/frames/frame_and_button_base_kit.png",
+  "canvas": {
+    "width": 1536,
+    "height": 1024
+  },
+  "coordinate_system": "top_left_origin_pixels",
+  "components": [
+    {
+      "x": 18,
+      "y": 19,
+      "width": 483,
+      "height": 319,
+      "semantic_id": "ui_frame_component_01"
+    },
+    {
+      "x": 512,
+      "y": 61,
+      "width": 354,
+      "height": 235,
+      "semantic_id": "ui_frame_component_02"
+    },
+    {
+      "x": 879,
+      "y": 82,
+      "width": 250,
+      "height": 191,
+      "semantic_id": "ui_frame_component_03"
+    },
+    {
+      "x": 1134,
+      "y": 83,
+      "width": 390,
+      "height": 171,
+      "semantic_id": "ui_frame_component_04"
+    },
+    {
+      "x": 13,
+      "y": 352,
+      "width": 322,
+      "height": 174,
+      "semantic_id": "ui_frame_component_05"
+    },
+    {
+      "x": 353,
+      "y": 361,
+      "width": 118,
+      "height": 126,
+      "semantic_id": "ui_frame_component_06"
+    },
+    {
+      "x": 482,
+      "y": 361,
+      "width": 118,
+      "height": 128,
+      "semantic_id": "ui_frame_component_07"
+    },
+    {
+      "x": 609,
+      "y": 361,
+      "width": 140,
+      "height": 127,
+      "semantic_id": "ui_frame_component_08"
+    },
+    {
+      "x": 764,
+      "y": 340,
+      "width": 189,
+      "height": 75,
+      "semantic_id": "ui_frame_component_09"
+    },
+    {
+      "x": 768,
+      "y": 443,
+      "width": 160,
+      "height": 80,
+      "semantic_id": "ui_frame_component_10"
+    },
+    {
+      "x": 935,
+      "y": 443,
+      "width": 165,
+      "height": 80,
+      "semantic_id": "ui_frame_component_11"
+    },
+    {
+      "x": 960,
+      "y": 339,
+      "width": 379,
+      "height": 75,
+      "semantic_id": "ui_frame_component_12"
+    },
+    {
+      "x": 1125,
+      "y": 425,
+      "width": 390,
+      "height": 92,
+      "semantic_id": "ui_frame_component_13"
+    },
+    {
+      "x": 1346,
+      "y": 338,
+      "width": 174,
+      "height": 73,
+      "semantic_id": "ui_frame_component_14"
+    },
+    {
+      "x": 17,
+      "y": 628,
+      "width": 729,
+      "height": 62,
+      "semantic_id": "ui_frame_component_15"
+    },
+    {
+      "x": 27,
+      "y": 549,
+      "width": 338,
+      "height": 45,
+      "semantic_id": "ui_frame_component_16"
+    },
+    {
+      "x": 389,
+      "y": 549,
+      "width": 363,
+      "height": 45,
+      "semantic_id": "ui_frame_component_17"
+    },
+    {
+      "x": 776,
+      "y": 537,
+      "width": 346,
+      "height": 70,
+      "semantic_id": "ui_frame_component_18"
+    },
+    {
+      "x": 1006,
+      "y": 632,
+      "width": 69,
+      "height": 72,
+      "semantic_id": "ui_frame_component_19"
+    },
+    {
+      "x": 1112,
+      "y": 628,
+      "width": 76,
+      "height": 77,
+      "semantic_id": "ui_frame_component_20"
+    },
+    {
+      "x": 1151,
+      "y": 536,
+      "width": 358,
+      "height": 73,
+      "semantic_id": "ui_frame_component_21"
+    },
+    {
+      "x": 836,
+      "y": 622,
+      "width": 27,
+      "height": 116,
+      "semantic_id": "ui_frame_component_22"
+    },
+    {
+      "x": 902,
+      "y": 621,
+      "width": 37,
+      "height": 118,
+      "semantic_id": "ui_frame_component_23"
+    },
+    {
+      "x": 1246,
+      "y": 617,
+      "width": 108,
+      "height": 103,
+      "semantic_id": "ui_frame_component_24"
+    },
+    {
+      "x": 1400,
+      "y": 618,
+      "width": 108,
+      "height": 102,
+      "semantic_id": "ui_frame_component_25"
+    },
+    {
+      "x": 17,
+      "y": 727,
+      "width": 441,
+      "height": 261,
+      "semantic_id": "ui_frame_component_26"
+    },
+    {
+      "x": 472,
+      "y": 755,
+      "width": 487,
+      "height": 80,
+      "semantic_id": "ui_frame_component_27"
+    },
+    {
+      "x": 977,
+      "y": 736,
+      "width": 122,
+      "height": 119,
+      "semantic_id": "ui_frame_component_28"
+    },
+    {
+      "x": 1111,
+      "y": 737,
+      "width": 116,
+      "height": 114,
+      "semantic_id": "ui_frame_component_29"
+    },
+    {
+      "x": 1247,
+      "y": 736,
+      "width": 123,
+      "height": 118,
+      "semantic_id": "ui_frame_component_30"
+    },
+    {
+      "x": 1389,
+      "y": 736,
+      "width": 124,
+      "height": 119,
+      "semantic_id": "ui_frame_component_31"
+    },
+    {
+      "x": 472,
+      "y": 872,
+      "width": 488,
+      "height": 100,
+      "semantic_id": "ui_frame_component_32"
+    },
+    {
+      "x": 981,
+      "y": 862,
+      "width": 121,
+      "height": 121,
+      "semantic_id": "ui_frame_component_33"
+    },
+    {
+      "x": 1116,
+      "y": 863,
+      "width": 118,
+      "height": 117,
+      "semantic_id": "ui_frame_component_34"
+    },
+    {
+      "x": 1248,
+      "y": 862,
+      "width": 120,
+      "height": 118,
+      "semantic_id": "ui_frame_component_35"
+    },
+    {
+      "x": 1387,
+      "y": 862,
+      "width": 120,
+      "height": 120,
+      "semantic_id": "ui_frame_component_36"
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "atlas_id": "natural_props_atlas",
+  "image": "world/props/natural_props_atlas.png",
+  "canvas": {
+    "width": 1536,
+    "height": 1024
+  },
+  "coordinate_system": "top_left_origin_pixels",
+  "components": [
+    {
+      "x": 10,
+      "y": 0,
+      "width": 447,
+      "height": 517,
+      "semantic_id": "large_mature_tree"
+    },
+    {
+      "x": 464,
+      "y": 72,
+      "width": 345,
+      "height": 431,
+      "semantic_id": "medium_mature_tree"
+    },
+    {
+      "x": 807,
+      "y": 221,
+      "width": 306,
+      "height": 282,
+      "semantic_id": "large_round_bush"
+    },
+    {
+      "x": 1124,
+      "y": 209,
+      "width": 412,
+      "height": 290,
+      "semantic_id": "hedge_cluster"
+    },
+    {
+      "x": 11,
+      "y": 525,
+      "width": 327,
+      "height": 248,
+      "semantic_id": "flowering_bush"
+    },
+    {
+      "x": 360,
+      "y": 501,
+      "width": 283,
+      "height": 264,
+      "semantic_id": "tall_grass_clump"
+    },
+    {
+      "x": 668,
+      "y": 547,
+      "width": 223,
+      "height": 201,
+      "semantic_id": "wildflower_grass_clump"
+    },
+    {
+      "x": 932,
+      "y": 580,
+      "width": 243,
+      "height": 176,
+      "semantic_id": "single_rock"
+    },
+    {
+      "x": 1206,
+      "y": 540,
+      "width": 328,
+      "height": 229,
+      "semantic_id": "rock_cluster"
+    },
+    {
+      "x": 69,
+      "y": 779,
+      "width": 380,
+      "height": 241,
+      "semantic_id": "flower_planter_box"
+    },
+    {
+      "x": 528,
+      "y": 790,
+      "width": 332,
+      "height": 206,
+      "semantic_id": "tree_stump"
+    },
+    {
+      "x": 899,
+      "y": 777,
+      "width": 571,
+      "height": 223,
+      "semantic_id": "fallen_log"
+    }
+  ]
+}

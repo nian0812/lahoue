@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/aquaculture/aquaculture_container.gd" id="1_aquaculture"]
 [ext_resource type="Shader" path="res://scenes/aquaculture/water.gdshader" id="2_shader"]
+[ext_resource type="Script" path="res://scripts/visual/manifest_sprite.gd" id="3_visual"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_aquaculture"]
 size = Vector2(72, 72)
@@ -15,20 +16,35 @@ collision_mask = 0
 monitoring = false
 script = ExtResource("1_aquaculture")
 
-[node name="water_visual" type="Polygon2D" parent="."]
+[node name="VisualRoot" type="Node2D" parent="."]
+script = ExtResource("3_visual")
+semantic_id = "aquaculture_pond"
+target_rect = Rect2(-36, -36, 72, 72)
+placeholder_paths = PackedStringArray("water_visual", "rim_visual")
+artwork_z_index = -1
+
+[node name="water_visual" type="Polygon2D" parent="VisualRoot"]
 material = SubResource("ShaderMaterial_water")
 polygon = PackedVector2Array(-36, -36, 36, -36, 36, 36, -36, 36)
 color = Color(0.223529, 0.486275, 0.65098, 1)
 
-[node name="rim_visual" type="Line2D" parent="."]
+[node name="rim_visual" type="Line2D" parent="VisualRoot"]
 points = PackedVector2Array(-36, -36, 36, -36, 36, 36, -36, 36, -36, -36)
 width = 5.0
 default_color = Color(0.396078, 0.301961, 0.196078, 1)
 
-[node name="product_visual" type="Polygon2D" parent="."]
+[node name="product_visual" type="Polygon2D" parent="VisualRoot"]
 visible = false
+z_index = 2
 polygon = PackedVector2Array(-17, 0, -7, -9, 10, -9, 20, 0, 10, 9, -7, 9)
 color = Color(0.941176, 0.827451, 0.360784, 1)
+
+[node name="SpeciesArtworkRoot" type="Node2D" parent="VisualRoot"]
+script = ExtResource("3_visual")
+manifest_id = "aquaculture"
+section_id = "aquaculture"
+target_rect = Rect2(-22, -18, 44, 38)
+artwork_z_index = 1
 
 [node name="collision_shape" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_aquaculture")

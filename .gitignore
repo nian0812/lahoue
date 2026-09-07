@@ -1,1 +1,27 @@
+# Godot generated cache
 .godot/
+
+# Temporary test / Codex data
+.tmp/
+.test_user/
+.test_userdata/
+.testdata/
+scratch/
+
+# Temporary helper scripts
+patch.py
+patch_gd.py
+script_*.py
+
+# Packaged archive - extracted assets are committed instead
+lahoue_assets.zip
+
+# Logs / temp
+*.log
+*.tmp
+*.bak
+
+# OS / editor
+Thumbs.db
+.DS_Store
+.vscode/

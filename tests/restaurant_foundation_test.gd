@@ -38,7 +38,7 @@ func _run_tests() -> void:
 
 	var table_capacity: int = data_manager.get_restaurant_table_capacity(1)
 	var tables_by_id: Dictionary = restaurant.get("tables_by_id") as Dictionary
-	_expect(table_capacity == 3, "restaurant level-1 table capacity is wrong")
+	_expect(table_capacity == 2, "restaurant level-1 table capacity is wrong")
 	_expect(tables_by_id.size() == table_capacity, "restaurant did not create the configured tables")
 	for table_id_value: Variant in tables_by_id:
 		var table: Node = tables_by_id[table_id_value] as Node
@@ -60,6 +60,9 @@ func _run_tests() -> void:
 		exp_to_unlock += data_manager.get_level_exp(level_value)
 	game_manager.add_exp(exp_to_unlock)
 	_expect(game_manager.level == unlock_level, "level progression did not reach restaurant unlock")
+	_expect(not bool(restaurant.call("is_available")), "level permission auto-owned the Restaurant")
+	game_manager.money = data_manager.get_progression_upgrade_cost("restaurant", 1)
+	_expect(bool(world.call("upgrade_system", "restaurant")), "Restaurant Lv1 purchase failed")
 	_expect(bool(restaurant.call("is_available")), "restaurant did not become available at unlock level")
 	_expect(String(restaurant.get("current_state")) == "available", "restaurant state did not transition to available")
 	_expect(int(restaurant.get("restaurant_level")) == 1, "restaurant did not initialize at level 1")
@@ -131,6 +134,9 @@ func _run_tests() -> void:
 	var legacy_state: Dictionary = save_manager.call("_build_save_state") as Dictionary
 	legacy_state.erase("restaurant_tables")
 	legacy_state["restaurant_level"] = 0
+	legacy_state.erase("building_ownership")
+	legacy_state.erase("purchased_farm_plots")
+	legacy_state.erase("pond_levels")
 	var legacy_validation: Dictionary = save_manager.call("_validate_save_state", legacy_state) as Dictionary
 	_expect(bool(legacy_validation.get("ok", false)), "legacy v1 restaurant save is not compatible")
 	if bool(legacy_validation.get("ok", false)):

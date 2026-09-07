@@ -1,5 +1,8 @@
 extends Area2D
 
+const asset_catalog: GDScript = preload("res://scripts/visual/lahoue_asset_catalog.gd")
+const manifest_sprite: GDScript = preload("res://scripts/visual/manifest_sprite.gd")
+
 signal state_changed(tile_id: String, state: int)
 signal crop_planted(tile_id: String, crop_id: String)
 signal crop_ready(tile_id: String, crop_id: String)
@@ -13,26 +16,39 @@ enum farm_state {
 
 @export var tile_id: String = ""
 
-@onready var soil: Polygon2D = $soil
-@onready var crop_visual: Polygon2D = $crop
+@onready var soil: Polygon2D = $VisualRoot/soil
+@onready var crop_visual: Polygon2D = $VisualRoot/crop
+@onready var crop_artwork: Sprite2D = $VisualRoot/CropArtwork
 
 var current_state: int = farm_state.EMPTY
 var crop_id: String = ""
 var growth_elapsed: float = 0.0
+var is_purchased: bool = true
+var visual_stage: int = 0
 
 
 func _ready() -> void:
 	_update_visual()
+	if not game_manager.day_finishing.is_connected(_on_day_finishing):
+		game_manager.day_finishing.connect(_on_day_finishing)
+
+
+func _on_day_finishing(_day: int) -> void:
+	var remaining_time: float = game_manager.day_duration - game_manager.day_timer
+	if remaining_time > 0.0:
+		advance_growth(remaining_time)
 
 
 func _process(delta: float) -> void:
-	if not game_manager.gameplay_active:
+	if not is_purchased or not game_manager.gameplay_active:
 		return
 
 	advance_growth(delta)
 
 
 func interact(player: Node) -> bool:
+	if not is_purchased:
+		return false
 	if current_state == farm_state.READY:
 		return harvest()
 
@@ -47,7 +63,7 @@ func interact(player: Node) -> bool:
 
 
 func can_plant(seed_item_id: String) -> bool:
-	if current_state != farm_state.EMPTY or seed_item_id.is_empty():
+	if not is_purchased or current_state != farm_state.EMPTY or seed_item_id.is_empty():
 		return false
 
 	var candidate_crop_id: String = data_manager.get_crop_id_for_seed(seed_item_id)
@@ -90,7 +106,7 @@ func plant_seed(seed_item_id: String) -> bool:
 
 
 func advance_growth(delta: float) -> void:
-	if current_state != farm_state.PLANTED or delta <= 0.0:
+	if not is_purchased or current_state != farm_state.PLANTED or delta <= 0.0:
 		return
 
 	var crop_data_value: Variant = data_manager.get_entry("crops", crop_id)
@@ -105,10 +121,12 @@ func advance_growth(delta: float) -> void:
 	if growth_elapsed >= growth_time:
 		_set_state(farm_state.READY)
 		crop_ready.emit(tile_id, crop_id)
+	else:
+		_refresh_crop_artwork()
 
 
 func harvest() -> bool:
-	if current_state != farm_state.READY:
+	if not is_purchased or current_state != farm_state.READY:
 		return false
 
 	var crop_data_value: Variant = data_manager.get_entry("crops", crop_id)
@@ -137,7 +155,7 @@ func harvest() -> bool:
 
 
 func apply_saved_crop(saved_crop_id: String, saved_growth: float) -> bool:
-	if saved_crop_id.is_empty() or not is_finite(saved_growth) or saved_growth < 0.0:
+	if not is_purchased or saved_crop_id.is_empty() or not is_finite(saved_growth) or saved_growth < 0.0:
 		return false
 
 	var crop_data_value: Variant = data_manager.get_entry("crops", saved_crop_id)
@@ -171,7 +189,15 @@ func is_planted() -> bool:
 
 
 func is_ready() -> bool:
-	return current_state == farm_state.READY
+	return is_purchased and current_state == farm_state.READY
+
+
+func set_purchased(value: bool) -> void:
+	is_purchased = value
+	visible = value
+	set_process(value)
+	if has_node("collision_shape"):
+		$collision_shape.set_deferred("disabled", not value)
 
 
 func _set_state(value: int) -> void:
@@ -201,3 +227,54 @@ func _update_visual() -> void:
 			crop_visual.visible = true
 			tw = create_tween()
 			tw.tween_property(crop_visual, "scale", Vector2.ONE, 0.4).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	_refresh_crop_artwork(true)
+
+
+func _refresh_crop_artwork(force: bool = false) -> void:
+	if not is_instance_valid(crop_artwork):
+		return
+	var next_stage: int = _get_visual_stage()
+	if next_stage <= 0:
+		visual_stage = 0
+		crop_artwork.visible = false
+		return
+	if not force and visual_stage == next_stage and crop_artwork.texture != null:
+		return
+	var canonical_crop_id: String = asset_catalog.get_bound_id("crops", crop_id)
+	var texture: Texture2D = asset_catalog.get_variant_texture(
+		"crops",
+		"crops",
+		canonical_crop_id,
+		"stage_%d" % next_stage
+	)
+	if texture == null:
+		crop_artwork.visible = false
+		return
+	visual_stage = next_stage
+	crop_artwork.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+	manifest_sprite.configure_sprite(crop_artwork, texture, _get_crop_visual_rect())
+	crop_artwork.visible = true
+	crop_visual.visible = false
+
+
+func _get_crop_visual_rect() -> Rect2:
+	if crop_id in ["coconut", "banana"]:
+		return Rect2(-23.0, -42.0, 46.0, 68.0)
+	if crop_id in [
+		"corn", "cucumber", "tomato", "chili", "soybean", "lemongrass",
+		"tea", "sugarcane", "coffee",
+	]:
+		return Rect2(-24.0, -31.0, 48.0, 56.0)
+	return Rect2(-24.0, -20.0, 48.0, 44.0)
+
+
+func _get_visual_stage() -> int:
+	if not is_purchased or crop_id.is_empty() or current_state == farm_state.EMPTY:
+		return 0
+	if current_state == farm_state.READY:
+		return 4
+	var growth_time: float = data_manager.get_crop_growth_time_seconds(crop_id)
+	if growth_time <= 0.0:
+		return 1
+	var progress: float = clampf(growth_elapsed / growth_time, 0.0, 0.9999)
+	return mini(int(floor(progress * 4.0)) + 1, 3)

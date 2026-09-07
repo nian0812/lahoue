@@ -1,19 +1,11 @@
 {
   "schema_version": 1,
-  "settings": {
-    "default_staff_type": "waiter"
-  },
+  "settings": {"default_staff_type": "waiter"},
   "entries": {
-    "waiter": {
-      "unlock_level": 4,
-      "movement_speed": 180,
-      "cleaning_time_seconds": 2,
-      "allowed_jobs": [
-        "cook",
-        "serve",
-        "payment",
-        "clean"
-      ]
-    }
+    "waiter": {"unlock_level": 5, "movement_speed": 180, "cleaning_time_seconds": 2, "max_count": 3, "allowed_jobs": ["serve", "payment", "clean"]},
+    "chef": {"unlock_level": 5, "movement_speed": 180, "cleaning_time_seconds": 2, "max_count": 2, "allowed_jobs": ["cook"]},
+    "farm_worker": {"unlock_level": 5, "movement_speed": 180, "cleaning_time_seconds": 2, "max_count": 2, "allowed_jobs": ["harvest"]},
+    "animal_worker": {"unlock_level": 5, "movement_speed": 180, "cleaning_time_seconds": 2, "max_count": 2, "allowed_jobs": ["collect_animal"]},
+    "aquaculture_worker": {"unlock_level": 10, "movement_speed": 180, "cleaning_time_seconds": 2, "max_count": 1, "allowed_jobs": ["collect_aquaculture"]}
   }
 }

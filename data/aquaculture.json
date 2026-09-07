@@ -1,40 +1,10 @@
 {
   "schema_version": 1,
   "entries": {
-    "fish": {
-      "required_level": 3,
-      "growth_time": 45.0,
-      "yield": 2,
-      "exp": 10,
-      "item_id": "fish"
-    },
-    "shrimp": {
-      "required_level": 3,
-      "growth_time": 60.0,
-      "yield": 2,
-      "exp": 12,
-      "item_id": "shrimp"
-    },
-    "crab": {
-      "required_level": 3,
-      "growth_time": 75.0,
-      "yield": 2,
-      "exp": 15,
-      "item_id": "crab"
-    },
-    "squid": {
-      "required_level": 3,
-      "growth_time": 90.0,
-      "yield": 2,
-      "exp": 18,
-      "item_id": "squid"
-    },
-    "octopus": {
-      "required_level": 3,
-      "growth_time": 120.0,
-      "yield": 1,
-      "exp": 20,
-      "item_id": "octopus"
-    }
+    "fish": {"required_level": 10, "growth_time": 60.0, "yield": 2, "exp": 18, "item_id": "fish"},
+    "shrimp": {"required_level": 15, "growth_time": 75.0, "yield": 2, "exp": 24, "item_id": "shrimp"},
+    "crab": {"required_level": 20, "growth_time": 90.0, "yield": 2, "exp": 30, "item_id": "crab"},
+    "squid": {"required_level": 25, "growth_time": 105.0, "yield": 2, "exp": 34, "item_id": "squid"},
+    "octopus": {"required_level": 30, "growth_time": 120.0, "yield": 1, "exp": 40, "item_id": "octopus"}
   }
 }

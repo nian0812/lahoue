@@ -1,15 +1,150 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://scripts/restaurant/restaurant.gd" id="1_restaurant"]
 [ext_resource type="PackedScene" path="res://scenes/restaurant/restaurant_table.tscn" id="2_table"]
+[ext_resource type="Script" path="res://scripts/world/marker_route.gd" id="3_route"]
+[ext_resource type="Script" path="res://scripts/visual/manifest_sprite.gd" id="4_visual"]
+[ext_resource type="PackedScene" path="res://scenes/world/visual/zone_ground_visual.tscn" id="5_ground"]
+[ext_resource type="PackedScene" path="res://scenes/world/visual/route_surface_visual.tscn" id="6_route_visual"]
+[ext_resource type="PackedScene" path="res://scenes/world/visual/contact_shadow.tscn" id="7_shadow"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_restaurant_entrance"]
 radius = 32.0
 
 [node name="restaurant" type="Node2D"]
 script = ExtResource("1_restaurant")
+zone_id = "restaurant"
+local_bounds = Rect2(-280, -150, 560, 350)
 
-[node name="building_visual" type="Polygon2D" parent="."]
+[node name="Ground" type="Node2D" parent="."]
+[node name="GroundLayers" type="Node2D" parent="Ground"]
+[node name="GroundVisual" parent="Ground/GroundLayers" instance=ExtResource("5_ground")]
+profile = 5
+area_rect = Rect2(-275, -145, 550, 390)
+detail_seed = 79
+[node name="Roads" type="Node2D" parent="."]
+[node name="CustomerPathSurface" parent="Roads" instance=ExtResource("6_route_visual")]
+route_path = NodePath("../../Paths/CustomerEntryRoute")
+surface_width = 36.0
+edge_color = Color(0.305882, 0.329412, 0.270588, 0.8)
+surface_color = Color(0.513726, 0.466667, 0.372549, 1)
+[node name="Props" type="Node2D" parent="."]
+[node name="Buildings" type="Node2D" parent="."]
+[node name="Interactables" type="Node2D" parent="."]
+[node name="NPCMarkers" type="Node2D" parent="."]
+
+[node name="WaiterHome01" type="Marker2D" parent="NPCMarkers"]
+position = Vector2(-145, -70)
+
+[node name="WaiterHome02" type="Marker2D" parent="NPCMarkers"]
+position = Vector2(-93, -70)
+
+[node name="WaiterHome03" type="Marker2D" parent="NPCMarkers"]
+position = Vector2(-41, -70)
+
+[node name="ChefHome01" type="Marker2D" parent="NPCMarkers"]
+position = Vector2(141, -94)
+
+[node name="ChefHome02" type="Marker2D" parent="NPCMarkers"]
+position = Vector2(99, -94)
+
+[node name="Paths" type="Node2D" parent="."]
+
+[node name="CustomerEntryRoute" type="Path2D" parent="Paths"]
+script = ExtResource("3_route")
+
+[node name="Outside" type="Marker2D" parent="Paths/CustomerEntryRoute"]
+position = Vector2(280, 170)
+
+[node name="Walkway" type="Marker2D" parent="Paths/CustomerEntryRoute"]
+position = Vector2(-180, 170)
+
+[node name="Entrance" type="Marker2D" parent="Paths/CustomerEntryRoute"]
+position = Vector2(-180, 0)
+
+[node name="ExpansionAnchors" type="Node2D" parent="."]
+
+[node name="North" type="Marker2D" parent="ExpansionAnchors"]
+position = Vector2(0, -150)
+
+[node name="East" type="Marker2D" parent="ExpansionAnchors"]
+position = Vector2(280, 25)
+
+[node name="South" type="Marker2D" parent="ExpansionAnchors"]
+position = Vector2(0, 200)
+
+[node name="West" type="Marker2D" parent="ExpansionAnchors"]
+position = Vector2(-280, 25)
+
+[node name="TableSlots" type="Node2D" parent="ExpansionAnchors"]
+
+[node name="TableSlot03" type="Marker2D" parent="ExpansionAnchors/TableSlots"]
+position = Vector2(-130, 85)
+
+[node name="TableSlot04" type="Marker2D" parent="ExpansionAnchors/TableSlots"]
+position = Vector2(-65, 85)
+
+[node name="TableSlot05" type="Marker2D" parent="ExpansionAnchors/TableSlots"]
+position = Vector2(0, 85)
+
+[node name="TableSlot06" type="Marker2D" parent="ExpansionAnchors/TableSlots"]
+position = Vector2(65, 85)
+
+[node name="TableSlot07" type="Marker2D" parent="ExpansionAnchors/TableSlots"]
+position = Vector2(130, 85)
+
+[node name="TableSlot08" type="Marker2D" parent="ExpansionAnchors/TableSlots"]
+position = Vector2(-130, 135)
+
+[node name="TableSlot09" type="Marker2D" parent="ExpansionAnchors/TableSlots"]
+position = Vector2(-65, 135)
+
+[node name="TableSlot10" type="Marker2D" parent="ExpansionAnchors/TableSlots"]
+position = Vector2(0, 135)
+
+[node name="TableSlot11" type="Marker2D" parent="ExpansionAnchors/TableSlots"]
+position = Vector2(65, 135)
+
+[node name="TableSlot12" type="Marker2D" parent="ExpansionAnchors/TableSlots"]
+position = Vector2(130, 135)
+
+[node name="TableSlot13" type="Marker2D" parent="ExpansionAnchors/TableSlots"]
+position = Vector2(-130, 185)
+
+[node name="TableSlot14" type="Marker2D" parent="ExpansionAnchors/TableSlots"]
+position = Vector2(-65, 185)
+
+[node name="TableSlot15" type="Marker2D" parent="ExpansionAnchors/TableSlots"]
+position = Vector2(0, 185)
+
+[node name="TableSlot16" type="Marker2D" parent="ExpansionAnchors/TableSlots"]
+position = Vector2(65, 185)
+
+[node name="TableSlot17" type="Marker2D" parent="ExpansionAnchors/TableSlots"]
+position = Vector2(130, 185)
+
+[node name="TableSlot18" type="Marker2D" parent="ExpansionAnchors/TableSlots"]
+position = Vector2(-130, 235)
+
+[node name="TableSlot19" type="Marker2D" parent="ExpansionAnchors/TableSlots"]
+position = Vector2(-65, 235)
+
+[node name="TableSlot20" type="Marker2D" parent="ExpansionAnchors/TableSlots"]
+position = Vector2(0, 235)
+
+[node name="VisualRoot" type="Node2D" parent="."]
+script = ExtResource("4_visual")
+semantic_id = "restaurant"
+target_rect = Rect2(-180, -120, 360, 240)
+placeholder_paths = PackedStringArray("building_visual")
+artwork_z_index = -1
+
+[node name="ContactShadow" parent="." instance=ExtResource("7_shadow")]
+shadow_size = Vector2(330, 62)
+shadow_offset = Vector2(0, 105)
+opacity = 0.16
+
+[node name="building_visual" type="Polygon2D" parent="VisualRoot"]
 z_index = -1
 polygon = PackedVector2Array(-180, -120, 180, -120, 180, 120, -180, 120)
 color = Color(0.333333, 0.313726, 0.298039, 1)
@@ -55,7 +190,3 @@ table_id = "table_01"
 [node name="table_02" parent="tables" instance=ExtResource("2_table")]
 position = Vector2(0, 35)
 table_id = "table_02"
-
-[node name="table_03" parent="tables" instance=ExtResource("2_table")]
-position = Vector2(95, 35)
-table_id = "table_03"

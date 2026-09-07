@@ -1,0 +1,39 @@
+{
+  "atlas_id": "outdoor_dining_set_atlas",
+  "image": "world/props/outdoor_dining_set_atlas.png",
+  "canvas": {
+    "width": 5135,
+    "height": 1282
+  },
+  "coordinate_system": "top_left_origin_pixels",
+  "components": [
+    {
+      "semantic_id": "outdoor_dining_set_square_table_umbrella",
+      "x": 32,
+      "y": 46,
+      "width": 1244,
+      "height": 1189
+    },
+    {
+      "semantic_id": "outdoor_dining_set_round_table_umbrella",
+      "x": 1308,
+      "y": 32,
+      "width": 1236,
+      "height": 1218
+    },
+    {
+      "semantic_id": "outdoor_dining_set_pergola_dining_module",
+      "x": 2576,
+      "y": 33,
+      "width": 1254,
+      "height": 1215
+    },
+    {
+      "semantic_id": "outdoor_dining_set_cafe_table_cantilever_umbrella",
+      "x": 3862,
+      "y": 46,
+      "width": 1241,
+      "height": 1190
+    }
+  ]
+}

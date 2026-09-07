@@ -1,0 +1,74 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/zone_root.gd" id="1_zone"]
+[ext_resource type="Script" path="res://scripts/visual/manifest_sprite.gd" id="2_visual"]
+[ext_resource type="PackedScene" path="res://scenes/world/visual/zone_ground_visual.tscn" id="3_ground"]
+[ext_resource type="PackedScene" path="res://scenes/world/visual/contact_shadow.tscn" id="4_shadow"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_resort"]
+radius = 52.0
+
+[node name="ZoneRoot" type="Node2D"]
+script = ExtResource("1_zone")
+zone_id = "resort"
+local_bounds = Rect2(-45, -60, 90, 60)
+interaction_id = "resort"
+metadata/pivot_convention = "ground_contact"
+
+[node name="Ground" type="Node2D" parent="."]
+[node name="GroundLayers" type="Node2D" parent="Ground"]
+[node name="GroundVisual" parent="Ground/GroundLayers" instance=ExtResource("3_ground")]
+profile = 7
+area_rect = Rect2(-62, -78, 124, 96)
+detail_seed = 97
+[node name="Roads" type="Node2D" parent="."]
+[node name="Props" type="Node2D" parent="."]
+[node name="Buildings" type="Node2D" parent="."]
+[node name="Interactables" type="Node2D" parent="."]
+[node name="NPCMarkers" type="Node2D" parent="."]
+[node name="Paths" type="Node2D" parent="."]
+[node name="ExpansionAnchors" type="Node2D" parent="."]
+
+[node name="North" type="Marker2D" parent="ExpansionAnchors"]
+position = Vector2(0, -60)
+
+[node name="East" type="Marker2D" parent="ExpansionAnchors"]
+position = Vector2(45, -30)
+
+[node name="South" type="Marker2D" parent="ExpansionAnchors"]
+
+[node name="West" type="Marker2D" parent="ExpansionAnchors"]
+position = Vector2(-45, -30)
+
+[node name="VisualRoot" type="Node2D" parent="."]
+script = ExtResource("2_visual")
+semantic_id = "resort"
+target_rect = Rect2(-45, -60, 90, 60)
+placeholder_paths = PackedStringArray("body")
+
+[node name="ContactShadow" parent="." instance=ExtResource("4_shadow")]
+shadow_size = Vector2(82, 19)
+shadow_offset = Vector2(0, -2)
+opacity = 0.15
+
+[node name="body" type="Polygon2D" parent="VisualRoot"]
+polygon = PackedVector2Array(-45, -60, 45, -60, 45, 0, -45, 0)
+color = Color(0.74, 0.58, 0.32, 1)
+
+[node name="label" type="Label" parent="VisualRoot"]
+offset_left = -45.0
+offset_top = -82.0
+offset_right = 45.0
+offset_bottom = -62.0
+text = "Resort"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 11
+
+[node name="interaction_area" type="Area2D" parent="."]
+position = Vector2(0, -30)
+collision_layer = 4
+collision_mask = 0
+monitoring = false
+
+[node name="collision_shape" type="CollisionShape2D" parent="interaction_area"]
+shape = SubResource("CircleShape2D_resort")

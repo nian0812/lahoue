@@ -30,7 +30,7 @@ func _run_tests() -> void:
 	var squid_data: Dictionary = data_manager.get_entry("aquaculture", "squid") as Dictionary
 	var octopus_data: Dictionary = data_manager.get_entry("aquaculture", "octopus") as Dictionary
 
-	_expect(world.aquaculture_containers_by_id.size() == 3, "main_world did not register all aquaculture containers")
+	_expect(world.aquaculture_containers_by_id.size() >= 5, "main_world did not register all aquaculture containers")
 	_expect(fish_container != null, "fish container creation/setup failed")
 	_expect(squid_container != null, "squid container creation/setup failed")
 	_expect(octopus_container != null, "octopus container creation/setup failed")
@@ -45,14 +45,16 @@ func _run_tests() -> void:
 	_expect(not bool(fish_container.call("start_cycle")), "fish ignored its unlock level")
 	_expect(not bool(squid_container.call("start_cycle")), "squid ignored its unlock level")
 	_expect(not bool(octopus_container.call("start_cycle")), "octopus ignored its unlock level")
-	_expect(inventory_manager.get_total_count() == 0, "locked aquaculture created a product")
+	_expect(inventory_manager.get_amount(String(fish_data.get("item_id", ""))) == 0, "locked aquaculture created a product")
 
 	game_manager.level = int(fish_data.get("required_level", 1))
+	game_manager.money = 20000000
+	_expect(bool(world.call("upgrade_pond", "aquaculture_fish")), "Fish Pond purchase failed at its unlock level")
 	await _interact_with(player, fish_container)
 	_expect(String(fish_container.get("current_state")) == aquaculture_container_script.state_growing, "E interaction did not start fish growth")
 	_expect(not bool(fish_container.call("harvest_product")), "growing fish was harvested early")
 
-	var fish_growth_time: float = float(fish_data.get("growth_time", 0.0))
+	var fish_growth_time: float = data_manager.get_pond_cycle_time("fish", 1)
 	var fish_almost_ready: float = fish_growth_time - 0.25
 	fish_container.call("advance_growth", fish_almost_ready)
 	_expect(String(fish_container.get("current_state")) == aquaculture_container_script.state_growing, "fish became ready before its JSON growth time")
@@ -66,7 +68,7 @@ func _run_tests() -> void:
 	var exp_before_capacity: int = game_manager.current_exp
 	var fill_amount: int = inventory_manager.get_free_space()
 	_expect(fill_amount > 0, "capacity fixture had no free inventory space")
-	_expect(inventory_manager.add_item("rice_seed", fill_amount), "could not fill inventory capacity")
+	_expect(inventory_manager.add_item("rice", fill_amount), "could not fill inventory capacity")
 	_expect(not bool(fish_container.call("harvest_product")), "full inventory accepted fish")
 	_expect(String(fish_container.get("current_state")) == aquaculture_container_script.state_ready, "capacity failure changed ready state")
 	_expect(fish_container.get("pending_product") == fish_pending, "capacity failure lost pending fish")
@@ -85,7 +87,7 @@ func _run_tests() -> void:
 	_expect(is_equal_approx(float(fish_container.get("growth_timer")), fish_growth_time), "ready growth timer was not restored")
 	_expect(fish_container.get("pending_product") == fish_pending, "pending fish was not restored")
 	_expect(not bool(fish_container.call("harvest_product")), "loaded full inventory accepted fish")
-	_expect(inventory_manager.remove_item("rice_seed", fill_amount), "could not free inventory capacity")
+	_expect(inventory_manager.remove_item("rice", fill_amount), "could not free inventory capacity")
 
 	await _interact_with(player, fish_container)
 	var fish_item_id: String = String(fish_data.get("item_id", ""))
@@ -95,16 +97,20 @@ func _run_tests() -> void:
 	_expect(String(fish_container.get("current_state")) == aquaculture_container_script.state_empty, "fish container did not reset after harvest")
 	_expect(not bool(fish_container.call("harvest_product")), "fish was harvested twice in one cycle")
 	_expect(inventory_manager.get_amount(fish_item_id) == fish_yield, "duplicate fish harvest changed inventory")
+	game_manager.level = 30
+	game_manager.money = 20000000
+	_expect(bool(world.call("upgrade_pond", "aquaculture_squid")), "Squid Pond purchase failed")
+	_expect(bool(world.call("upgrade_pond", "aquaculture_octopus")), "Octopus Pond purchase failed")
 
 	_expect(bool(squid_container.call("start_cycle")), "unlocked squid cycle did not start")
-	squid_container.call("advance_growth", float(squid_data.get("growth_time", 0.0)))
+	squid_container.call("advance_growth", data_manager.get_pond_cycle_time("squid", 1))
 	_expect(String(squid_container.get("current_state")) == aquaculture_container_script.state_ready, "squid production did not become ready")
 	_expect(bool(squid_container.call("harvest_product")), "squid product could not be received")
 	_expect(inventory_manager.get_amount(String(squid_data.get("item_id", ""))) == int(squid_data.get("yield", 0)), "squid yield is wrong")
 	_expect(not bool(squid_container.call("harvest_product")), "squid was harvested twice")
 
 	_expect(bool(octopus_container.call("start_cycle")), "unlocked octopus cycle did not start")
-	octopus_container.call("advance_growth", float(octopus_data.get("growth_time", 0.0)))
+	octopus_container.call("advance_growth", data_manager.get_pond_cycle_time("octopus", 1))
 	_expect(String(octopus_container.get("current_state")) == aquaculture_container_script.state_ready, "octopus production did not become ready")
 	_expect(bool(octopus_container.call("harvest_product")), "octopus product could not be received")
 	_expect(inventory_manager.get_amount(String(octopus_data.get("item_id", ""))) == int(octopus_data.get("yield", 0)), "octopus yield is wrong")

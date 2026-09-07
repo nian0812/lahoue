@@ -1,6 +1,8 @@
 extends Node
 
 const max_wallet_balance: int = 9007199254740991
+const sales_exp_revenue_step: int = 10000
+const max_sales_exp_per_transaction: int = 1000
 
 signal game_state_changed(state)
 signal day_started(day)
@@ -147,6 +149,19 @@ func add_exp(amount: int) -> bool:
 	_process_level_up()
 	exp_changed.emit(current_exp, level)
 	return true
+
+
+func calculate_sales_exp(revenue: int) -> int:
+	if revenue <= 0:
+		return 0
+	return mini(floori(float(revenue) / float(sales_exp_revenue_step)), max_sales_exp_per_transaction)
+
+
+func grant_sales_exp(revenue: int) -> int:
+	var sales_exp: int = calculate_sales_exp(revenue)
+	if sales_exp <= 0 or not add_exp(sales_exp):
+		return 0
+	return sales_exp
 
 
 func _process_level_up() -> void:

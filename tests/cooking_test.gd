@@ -46,6 +46,7 @@ func _run_tests() -> void:
 	_expect(customer != null, "cooking customer could not spawn")
 	await get_tree().process_frame
 	await get_tree().process_frame
+	_finish_customer_entry(restaurant, customer)
 	_expect(customer != null and String(customer.get("current_state")) == customer_script.state_waiting_food, "cooking customer has no pending order")
 	_expect(not bool(restaurant.call("start_cooking", "unknown_customer")), "unknown customer started cooking")
 
@@ -102,6 +103,7 @@ func _run_tests() -> void:
 	_expect(other_customer != null, "second customer could not spawn")
 	await get_tree().process_frame
 	await get_tree().process_frame
+	_finish_customer_entry(restaurant, other_customer)
 	_expect(not bool(restaurant.call("serve_order", "cooking_other")), "food was served to the wrong customer")
 	_expect(String(customer.get("current_state")) == customer_script.state_waiting_food, "wrong serve mutated the correct customer")
 	_expect(bool(restaurant.call("serve_order", "cooking_customer")), "ready food could not be served")
@@ -114,8 +116,10 @@ func _run_tests() -> void:
 	var table: Node = (restaurant.get("tables_by_id") as Dictionary).get(table_id) as Node
 	var wallet_before_payment: int = game_manager.get_wallet_balance()
 	var expected_revenue: int = int(menu_entry.get("selling_price", 0))
+	var exp_before_payment: int = game_manager.current_exp
 	game_manager.money = game_manager.max_wallet_balance
 	_expect(not bool(restaurant.call("finish_customer_meal", "cooking_customer")), "overflow payment transaction was accepted")
+	_expect(game_manager.current_exp == exp_before_payment, "failed Restaurant payment granted Sales EXP")
 	_expect(String(customer.get("current_state")) == customer_script.state_eating, "failed payment moved the customer out of EATING")
 	_expect(String((restaurant.call("get_cooking_job", "cooking_customer") as Dictionary).get("state", "")) == restaurant_script.cooking_state_served, "failed payment mutated the cooking job")
 	_expect(String(table.get("current_state")) == restaurant_table_script.state_occupied, "failed payment released the table")
@@ -124,10 +128,13 @@ func _run_tests() -> void:
 	_expect(String(customer.get("current_state")) == customer_script.state_leaving, "finish_eating did not move customer to LEAVING")
 	_expect(String(table.get("current_state")) == restaurant_table_script.state_available, "payment flow did not release table")
 	_expect(game_manager.get_wallet_balance() == wallet_before_payment + expected_revenue, "restaurant revenue is incorrect")
+	var expected_sales_exp: int = game_manager.calculate_sales_exp(expected_revenue)
+	_expect(game_manager.current_exp == exp_before_payment + expected_sales_exp, "Restaurant payment granted the wrong Sales EXP")
 	job = restaurant.call("get_cooking_job", "cooking_customer") as Dictionary
 	_expect(String(job.get("state", "")) == restaurant_script.cooking_state_paid and bool(job.get("payment_collected", false)), "payment state was not recorded")
 	_expect(not bool(restaurant.call("finish_customer_meal", "cooking_customer")), "duplicate payment was accepted")
 	_expect(game_manager.get_wallet_balance() == wallet_before_payment + expected_revenue, "duplicate payment changed wallet")
+	_expect(game_manager.current_exp == exp_before_payment + expected_sales_exp, "duplicate Restaurant payment granted Sales EXP twice")
 
 	_expect(save_manager.save_game(), "paid order state could not be saved")
 	game_manager.money = 0
@@ -159,6 +166,9 @@ func _run_tests() -> void:
 	var legacy_state: Dictionary = save_manager.call("_build_save_state") as Dictionary
 	legacy_state.erase("restaurant_cooking")
 	legacy_state["kitchen_level"] = 0
+	legacy_state.erase("building_ownership")
+	legacy_state.erase("purchased_farm_plots")
+	legacy_state.erase("pond_levels")
 	var legacy_validation: Dictionary = save_manager.call("_validate_save_state", legacy_state) as Dictionary
 	_expect(bool(legacy_validation.get("ok", false)), "Phase 8 save without cooking state is not compatible")
 
@@ -171,6 +181,17 @@ func _unlock_restaurant() -> void:
 	for level_value: int in range(game_manager.level, unlock_level):
 		required_exp += data_manager.get_level_exp(level_value)
 	game_manager.add_exp(required_exp)
+	game_manager.money = data_manager.get_progression_upgrade_cost("restaurant", 1)
+	world.call("upgrade_system", "restaurant")
+
+
+func _finish_customer_entry(restaurant: Node, customer: Node) -> void:
+	if customer == null:
+		return
+	customer.set("is_walking_in", false)
+	var empty_path: Array[Vector2] = []
+	customer.set("walk_path", empty_path)
+	restaurant.call("_on_customer_arrived_at_table", String(customer.get("customer_id")))
 
 
 func _finish_tests() -> void:

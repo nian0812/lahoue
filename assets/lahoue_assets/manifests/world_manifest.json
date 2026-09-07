@@ -1,0 +1,77 @@
+{
+  "buildings": {
+    "aquaculture_pond": {
+      "file": "world/buildings/aquaculture_pond.png"
+    },
+    "chicken_coop": {
+      "file": "world/buildings/chicken_coop.png"
+    },
+    "cow_barn": {
+      "file": "world/buildings/cow_barn.png"
+    },
+    "helipad": {
+      "file": "world/buildings/helipad.png"
+    },
+    "market": {
+      "file": "world/buildings/market.png"
+    },
+    "pig_pen": {
+      "file": "world/buildings/pig_pen.png"
+    },
+    "premium_market": {
+      "file": "world/buildings/premium_market.png"
+    },
+    "resort": {
+      "file": "world/buildings/resort.png"
+    },
+    "restaurant": {
+      "file": "world/buildings/restaurant.png"
+    },
+    "truck_depot": {
+      "file": "world/buildings/truck_depot.png"
+    },
+    "vip_area": {
+      "file": "world/buildings/vip_area.png"
+    },
+    "warehouse": {
+      "file": "world/buildings/warehouse.png"
+    }
+  },
+  "environment": {
+    "farm_fence_gate": {
+      "file": "world/environment/farm_fence_gate.png"
+    },
+    "road_tiles_kit": {
+      "file": "world/environment/road_tiles_kit.png"
+    }
+  },
+  "farm_plots": {
+    "empty_farm_plot": {
+      "file": "world/farm_plots/empty_farm_plot.png"
+    }
+  },
+  "props": {
+    "directional_signs_kit": {
+      "file": "world/props/directional_signs_kit.png"
+    },
+    "farm_warehouse_utility_props_atlas": {
+      "file": "world/props/farm_warehouse_utility_props_atlas.png"
+    },
+    "logistics_props_atlas": {
+      "file": "world/props/logistics_props_atlas.png"
+    },
+    "natural_props_atlas": {
+      "file": "world/props/natural_props_atlas.png"
+    },
+    "outdoor_dining_set_atlas": {
+      "file": "world/props/outdoor_dining_set_atlas.png"
+    },
+    "restaurant_kitchen_cooking_station_module_set": {
+      "file": "world/props/restaurant_kitchen_cooking_station_module_set.png"
+    }
+  },
+  "authoritative_progression_assets": {
+    "building_purchase_upgrade_construction_kit": "ui/progression/building_purchase_upgrade_construction_kit.png",
+    "map_zone_expansion_visual_kit": "ui/progression/map_zone_expansion_visual_kit.png"
+  }
+}

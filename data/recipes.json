@@ -1,459 +1,56 @@
 {
   "schema_version": 1,
   "entries": {
-    "garlic_egg_rice": {
-      "name": "cơm tỏi trứng",
-      "category": "rice",
-      "required_level": null,
-      "ingredients": {
-        "rice": 1,
-        "egg": 1
-      },
-      "cooking_time": 10,
-      "selling_price": 79000,
-      "exp": null,
-      "icon": ""
-    },
-    "chicken_rice": {
-      "name": "cơm gà",
-      "category": "rice",
-      "required_level": null,
-      "ingredients": {
-        "rice_processed": 1,
-        "chicken_meat": 1
-      },
-      "cooking_time": 10,
-      "selling_price": 79000,
-      "exp": null,
-      "icon": ""
-    },
-    "fish_rice": {
-      "name": "cơm cá",
-      "category": "rice",
-      "required_level": null,
-      "ingredients": {
-        "rice_processed": 1,
-        "fish": 1
-      },
-      "cooking_time": 10,
-      "selling_price": 89000,
-      "exp": null,
-      "icon": ""
-    },
-    "beef_rice": {
-      "name": "cơm bò",
-      "category": "rice",
-      "required_level": null,
-      "ingredients": {
-        "rice_processed": 1,
-        "beef": 1
-      },
-      "cooking_time": 10,
-      "selling_price": 109000,
-      "exp": null,
-      "icon": ""
-    },
-    "shrimp_rice": {
-      "name": "cơm tôm",
-      "category": "rice",
-      "required_level": null,
-      "ingredients": {
-        "rice_processed": 1,
-        "shrimp": 1
-      },
-      "cooking_time": 10,
-      "selling_price": 109000,
-      "exp": null,
-      "icon": ""
-    },
-    "seafood_rice": {
-      "name": "cơm hải sản",
-      "category": "rice",
-      "required_level": null,
-      "ingredients": {
-        "rice_processed": 1,
-        "shrimp": 1,
-        "squid": 1
-      },
-      "cooking_time": 10,
-      "selling_price": 129000,
-      "exp": null,
-      "icon": ""
-    },
-    "crab_rice": {
-      "name": "cơm cua",
-      "category": "rice",
-      "required_level": null,
-      "ingredients": {
-        "rice_processed": 1,
-        "crab": 1
-      },
-      "cooking_time": 10,
-      "selling_price": 139000,
-      "exp": null,
-      "icon": ""
-    },
-    "octopus_rice": {
-      "name": "cơm bạch tuộc",
-      "category": "rice",
-      "required_level": null,
-      "ingredients": {
-        "rice_processed": 1,
-        "octopus": 1
-      },
-      "cooking_time": 10,
-      "selling_price": 149000,
-      "exp": null,
-      "icon": ""
-    },
-    "vegetable_fried_noodle": {
-      "name": "mì xào rau",
-      "category": "noodle",
-      "required_level": null,
-      "ingredients": {
-        "noodle": 1,
-        "vegetables": 1
-      },
-      "cooking_time": 10,
-      "selling_price": 59000,
-      "exp": null,
-      "icon": ""
-    },
-    "egg_fried_noodle": {
-      "name": "mì xào trứng",
-      "category": "noodle",
-      "required_level": null,
-      "ingredients": {
-        "noodle": 1,
-        "egg": 1
-      },
-      "cooking_time": 10,
-      "selling_price": 69000,
-      "exp": null,
-      "icon": ""
-    },
-    "chicken_fried_noodle": {
-      "name": "mì xào gà",
-      "category": "noodle",
-      "required_level": null,
-      "ingredients": {
-        "noodle": 1,
-        "chicken_meat": 1
-      },
-      "cooking_time": 10,
-      "selling_price": 89000,
-      "exp": null,
-      "icon": ""
-    },
-    "beef_fried_noodle": {
-      "name": "mì xào bò",
-      "category": "noodle",
-      "required_level": 3,
-      "ingredients": {
-        "noodle": 1,
-        "beef": 1
-      },
-      "cooking_time": 10,
-      "selling_price": 99000,
-      "exp": null,
-      "icon": ""
-    },
-    "shrimp_fried_noodle": {
-      "name": "mì xào tôm",
-      "category": "noodle",
-      "required_level": null,
-      "ingredients": {
-        "noodle": 1,
-        "shrimp": 1
-      },
-      "cooking_time": 10,
-      "selling_price": 109000,
-      "exp": null,
-      "icon": ""
-    },
-    "squid_fried_noodle": {
-      "name": "mì xào mực",
-      "category": "noodle",
-      "required_level": null,
-      "ingredients": {
-        "noodle": 1,
-        "squid": 1
-      },
-      "cooking_time": 10,
-      "selling_price": 119000,
-      "exp": null,
-      "icon": ""
-    },
-    "crab_fried_noodle": {
-      "name": "mì xào cua",
-      "category": "noodle",
-      "required_level": null,
-      "ingredients": {
-        "noodle": 1,
-        "crab": 1
-      },
-      "cooking_time": 10,
-      "selling_price": 129000,
-      "exp": null,
-      "icon": ""
-    },
-    "octopus_fried_noodle": {
-      "name": "mì xào bạch tuộc",
-      "category": "noodle",
-      "required_level": null,
-      "ingredients": {
-        "noodle": 1,
-        "octopus": 1
-      },
-      "cooking_time": 10,
-      "selling_price": 139000,
-      "exp": null,
-      "icon": ""
-    },
-    "seafood_fried_noodle": {
-      "name": "mì xào hải sản",
-      "category": "noodle",
-      "required_level": null,
-      "ingredients": {
-        "noodle": 1,
-        "shrimp": 1,
-        "squid": 1,
-        "octopus": 1
-      },
-      "cooking_time": 10,
-      "selling_price": 149000,
-      "exp": null,
-      "icon": ""
-    },
-    "fried_fish": {
-      "name": "cá chiên",
-      "category": "seafood",
-      "required_level": null,
-      "ingredients": null,
-      "cooking_time": null,
-      "selling_price": 69000,
-      "exp": null,
-      "icon": ""
-    },
-    "grilled_fish": {
-      "name": "cá nướng",
-      "category": "seafood",
-      "required_level": null,
-      "ingredients": null,
-      "cooking_time": null,
-      "selling_price": 89000,
-      "exp": null,
-      "icon": ""
-    },
-    "fried_shrimp": {
-      "name": "tôm chiên",
-      "category": "seafood",
-      "required_level": null,
-      "ingredients": null,
-      "cooking_time": null,
-      "selling_price": 89000,
-      "exp": null,
-      "icon": ""
-    },
-    "grilled_shrimp": {
-      "name": "tôm nướng",
-      "category": "seafood",
-      "required_level": null,
-      "ingredients": null,
-      "cooking_time": null,
-      "selling_price": 109000,
-      "exp": null,
-      "icon": ""
-    },
-    "steamed_crab": {
-      "name": "cua hấp",
-      "category": "seafood",
-      "required_level": null,
-      "ingredients": null,
-      "cooking_time": null,
-      "selling_price": 129000,
-      "exp": null,
-      "icon": ""
-    },
-    "grilled_crab": {
-      "name": "cua nướng",
-      "category": "seafood",
-      "required_level": null,
-      "ingredients": null,
-      "cooking_time": null,
-      "selling_price": 149000,
-      "exp": null,
-      "icon": ""
-    },
-    "stir_fried_squid": {
-      "name": "mực xào",
-      "category": "seafood",
-      "required_level": null,
-      "ingredients": null,
-      "cooking_time": null,
-      "selling_price": 99000,
-      "exp": null,
-      "icon": ""
-    },
-    "grilled_squid": {
-      "name": "mực nướng",
-      "category": "seafood",
-      "required_level": null,
-      "ingredients": null,
-      "cooking_time": null,
-      "selling_price": 119000,
-      "exp": null,
-      "icon": ""
-    },
-    "grilled_octopus": {
-      "name": "bạch tuộc nướng",
-      "category": "seafood",
-      "required_level": null,
-      "ingredients": null,
-      "cooking_time": null,
-      "selling_price": 139000,
-      "exp": null,
-      "icon": ""
-    },
-    "grilled_seafood": {
-      "name": "hải sản nướng",
-      "category": "seafood",
-      "required_level": null,
-      "ingredients": null,
-      "cooking_time": null,
-      "selling_price": 169000,
-      "exp": null,
-      "icon": ""
-    },
-    "hot_tea": {
-      "name": "trà nóng",
-      "category": "drink",
-      "required_level": null,
-      "ingredients": null,
-      "cooking_time": null,
-      "selling_price": 25000,
-      "exp": null,
-      "icon": ""
-    },
-    "lemon_tea": {
-      "name": "trà chanh",
-      "category": "drink",
-      "required_level": null,
-      "ingredients": null,
-      "cooking_time": null,
-      "selling_price": 35000,
-      "exp": null,
-      "icon": ""
-    },
-    "milk_tea": {
-      "name": "trà sữa",
-      "category": "drink",
-      "required_level": null,
-      "ingredients": null,
-      "cooking_time": null,
-      "selling_price": 45000,
-      "exp": null,
-      "icon": ""
-    },
-    "black_coffee": {
-      "name": "cà phê đen",
-      "category": "drink",
-      "required_level": null,
-      "ingredients": null,
-      "cooking_time": null,
-      "selling_price": 30000,
-      "exp": null,
-      "icon": ""
-    },
-    "milk_coffee": {
-      "name": "cà phê sữa",
-      "category": "drink",
-      "required_level": null,
-      "ingredients": null,
-      "cooking_time": null,
-      "selling_price": 40000,
-      "exp": null,
-      "icon": ""
-    },
-    "fresh_milk": {
-      "name": "sữa tươi",
-      "category": "drink",
-      "required_level": null,
-      "ingredients": null,
-      "cooking_time": null,
-      "selling_price": 30000,
-      "exp": null,
-      "icon": ""
-    },
-    "special_coffee": {
-      "name": "cà phê đặc biệt",
-      "category": "drink",
-      "required_level": null,
-      "ingredients": null,
-      "cooking_time": null,
-      "selling_price": 55000,
-      "exp": null,
-      "icon": ""
-    },
-    "special_tea": {
-      "name": "trà đặc biệt",
-      "category": "drink",
-      "required_level": null,
-      "ingredients": null,
-      "cooking_time": null,
-      "selling_price": 50000,
-      "exp": null,
-      "icon": ""
-    },
-    "wagyu_steak": {
-      "name": "wagyu steak",
-      "category": "premium",
-      "required_level": 9,
-      "ingredients": null,
-      "cooking_time": null,
-      "selling_price": 599000,
-      "exp": null,
-      "icon": ""
-    },
-    "wagyu_rice": {
-      "name": "wagyu rice",
-      "category": "premium",
-      "required_level": 9,
-      "ingredients": null,
-      "cooking_time": null,
-      "selling_price": 499000,
-      "exp": null,
-      "icon": ""
-    },
-    "salmon_steak": {
-      "name": "salmon steak",
-      "category": "premium",
-      "required_level": 9,
-      "ingredients": null,
-      "cooking_time": null,
-      "selling_price": 399000,
-      "exp": null,
-      "icon": ""
-    },
-    "salmon_rice": {
-      "name": "salmon rice",
-      "category": "premium",
-      "required_level": 9,
-      "ingredients": null,
-      "cooking_time": null,
-      "selling_price": 349000,
-      "exp": null,
-      "icon": ""
-    },
-    "lobster_grill": {
-      "name": "lobster grill",
-      "category": "premium",
-      "required_level": 9,
-      "ingredients": null,
-      "cooking_time": null,
-      "selling_price": 699000,
-      "exp": null,
-      "icon": ""
-    }
+    "garlic_egg_rice": {"name": "Egg Fried Rice", "category": "rice", "required_level": 5, "ingredients": {"rice": 1, "egg": 1}, "cooking_time": 10, "selling_price": 50000, "exp": 12, "icon": ""},
+    "chicken_rice": {"name": "Chicken Rice", "category": "rice", "required_level": 5, "ingredients": {"rice": 1, "chicken_meat": 1}, "cooking_time": 12, "selling_price": 150000, "exp": 16, "icon": ""},
+    "corn_egg_soup": {"name": "Corn Egg Soup", "category": "soup", "required_level": 5, "ingredients": {"corn": 1, "egg": 1}, "cooking_time": 10, "selling_price": 60000, "exp": 13, "icon": ""},
+    "wheat_pancake": {"name": "Wheat Pancake", "category": "bakery", "required_level": 5, "ingredients": {"wheat": 1, "egg": 1}, "cooking_time": 10, "selling_price": 50000, "exp": 12, "icon": ""},
+    "cucumber_pork_salad": {"name": "Cucumber Pork Salad", "category": "salad", "required_level": 7, "ingredients": {"cucumber": 1, "pork": 1}, "cooking_time": 12, "selling_price": 160000, "exp": 18, "icon": ""},
+    "pork_rice": {"name": "Pork Rice", "category": "rice", "required_level": 7, "ingredients": {"rice": 1, "pork": 1}, "cooking_time": 12, "selling_price": 150000, "exp": 18, "icon": ""},
+    "green_onion_omelette": {"name": "Green Onion Omelette", "category": "egg", "required_level": 9, "ingredients": {"green_onion": 1, "egg": 1}, "cooking_time": 10, "selling_price": 60000, "exp": 15, "icon": ""},
+    "chicken_corn_soup": {"name": "Chicken Corn Soup", "category": "soup", "required_level": 9, "ingredients": {"chicken_meat": 1, "corn": 1}, "cooking_time": 13, "selling_price": 160000, "exp": 19, "icon": ""},
+    "fish_rice": {"name": "Fish Rice", "category": "rice", "required_level": 10, "ingredients": {"rice": 1, "fish": 1}, "cooking_time": 12, "selling_price": 90000, "exp": 18, "icon": ""},
+    "grilled_fish": {"name": "Green Onion Grilled Fish", "category": "seafood", "required_level": 10, "ingredients": {"fish": 1, "green_onion": 1}, "cooking_time": 13, "selling_price": 100000, "exp": 20, "icon": ""},
+    "tomato_egg_rice": {"name": "Tomato Egg Rice", "category": "rice", "required_level": 12, "ingredients": {"tomato": 1, "egg": 1, "rice": 1}, "cooking_time": 12, "selling_price": 90000, "exp": 20, "icon": ""},
+    "milk_pancake": {"name": "Milk Pancake", "category": "bakery", "required_level": 12, "ingredients": {"wheat": 1, "cow_milk": 1}, "cooking_time": 12, "selling_price": 90000, "exp": 20, "icon": ""},
+    "beef_rice": {"name": "Beef Rice", "category": "rice", "required_level": 12, "ingredients": {"rice": 1, "beef": 1}, "cooking_time": 14, "selling_price": 280000, "exp": 24, "icon": ""},
+    "chili_chicken": {"name": "Chili Chicken", "category": "meat", "required_level": 15, "ingredients": {"chili": 1, "chicken_meat": 1}, "cooking_time": 14, "selling_price": 180000, "exp": 24, "icon": ""},
+    "shrimp_rice": {"name": "Shrimp Rice", "category": "rice", "required_level": 15, "ingredients": {"rice": 1, "shrimp": 1}, "cooking_time": 14, "selling_price": 160000, "exp": 24, "icon": ""},
+    "cucumber_shrimp_salad": {"name": "Cucumber Shrimp Salad", "category": "salad", "required_level": 15, "ingredients": {"cucumber": 1, "shrimp": 1}, "cooking_time": 13, "selling_price": 170000, "exp": 24, "icon": ""},
+    "carrot_pork_stew": {"name": "Carrot Pork Stew", "category": "stew", "required_level": 18, "ingredients": {"carrot": 1, "pork": 1}, "cooking_time": 16, "selling_price": 190000, "exp": 28, "icon": ""},
+    "carrot_beef_stew": {"name": "Carrot Beef Stew", "category": "stew", "required_level": 18, "ingredients": {"carrot": 1, "beef": 1}, "cooking_time": 17, "selling_price": 320000, "exp": 30, "icon": ""},
+    "crab_rice": {"name": "Crab Rice", "category": "rice", "required_level": 20, "ingredients": {"rice": 1, "crab": 1}, "cooking_time": 16, "selling_price": 280000, "exp": 30, "icon": ""},
+    "potato_fries": {"name": "Potato Fries", "category": "side", "required_level": 20, "ingredients": {"potato": 1}, "cooking_time": 10, "selling_price": 70000, "exp": 22, "icon": ""},
+    "crab_tomato_soup": {"name": "Crab Tomato Soup", "category": "soup", "required_level": 20, "ingredients": {"crab": 1, "tomato": 1}, "cooking_time": 17, "selling_price": 320000, "exp": 32, "icon": ""},
+    "soybean_tofu": {"name": "Tofu", "category": "plant", "required_level": 23, "ingredients": {"soybean": 1}, "cooking_time": 11, "selling_price": 70000, "exp": 24, "icon": ""},
+    "tofu_tomato": {"name": "Tomato Tofu", "category": "plant", "required_level": 23, "ingredients": {"soybean": 1, "tomato": 1}, "cooking_time": 13, "selling_price": 110000, "exp": 26, "icon": ""},
+    "soybean_pork": {"name": "Soybean Pork", "category": "meat", "required_level": 23, "ingredients": {"soybean": 1, "pork": 1}, "cooking_time": 16, "selling_price": 200000, "exp": 30, "icon": ""},
+    "garlic_beef": {"name": "Garlic Beef", "category": "meat", "required_level": 25, "ingredients": {"garlic": 1, "beef": 1}, "cooking_time": 17, "selling_price": 330000, "exp": 34, "icon": ""},
+    "squid_rice": {"name": "Squid Rice", "category": "rice", "required_level": 25, "ingredients": {"squid": 1, "rice": 1}, "cooking_time": 16, "selling_price": 290000, "exp": 34, "icon": ""},
+    "chili_squid": {"name": "Chili Squid", "category": "seafood", "required_level": 25, "ingredients": {"chili": 1, "squid": 1}, "cooking_time": 17, "selling_price": 320000, "exp": 35, "icon": ""},
+    "garlic_shrimp": {"name": "Garlic Shrimp", "category": "seafood", "required_level": 25, "ingredients": {"garlic": 1, "shrimp": 1}, "cooking_time": 16, "selling_price": 210000, "exp": 33, "icon": ""},
+    "coconut_chicken": {"name": "Coconut Chicken", "category": "meat", "required_level": 27, "ingredients": {"coconut": 1, "chicken_meat": 1}, "cooking_time": 17, "selling_price": 210000, "exp": 35, "icon": ""},
+    "coconut_fish_curry": {"name": "Coconut Fish Curry", "category": "seafood", "required_level": 27, "ingredients": {"coconut": 1, "fish": 1}, "cooking_time": 18, "selling_price": 150000, "exp": 35, "icon": ""},
+    "lemongrass_pork": {"name": "Lemongrass Pork", "category": "meat", "required_level": 29, "ingredients": {"lemongrass": 1, "pork": 1}, "cooking_time": 18, "selling_price": 220000, "exp": 38, "icon": ""},
+    "octopus_lemongrass": {"name": "Lemongrass Octopus", "category": "seafood", "required_level": 30, "ingredients": {"octopus": 1, "lemongrass": 1}, "cooking_time": 20, "selling_price": 750000, "exp": 44, "icon": ""},
+    "tea_milk": {"name": "Fresh Milk Tea", "category": "drink", "required_level": 31, "ingredients": {"tea_leaf": 1, "cow_milk": 1}, "cooking_time": 10, "selling_price": 150000, "exp": 34, "icon": ""},
+    "peanut_chicken": {"name": "Peanut Chicken", "category": "meat", "required_level": 33, "ingredients": {"peanut": 1, "chicken_meat": 1}, "cooking_time": 18, "selling_price": 230000, "exp": 40, "icon": ""},
+    "sugarcane_tea": {"name": "Sugarcane Tea", "category": "drink", "required_level": 36, "ingredients": {"sugarcane": 1, "tea_leaf": 1}, "cooking_time": 10, "selling_price": 170000, "exp": 38, "icon": ""},
+    "coffee_milk": {"name": "Milk Coffee", "category": "drink", "required_level": 38, "ingredients": {"coffee_bean": 1, "cow_milk": 1}, "cooking_time": 10, "selling_price": 190000, "exp": 42, "icon": ""},
+    "banana_pancake": {"name": "Banana Pancake", "category": "bakery", "required_level": 42, "ingredients": {"banana": 1, "wheat": 1, "egg": 1}, "cooking_time": 14, "selling_price": 170000, "exp": 46, "icon": ""},
+    "banana_coconut_tea": {"name": "Banana Coconut Tea", "category": "drink", "required_level": 42, "ingredients": {"banana": 1, "coconut": 1, "tea_leaf": 1}, "cooking_time": 12, "selling_price": 260000, "exp": 48, "icon": ""},
+
+    "st25_wagyu_rice": {"name": "ST25 Wagyu Rice", "category": "premium", "required_level": 35, "ingredients": {"st25_rice": 1, "wagyu": 1}, "cooking_time": 20, "selling_price": 10200000, "exp": 80, "icon": ""},
+    "norwegian_salmon_rice": {"name": "Norwegian Salmon Rice", "category": "premium", "required_level": 35, "ingredients": {"salmon": 1, "st25_rice": 1, "olive_oil": 1}, "cooking_time": 20, "selling_price": 2400000, "exp": 65, "icon": ""},
+    "alaska_lobster_rice": {"name": "Butter Alaska Lobster", "category": "premium", "required_level": 37, "ingredients": {"lobster": 1, "butter": 1}, "cooking_time": 21, "selling_price": 3400000, "exp": 70, "icon": ""},
+    "japanese_scallop_rice": {"name": "Cheese Scallop Rice", "category": "premium", "required_level": 39, "ingredients": {"japanese_scallop": 1, "cheese": 1, "st25_rice": 1}, "cooking_time": 22, "selling_price": 2800000, "exp": 75, "icon": ""},
+    "king_crab_butter": {"name": "King Crab Butter", "category": "premium", "required_level": 41, "ingredients": {"king_crab": 1, "butter": 1}, "cooking_time": 23, "selling_price": 6400000, "exp": 85, "icon": ""},
+    "bluefin_tuna_rice": {"name": "Bluefin Tuna Rice", "category": "premium", "required_level": 43, "ingredients": {"bluefin_tuna": 1, "st25_rice": 1}, "cooking_time": 23, "selling_price": 10200000, "exp": 90, "icon": ""},
+    "wagyu_steak": {"name": "Olive Wagyu Steak", "category": "premium", "required_level": 45, "ingredients": {"wagyu": 1, "butter": 1, "olive_oil": 1}, "cooking_time": 24, "selling_price": 11000000, "exp": 100, "icon": ""},
+    "butter_grilled_alaska_lobster": {"name": "Saffron Butter Lobster", "category": "premium", "required_level": 47, "ingredients": {"lobster": 1, "butter": 1, "saffron": 1}, "cooking_time": 25, "selling_price": 7400000, "exp": 110, "icon": ""},
+    "cheese_salmon": {"name": "Cheese Salmon", "category": "premium", "required_level": 49, "ingredients": {"salmon": 1, "cheese": 1, "olive_oil": 1}, "cooking_time": 24, "selling_price": 2800000, "exp": 100, "icon": ""},
+    "king_crab_rice": {"name": "Saffron King Crab Rice", "category": "premium", "required_level": 51, "ingredients": {"king_crab": 1, "st25_rice": 1, "saffron": 1}, "cooking_time": 26, "selling_price": 10200000, "exp": 120, "icon": ""},
+    "truffle_wagyu_steak": {"name": "Truffle Wagyu Steak", "category": "premium", "required_level": 53, "ingredients": {"truffle": 1, "wagyu": 1, "butter": 1}, "cooking_time": 28, "selling_price": 20400000, "exp": 140, "icon": ""},
+    "royal_seafood_platter": {"name": "LaHoue Empire Feast", "category": "premium", "required_level": 55, "ingredients": {"lobster": 1, "king_crab": 1, "japanese_scallop": 1, "bluefin_tuna": 1, "olive_oil": 1, "saffron": 1}, "cooking_time": 30, "selling_price": 25600000, "exp": 180, "icon": ""}
   }
 }

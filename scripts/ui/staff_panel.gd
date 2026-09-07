@@ -1,11 +1,13 @@
 extends PanelContainer
 
 const vnd_format: GDScript = preload("res://scripts/ui/vnd_formatter.gd")
+const ui_style: GDScript = preload("res://scripts/ui/ui_style.gd")
 
 var staff_container: VBoxContainer
 var hire_container: VBoxContainer
 var split_container: HSplitContainer
 var header_lbl: Label
+var payroll_button: Button
 
 func _ready() -> void:
 	_build_ui()
@@ -35,10 +37,11 @@ func _build_ui() -> void:
 
 	var header: HBoxContainer = HBoxContainer.new()
 	vbox.add_child(header)
+	header.add_child(ui_style.make_icon_slot("staff"))
 
 	var title: Label = Label.new()
 	title.text = "STAFF MANAGEMENT"
-	title.add_theme_font_size_override("font_size", 22)
+	title.theme_type_variation = &"PanelTitle"
 	header.add_child(title)
 
 	var close_btn: Button = Button.new()
@@ -49,11 +52,14 @@ func _build_ui() -> void:
 
 	header_lbl = Label.new()
 	vbox.add_child(header_lbl)
+	payroll_button = Button.new()
+	payroll_button.pressed.connect(_on_payroll_pressed)
+	vbox.add_child(payroll_button)
 
 	split_container = HSplitContainer.new()
 	split_container.name = "split"
 	split_container.size_flags_vertical = SIZE_EXPAND_FILL
-	split_container.custom_minimum_size = Vector2(800, 400)
+	split_container.custom_minimum_size = Vector2(0, 220)
 	vbox.add_child(split_container)
 
 	# Left side: Hired Staff
@@ -63,7 +69,7 @@ func _build_ui() -> void:
 
 	var t_title: Label = Label.new()
 	t_title.text = "Hired Staff"
-	t_title.add_theme_font_size_override("font_size", 18)
+	t_title.theme_type_variation = &"SectionTitle"
 	staff_vbox.add_child(t_title)
 
 	var staff_scroll: ScrollContainer = ScrollContainer.new()
@@ -82,7 +88,7 @@ func _build_ui() -> void:
 
 	var o_title: Label = Label.new()
 	o_title.text = "Hire Staff"
-	o_title.add_theme_font_size_override("font_size", 18)
+	o_title.theme_type_variation = &"SectionTitle"
 	right_vbox.add_child(o_title)
 
 	var hire_scroll: ScrollContainer = ScrollContainer.new()
@@ -96,27 +102,34 @@ func _build_ui() -> void:
 
 
 func _on_close_pressed() -> void:
-	visible = false
 	var ui_manager: Node = get_parent()
-	if ui_manager and ui_manager.get("active_panel") == self:
-		ui_manager.set("active_panel", null)
+	if ui_manager and ui_manager.has_method("_close_active_panel"):
+		ui_manager.call("_close_active_panel")
+	else:
+		visible = false
 
 
 func _refresh_data() -> void:
-	var main_world: Node = get_tree().root.get_node_or_null("main_world")
+	var main_world: Node = get_tree().current_scene
 	if not main_world: return
 	var rest: Node = main_world.get_node_or_null("restaurant")
 	if not rest: return
 
 	if not rest.call("is_available"):
-		header_lbl.text = "Restaurant is locked. Level up to unlock staff."
-		header_lbl.modulate = Color(0.8, 0.3, 0.3)
+		header_lbl.text = "Staff — Locked\nRestaurant must be purchased first."
+		header_lbl.theme_type_variation = &"StatusLocked"
 		if split_container: split_container.visible = false
+		payroll_button.visible = false
 		return
 	else:
-		header_lbl.text = "Manage your restaurant staff"
-		header_lbl.modulate = Color(1, 1, 1)
+		var daily_payroll: int = int(rest.call("get_staff_daily_payroll"))
+		var outstanding_debt: int = int(rest.call("get_staff_outstanding_debt"))
+		header_lbl.text = "Daily Payroll: %s | Outstanding: %s" % [vnd_format.format_vnd(daily_payroll), vnd_format.format_vnd(outstanding_debt)]
+		header_lbl.theme_type_variation = &"StatusWarning" if outstanding_debt > 0 else &"StatusInfo"
 		if split_container: split_container.visible = true
+		payroll_button.visible = outstanding_debt > 0
+		payroll_button.text = "Pay Outstanding Staff Debt — %s" % vnd_format.format_vnd(outstanding_debt)
+		payroll_button.disabled = outstanding_debt <= 0 or not game_manager.can_afford(outstanding_debt)
 
 	_refresh_hired(rest)
 	_refresh_hire_options(rest)
@@ -136,24 +149,15 @@ func _refresh_hired(rest: Node) -> void:
 		var staff: Node = staffs_dict[sid]
 		var type_id: String = String(staff.get("staff_type_id"))
 
-		var row: PanelContainer = PanelContainer.new()
-		var style: StyleBoxFlat = StyleBoxFlat.new()
-		style.bg_color = Color(0.1, 0.08, 0.06, 0.4)
-		style.corner_radius_top_left = 4
-		style.corner_radius_top_right = 4
-		style.corner_radius_bottom_right = 4
-		style.corner_radius_bottom_left = 4
-		style.content_margin_left = 12
-		style.content_margin_right = 12
-		style.content_margin_top = 8
-		style.content_margin_bottom = 8
-		row.add_theme_stylebox_override("panel", style)
+		var debt: int = maxi(int(staff.get("salary_debt")), 0)
+		var row: PanelContainer = ui_style.make_card(&"WarningCard" if debt > 0 else &"Card")
 
 		var vbox: VBoxContainer = VBoxContainer.new()
 		row.add_child(vbox)
 
 		var name_lbl: Label = Label.new()
-		name_lbl.text = type_id.capitalize() + " (#%s)" % sid.right(4)
+		var salary: int = data_manager.get_staff_daily_salary(type_id)
+		name_lbl.text = "Role: %s (#%s) — %s/day" % [type_id.replace("_", " ").capitalize(), sid.right(4), vnd_format.format_vnd(salary)]
 		name_lbl.size_flags_horizontal = SIZE_EXPAND_FILL
 		vbox.add_child(name_lbl)
 
@@ -176,7 +180,7 @@ func _refresh_hired(rest: Node) -> void:
 
 
 func _update_staff_states() -> void:
-	var main_world: Node = get_tree().root.get_node_or_null("main_world")
+	var main_world: Node = get_tree().current_scene
 	if not main_world: return
 	var rest: Node = main_world.get_node_or_null("restaurant")
 	if not rest: return
@@ -190,16 +194,24 @@ func _update_staff_states() -> void:
 				var staff: Node = staffs_dict[sid]
 				var state: String = String(staff.get("current_state"))
 				var job: Dictionary = staff.get("active_job")
-				var txt: String = state.capitalize()
+				var txt: String = _get_staff_status_text(state, job)
 				if state != "idle" and not job.is_empty():
-					var j_type: String = String(job.get("job_type", ""))
 					var t_id: String = String(job.get("target_id", ""))
-					txt += " (%s" % j_type.capitalize()
 					if t_id != "":
-						txt += " -> %s)" % t_id.trim_prefix("customer_").left(6)
-					else:
-						txt += ")"
-				lbl.text = txt
+						txt += " -> %s" % t_id.trim_prefix("customer_").left(12)
+				var debt: int = maxi(int(staff.get("salary_debt")), 0)
+				if debt > 0 or not bool(staff.get("is_paid")):
+					lbl.text = "Unpaid — Debt: %s" % vnd_format.format_vnd(debt)
+					lbl.theme_type_variation = &"StatusWarning"
+				elif state == "idle":
+					lbl.text = "Idle"
+					lbl.theme_type_variation = &"StatusInfo"
+				elif state == "off_duty":
+					lbl.text = "Off Duty"
+					lbl.theme_type_variation = &"StatusLocked"
+				else:
+					lbl.text = "Working — %s" % txt
+					lbl.theme_type_variation = &"StatusSuccess"
 
 
 func _refresh_hire_options(rest: Node) -> void:
@@ -215,19 +227,11 @@ func _refresh_hire_options(rest: Node) -> void:
 
 		var req_lvl: int = int(data.get("unlock_level", 0))
 		var cost: int = data_manager.get_staff_hire_cost(type_id)
+		var salary: int = data_manager.get_staff_daily_salary(type_id)
+		var max_count: int = int(data.get("max_count", 0))
+		var hired_count: int = int(rest.call("get_staff_type_count", type_id))
 
-		var row: PanelContainer = PanelContainer.new()
-		var style: StyleBoxFlat = StyleBoxFlat.new()
-		style.bg_color = Color(0.1, 0.08, 0.06, 0.4)
-		style.corner_radius_top_left = 4
-		style.corner_radius_top_right = 4
-		style.corner_radius_bottom_right = 4
-		style.corner_radius_bottom_left = 4
-		style.content_margin_left = 12
-		style.content_margin_right = 12
-		style.content_margin_top = 8
-		style.content_margin_bottom = 8
-		row.add_theme_stylebox_override("panel", style)
+		var row: PanelContainer = ui_style.make_card()
 
 		var vbox: VBoxContainer = VBoxContainer.new()
 		row.add_child(vbox)
@@ -236,12 +240,12 @@ func _refresh_hire_options(rest: Node) -> void:
 		vbox.add_child(hbox_top)
 
 		var name_lbl: Label = Label.new()
-		name_lbl.text = type_id.capitalize()
+		name_lbl.text = type_id.replace("_", " ").capitalize()
 		name_lbl.size_flags_horizontal = SIZE_EXPAND_FILL
 		hbox_top.add_child(name_lbl)
 
 		var cost_lbl: Label = Label.new()
-		cost_lbl.text = vnd_format.format(cost)
+		cost_lbl.text = "Hire: %s" % vnd_format.format_vnd(cost)
 		cost_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		hbox_top.add_child(cost_lbl)
 
@@ -251,11 +255,11 @@ func _refresh_hire_options(rest: Node) -> void:
 		var jobs: Array = data.get("allowed_jobs", [])
 		var jobs_str: String = ""
 		for j: Variant in jobs:
-			jobs_str += String(j).capitalize() + ", "
+			jobs_str += _get_job_display_name(String(j)) + ", "
 		jobs_str = jobs_str.trim_suffix(", ")
 
 		var desc_lbl: Label = Label.new()
-		desc_lbl.text = "Can: " + jobs_str
+		desc_lbl.text = "Can: %s | Salary: %s/day | Hired: %d/%d" % [jobs_str, vnd_format.format_vnd(salary), hired_count, max_count]
 		desc_lbl.add_theme_font_size_override("font_size", 12)
 		desc_lbl.modulate = Color(0.8, 0.8, 0.8)
 		desc_lbl.size_flags_horizontal = SIZE_EXPAND_FILL
@@ -267,13 +271,18 @@ func _refresh_hire_options(rest: Node) -> void:
 		var can_afford: bool = game_manager.money >= cost
 		var level_ok: bool = game_manager.level >= req_lvl
 
-		if not level_ok:
+		if max_count > 0 and hired_count >= max_count:
 			hire_btn.disabled = true
-			hire_btn.text = "Lv %d" % req_lvl
+			hire_btn.text = "Max"
 			row.modulate = Color(1, 1, 1, 0.5)
+		elif not level_ok:
+			hire_btn.disabled = true
+			hire_btn.text = "Requires Level %d" % req_lvl
+			row.theme_type_variation = &"WarningCard"
 		elif not can_afford:
 			hire_btn.disabled = true
-			cost_lbl.modulate = Color(0.8, 0.3, 0.3)
+			hire_btn.text = "Not Enough Money"
+			cost_lbl.theme_type_variation = &"StatusWarning"
 
 		hire_btn.pressed.connect(_on_hire_pressed.bind(type_id, rest))
 		hbox_bottom.add_child(hire_btn)
@@ -281,8 +290,65 @@ func _refresh_hire_options(rest: Node) -> void:
 		hire_container.add_child(row)
 
 
+func _get_job_display_name(job_type: String) -> String:
+	match job_type:
+		"cook":
+			return "Cook"
+		"serve":
+			return "Serve"
+		"payment":
+			return "Payment"
+		"clean":
+			return "Clean"
+		"harvest":
+			return "Harvest Crops"
+		"collect_animal":
+			return "Collect Animal Products"
+		"collect_aquaculture":
+			return "Collect & Restart Aquaculture"
+	return job_type.capitalize()
+
+
+func _get_staff_status_text(state: String, job: Dictionary) -> String:
+	var job_type: String = String(job.get("job_type", ""))
+	match state:
+		"idle":
+			return "Idle"
+		"moving":
+			return "Moving to %s" % _get_job_display_name(job_type)
+		"handling_order":
+			return "Collecting Payment" if job_type == "payment" else "Cooking"
+		"delivering_food":
+			return "Serving"
+		"cleaning_table":
+			return "Cleaning"
+		"harvesting":
+			return "Harvesting"
+		"collecting":
+			return (
+				"Collecting Animal Products"
+				if job_type == "collect_animal"
+				else "Collecting & Restarting Aquaculture"
+			)
+		"returning":
+			return "Returning"
+		"off_duty":
+			return "OFF DUTY — salary unpaid"
+	return state.capitalize()
+
+
 func _on_hire_pressed(type_id: String, rest: Node) -> void:
 	var new_id: String = "%s_%d" % [type_id, Time.get_ticks_msec()]
 	var staff: Node = rest.call("hire_staff", new_id, type_id)
 	if staff != null:
+		refresh()
+
+
+func _on_payroll_pressed() -> void:
+	var main_world: Node = get_tree().current_scene
+	if main_world == null:
+		return
+	var rest: Node = main_world.get_node_or_null("restaurant")
+	if rest != null:
+		rest.call("pay_staff_debts")
 		refresh()

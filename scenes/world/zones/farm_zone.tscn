@@ -1,0 +1,227 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/zone_root.gd" id="1_zone"]
+[ext_resource type="PackedScene" path="res://scenes/farming/farm_tile.tscn" id="2_tile"]
+[ext_resource type="Script" path="res://scripts/farming/farm_expansion_point.gd" id="3_expand"]
+[ext_resource type="Script" path="res://scripts/visual/manifest_sprite.gd" id="4_visual"]
+[ext_resource type="PackedScene" path="res://scenes/world/visual/zone_ground_visual.tscn" id="5_ground"]
+
+[node name="ZoneRoot" type="Node2D"]
+script = ExtResource("1_zone")
+zone_id = "farm"
+local_bounds = Rect2(530, 330, 520, 390)
+
+[node name="Ground" type="Node2D" parent="."]
+
+[node name="GroundLayers" type="Node2D" parent="Ground"]
+
+[node name="GroundVisual" parent="Ground/GroundLayers" instance=ExtResource("5_ground")]
+z_index = -18
+profile = 1
+area_rect = Rect2(525, 325, 530, 405)
+detail_seed = 11
+
+[node name="farm_fence_artwork" type="Node2D" parent="Ground"]
+script = ExtResource("4_visual")
+section_id = "environment"
+semantic_id = "farm_fence_gate"
+target_rect = Rect2(840, 648, 150, 68)
+artwork_z_index = -2
+
+[node name="Roads" type="Node2D" parent="."]
+[node name="Props" type="Node2D" parent="."]
+
+[node name="watering_can_artwork" type="Node2D" parent="Props"]
+script = ExtResource("4_visual")
+atlas_id = "farm_warehouse_utility_props_atlas"
+semantic_id = "watering_can"
+target_rect = Rect2(1018, 642, 44, 38)
+artwork_z_index = 1
+[node name="Buildings" type="Node2D" parent="."]
+[node name="Interactables" type="Node2D" parent="."]
+[node name="NPCMarkers" type="Node2D" parent="."]
+
+[node name="FarmWorkerHome01" type="Marker2D" parent="NPCMarkers"]
+position = Vector2(550, 680)
+
+[node name="FarmWorkerHome02" type="Marker2D" parent="NPCMarkers"]
+position = Vector2(550, 732)
+
+[node name="Paths" type="Node2D" parent="."]
+[node name="ExpansionAnchors" type="Node2D" parent="."]
+
+[node name="North" type="Marker2D" parent="ExpansionAnchors"]
+position = Vector2(790, 330)
+
+[node name="East" type="Marker2D" parent="ExpansionAnchors"]
+position = Vector2(1050, 525)
+
+[node name="South" type="Marker2D" parent="ExpansionAnchors"]
+position = Vector2(790, 720)
+
+[node name="West" type="Marker2D" parent="ExpansionAnchors"]
+position = Vector2(530, 525)
+
+[node name="farm_expansion_point" type="Node2D" parent="."]
+position = Vector2(780, 680)
+script = ExtResource("3_expand")
+
+[node name="tile_01" parent="." instance=ExtResource("2_tile")]
+position = Vector2(590, 370)
+tile_id = "farm_01"
+
+[node name="tile_02" parent="." instance=ExtResource("2_tile")]
+position = Vector2(650, 370)
+tile_id = "farm_02"
+
+[node name="tile_03" parent="." instance=ExtResource("2_tile")]
+position = Vector2(710, 370)
+tile_id = "farm_03"
+
+[node name="tile_04" parent="." instance=ExtResource("2_tile")]
+position = Vector2(770, 370)
+tile_id = "farm_04"
+
+[node name="tile_05" parent="." instance=ExtResource("2_tile")]
+position = Vector2(830, 370)
+tile_id = "farm_05"
+
+[node name="tile_06" parent="." instance=ExtResource("2_tile")]
+position = Vector2(890, 370)
+tile_id = "farm_06"
+
+[node name="tile_07" parent="." instance=ExtResource("2_tile")]
+position = Vector2(950, 370)
+tile_id = "farm_07"
+
+[node name="tile_08" parent="." instance=ExtResource("2_tile")]
+position = Vector2(1010, 370)
+tile_id = "farm_08"
+
+[node name="tile_09" parent="." instance=ExtResource("2_tile")]
+position = Vector2(590, 430)
+tile_id = "farm_09"
+
+[node name="tile_10" parent="." instance=ExtResource("2_tile")]
+position = Vector2(650, 430)
+tile_id = "farm_10"
+
+[node name="tile_11" parent="." instance=ExtResource("2_tile")]
+position = Vector2(710, 430)
+tile_id = "farm_11"
+
+[node name="tile_12" parent="." instance=ExtResource("2_tile")]
+position = Vector2(770, 430)
+tile_id = "farm_12"
+
+[node name="tile_13" parent="." instance=ExtResource("2_tile")]
+position = Vector2(830, 430)
+tile_id = "farm_13"
+
+[node name="tile_14" parent="." instance=ExtResource("2_tile")]
+position = Vector2(890, 430)
+tile_id = "farm_14"
+
+[node name="tile_15" parent="." instance=ExtResource("2_tile")]
+position = Vector2(950, 430)
+tile_id = "farm_15"
+
+[node name="tile_16" parent="." instance=ExtResource("2_tile")]
+position = Vector2(1010, 430)
+tile_id = "farm_16"
+
+[node name="tile_17" parent="." instance=ExtResource("2_tile")]
+position = Vector2(590, 490)
+tile_id = "farm_17"
+
+[node name="tile_18" parent="." instance=ExtResource("2_tile")]
+position = Vector2(650, 490)
+tile_id = "farm_18"
+
+[node name="tile_19" parent="." instance=ExtResource("2_tile")]
+position = Vector2(710, 490)
+tile_id = "farm_19"
+
+[node name="tile_20" parent="." instance=ExtResource("2_tile")]
+position = Vector2(770, 490)
+tile_id = "farm_20"
+
+[node name="tile_21" parent="." instance=ExtResource("2_tile")]
+position = Vector2(830, 490)
+tile_id = "farm_21"
+
+[node name="tile_22" parent="." instance=ExtResource("2_tile")]
+position = Vector2(890, 490)
+tile_id = "farm_22"
+
+[node name="tile_23" parent="." instance=ExtResource("2_tile")]
+position = Vector2(950, 490)
+tile_id = "farm_23"
+
+[node name="tile_24" parent="." instance=ExtResource("2_tile")]
+position = Vector2(1010, 490)
+tile_id = "farm_24"
+
+[node name="tile_25" parent="." instance=ExtResource("2_tile")]
+position = Vector2(590, 550)
+tile_id = "farm_25"
+
+[node name="tile_26" parent="." instance=ExtResource("2_tile")]
+position = Vector2(650, 550)
+tile_id = "farm_26"
+
+[node name="tile_27" parent="." instance=ExtResource("2_tile")]
+position = Vector2(710, 550)
+tile_id = "farm_27"
+
+[node name="tile_28" parent="." instance=ExtResource("2_tile")]
+position = Vector2(770, 550)
+tile_id = "farm_28"
+
+[node name="tile_29" parent="." instance=ExtResource("2_tile")]
+position = Vector2(830, 550)
+tile_id = "farm_29"
+
+[node name="tile_30" parent="." instance=ExtResource("2_tile")]
+position = Vector2(890, 550)
+tile_id = "farm_30"
+
+[node name="tile_31" parent="." instance=ExtResource("2_tile")]
+position = Vector2(950, 550)
+tile_id = "farm_31"
+
+[node name="tile_32" parent="." instance=ExtResource("2_tile")]
+position = Vector2(1010, 550)
+tile_id = "farm_32"
+
+[node name="tile_33" parent="." instance=ExtResource("2_tile")]
+position = Vector2(590, 610)
+tile_id = "farm_33"
+
+[node name="tile_34" parent="." instance=ExtResource("2_tile")]
+position = Vector2(650, 610)
+tile_id = "farm_34"
+
+[node name="tile_35" parent="." instance=ExtResource("2_tile")]
+position = Vector2(710, 610)
+tile_id = "farm_35"
+
+[node name="tile_36" parent="." instance=ExtResource("2_tile")]
+position = Vector2(770, 610)
+tile_id = "farm_36"
+
+[node name="tile_37" parent="." instance=ExtResource("2_tile")]
+position = Vector2(830, 610)
+tile_id = "farm_37"
+
+[node name="tile_38" parent="." instance=ExtResource("2_tile")]
+position = Vector2(890, 610)
+tile_id = "farm_38"
+
+[node name="tile_39" parent="." instance=ExtResource("2_tile")]
+position = Vector2(950, 610)
+tile_id = "farm_39"
+
+[node name="tile_40" parent="." instance=ExtResource("2_tile")]
+position = Vector2(1010, 610)
+tile_id = "farm_40"

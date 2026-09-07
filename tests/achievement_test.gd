@@ -23,7 +23,7 @@ func _run_tests() -> void:
 	original_dataset = data_manager.get_dataset("achievements").duplicate(true)
 	var production_result: Dictionary = data_manager.validate_achievement_definitions(original_dataset)
 	_expect(bool(production_result.get("ok", false)), "production achievement definitions are invalid")
-	_expect((production_result.get("definitions", {}) as Dictionary).is_empty(), "undefined production achievements were invented")
+	_expect((production_result.get("definitions", {}) as Dictionary).size() == 18, "production achievement count is wrong")
 
 	var test_dataset: Dictionary = _make_test_dataset()
 	var definition_result: Dictionary = data_manager.validate_achievement_definitions(test_dataset)
@@ -49,7 +49,9 @@ func _run_tests() -> void:
 
 	game_manager.money = 0
 	_expect(bool(tracker.call("record_maximum", "player_level", 2)), "maximum condition was not evaluated")
-	_expect(game_manager.money == 7, "achievement money reward was not granted")
+	_expect(game_manager.money == 0, "achievement reward was granted before Claim")
+	_expect(bool(tracker.call("claim_reward", "level_reward")), "completed achievement reward could not be claimed")
+	_expect(game_manager.money == 7, "claimed achievement money reward was not granted")
 	_expect(not bool(tracker.call("record_maximum", "player_level", 3)), "maximum achievement unlocked twice")
 	_expect(game_manager.money == 7, "achievement reward was duplicated")
 

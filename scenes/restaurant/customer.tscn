@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/restaurant/customer.gd" id="1_customer"]
+[ext_resource type="Script" path="res://scripts/visual/manifest_sprite.gd" id="2_visual"]
 
 [node name="customer" type="Node2D"]
 script = ExtResource("1_customer")
@@ -8,3 +9,14 @@ script = ExtResource("1_customer")
 [node name="customer_visual" type="Polygon2D" parent="."]
 polygon = PackedVector2Array(-10, -18, 10, -18, 10, 18, -10, 18)
 color = Color(0.364706, 0.560784, 0.780392, 1)
+
+[node name="AssetVisualRoot" type="Node2D" parent="."]
+script = ExtResource("2_visual")
+manifest_id = "characters"
+section_id = "characters"
+target_rect = Rect2(-12, -24, 24, 42)
+placeholder_paths = PackedStringArray("../customer_visual")
+
+[node name="StateIndicator" type="Sprite2D" parent="."]
+position = Vector2(0, -34)
+z_index = 5

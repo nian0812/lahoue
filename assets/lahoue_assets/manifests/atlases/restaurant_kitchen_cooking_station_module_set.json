@@ -1,0 +1,116 @@
+{
+  "atlas_id": "restaurant_kitchen_cooking_station_module_set",
+  "image": "world/props/restaurant_kitchen_cooking_station_module_set.png",
+  "canvas": {
+    "width": 1448,
+    "height": 1086
+  },
+  "coordinate_system": "top_left_origin_pixels",
+  "components": [
+    {
+      "x": 11,
+      "y": 16,
+      "width": 366,
+      "height": 394,
+      "semantic_id": "main_cooking_stove"
+    },
+    {
+      "x": 400,
+      "y": 32,
+      "width": 253,
+      "height": 345,
+      "semantic_id": "wok_frying_station"
+    },
+    {
+      "x": 670,
+      "y": 25,
+      "width": 248,
+      "height": 358,
+      "semantic_id": "soup_boiling_station"
+    },
+    {
+      "x": 942,
+      "y": 89,
+      "width": 231,
+      "height": 279,
+      "semantic_id": "grill_station"
+    },
+    {
+      "x": 1197,
+      "y": 66,
+      "width": 239,
+      "height": 279,
+      "semantic_id": "exhaust_hood"
+    },
+    {
+      "x": 15,
+      "y": 435,
+      "width": 305,
+      "height": 294,
+      "semantic_id": "prep_table"
+    },
+    {
+      "x": 341,
+      "y": 444,
+      "width": 241,
+      "height": 285,
+      "semantic_id": "cutting_station"
+    },
+    {
+      "x": 614,
+      "y": 397,
+      "width": 189,
+      "height": 321,
+      "semantic_id": "ingredient_shelf"
+    },
+    {
+      "x": 842,
+      "y": 410,
+      "width": 294,
+      "height": 341,
+      "semantic_id": "sink_washing_station"
+    },
+    {
+      "x": 1176,
+      "y": 402,
+      "width": 251,
+      "height": 336,
+      "semantic_id": "dish_rack"
+    },
+    {
+      "x": 18,
+      "y": 721,
+      "width": 339,
+      "height": 343,
+      "semantic_id": "serving_counter"
+    },
+    {
+      "x": 389,
+      "y": 768,
+      "width": 276,
+      "height": 292,
+      "semantic_id": "order_pickup_counter"
+    },
+    {
+      "x": 699,
+      "y": 782,
+      "width": 264,
+      "height": 271,
+      "semantic_id": "dish_return_station"
+    },
+    {
+      "x": 1003,
+      "y": 798,
+      "width": 199,
+      "height": 241,
+      "semantic_id": "spice_condiment_shelf"
+    },
+    {
+      "x": 1221,
+      "y": 774,
+      "width": 211,
+      "height": 267,
+      "semantic_id": "kitchen_utility_cart"
+    }
+  ]
+}

@@ -17,9 +17,13 @@ func _run_tests() -> void:
 	_cleanup_save_files()
 
 	save_manager.create_new_game()
+	_expect(game_manager.money == 200000, "new game did not start with the redesigned starter wallet")
+	_expect(inventory_manager.get_amount("rice") == 10 and inventory_manager.get_amount("wheat") == 10, "new game did not start with starter crops")
+
 	game_manager.day = 3
 	game_manager.money = 1200
-	_expect(inventory_manager.add_item("rice_seed", 2), "test inventory setup failed")
+	inventory_manager.clear()
+	_expect(inventory_manager.add_item("rice", 2), "test inventory setup failed")
 	_expect(save_manager.save_game(), "first valid save failed")
 	_expect(FileAccess.file_exists(save_manager.save_path), "primary save was not created")
 
@@ -30,10 +34,11 @@ func _run_tests() -> void:
 
 	_expect(_write_text(save_manager.save_path, "{corrupt"), "could not write corrupt fixture")
 	save_manager.create_new_game()
+	
 	_expect(save_manager.load_game(), "load did not recover from the valid backup")
 	_expect(game_manager.day == 3, "backup day state was not restored")
 	_expect(game_manager.money == 1200, "backup money state was not restored")
-	_expect(inventory_manager.get_amount("rice_seed") == 2, "backup inventory was not restored")
+	_expect(inventory_manager.get_amount("rice") == 2, "backup inventory was not restored")
 
 	var valid_state: Dictionary = _read_dictionary(save_manager.backup_path)
 	_expect(not valid_state.is_empty(), "could not read the valid backup fixture")

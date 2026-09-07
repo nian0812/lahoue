@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/buildings/building_base.tscn" id="1_base"]
+
+[node name="LogicRoot" instance=ExtResource("1_base")]
+building_id = "upgrade_board"
+building_label = "Upgrades"
+building_color = Color(0.5, 0.45, 0.3, 1)
+building_size = Vector2(80, 60)
+
+[node name="VisualRoot" parent="." index="0"]
+atlas_id = "building_purchase_upgrade_construction_kit"
+semantic_id = "building_blueprint_plan_board"
+target_rect = Rect2(-40, -60, 80, 60)

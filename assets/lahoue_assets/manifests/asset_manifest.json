@@ -1,0 +1,116 @@
+{
+  "package_id": "lahoue_assets",
+  "version": "final_artwork_integrity_fixed",
+  "manifests": {
+    "character_manifest": "manifests/character_manifest.json",
+    "animal_manifest": "manifests/animal_manifest.json",
+    "aquaculture_manifest": "manifests/aquaculture_manifest.json",
+    "crop_manifest": "manifests/crop_manifest.json",
+    "vehicle_manifest": "manifests/vehicle_manifest.json",
+    "dish_manifest": "manifests/dish_manifest.json",
+    "world_manifest": "manifests/world_manifest.json",
+    "ui_manifest": "manifests/ui_manifest.json",
+    "atlas_manifest": "manifests/atlas_manifest.json",
+    "validation_report": "manifests/validation_report.json"
+  },
+  "authoritative_assets": {
+    "building_purchase_upgrade_construction_kit": "ui/progression/building_purchase_upgrade_construction_kit.png",
+    "map_zone_expansion_visual_kit": "ui/progression/map_zone_expansion_visual_kit.png"
+  },
+  "validation_targets": {
+    "characters": 8,
+    "farm_animals": 5,
+    "aquaculture_species": 5,
+    "crops": 18,
+    "crop_pngs": 90,
+    "dish_icons": 50,
+    "truck_levels": 5,
+    "helicopter_levels": 5
+  },
+  "folder_counts": {
+    "animals": {
+      "file_count": 5
+    },
+    "aquaculture": {
+      "file_count": 5
+    },
+    "characters": {
+      "file_count": 8
+    },
+    "crops": {
+      "file_count": 90
+    },
+    "manifests": {
+      "file_count": 12
+    },
+    "manifests/atlases": {
+      "file_count": 13
+    },
+    "ui": {
+      "file_count": 0
+    },
+    "ui/achievements": {
+      "file_count": 1
+    },
+    "ui/customer_indicators": {
+      "file_count": 8
+    },
+    "ui/day_summary": {
+      "file_count": 14
+    },
+    "ui/dish_icons": {
+      "file_count": 50
+    },
+    "ui/frames": {
+      "file_count": 1
+    },
+    "ui/gameplay_icons": {
+      "file_count": 20
+    },
+    "ui/item_icons": {
+      "file_count": 22
+    },
+    "ui/money_icons": {
+      "file_count": 6
+    },
+    "ui/notifications": {
+      "file_count": 16
+    },
+    "ui/planting_icons": {
+      "file_count": 18
+    },
+    "ui/progression": {
+      "file_count": 3
+    },
+    "ui/status_action": {
+      "file_count": 28
+    },
+    "ui/tutorial": {
+      "file_count": 1
+    },
+    "vehicles": {
+      "file_count": 0
+    },
+    "vehicles/helicopters": {
+      "file_count": 5
+    },
+    "vehicles/trucks": {
+      "file_count": 5
+    },
+    "world": {
+      "file_count": 0
+    },
+    "world/buildings": {
+      "file_count": 12
+    },
+    "world/environment": {
+      "file_count": 2
+    },
+    "world/farm_plots": {
+      "file_count": 1
+    },
+    "world/props": {
+      "file_count": 6
+    }
+  }
+}

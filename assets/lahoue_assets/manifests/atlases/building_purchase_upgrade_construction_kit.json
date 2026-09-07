@@ -1,0 +1,151 @@
+{
+  "atlas_id": "building_purchase_upgrade_construction_kit",
+  "image": "ui/progression/building_purchase_upgrade_construction_kit.png",
+  "canvas": {
+    "width": 1448,
+    "height": 1086
+  },
+  "coordinate_system": "top_left_origin_pixels",
+  "components": [
+    {
+      "x": 34,
+      "y": 37,
+      "width": 142,
+      "height": 240,
+      "semantic_id": "money_requirement_marker"
+    },
+    {
+      "x": 210,
+      "y": 46,
+      "width": 145,
+      "height": 229,
+      "semantic_id": "building_purchase_marker"
+    },
+    {
+      "x": 386,
+      "y": 45,
+      "width": 146,
+      "height": 229,
+      "semantic_id": "building_owned_marker"
+    },
+    {
+      "x": 561,
+      "y": 44,
+      "width": 145,
+      "height": 230,
+      "semantic_id": "building_locked_marker"
+    },
+    {
+      "x": 742,
+      "y": 45,
+      "width": 145,
+      "height": 229,
+      "semantic_id": "upgrade_available_marker"
+    },
+    {
+      "x": 920,
+      "y": 45,
+      "width": 145,
+      "height": 228,
+      "semantic_id": "upgrade_locked_marker"
+    },
+    {
+      "x": 1095,
+      "y": 43,
+      "width": 148,
+      "height": 230,
+      "semantic_id": "upgrade_in_progress_marker"
+    },
+    {
+      "x": 1273,
+      "y": 44,
+      "width": 147,
+      "height": 229,
+      "semantic_id": "upgrade_complete_marker"
+    },
+    {
+      "x": 286,
+      "y": 288,
+      "width": 152,
+      "height": 228,
+      "semantic_id": "construction_in_progress_marker"
+    },
+    {
+      "x": 524,
+      "y": 288,
+      "width": 151,
+      "height": 221,
+      "semantic_id": "building_available_marker"
+    },
+    {
+      "x": 763,
+      "y": 288,
+      "width": 152,
+      "height": 226,
+      "semantic_id": "requirement_not_met_marker"
+    },
+    {
+      "x": 1004,
+      "y": 276,
+      "width": 158,
+      "height": 233,
+      "semantic_id": "upgrade_arrow_marker"
+    },
+    {
+      "x": 36,
+      "y": 575,
+      "width": 366,
+      "height": 200,
+      "semantic_id": "construction_site_small"
+    },
+    {
+      "x": 407,
+      "y": 522,
+      "width": 459,
+      "height": 272,
+      "semantic_id": "construction_site_medium"
+    },
+    {
+      "x": 860,
+      "y": 511,
+      "width": 580,
+      "height": 322,
+      "semantic_id": "construction_site_large"
+    },
+    {
+      "x": 24,
+      "y": 808,
+      "width": 204,
+      "height": 244,
+      "semantic_id": "construction_progress_indicator"
+    },
+    {
+      "x": 233,
+      "y": 800,
+      "width": 317,
+      "height": 265,
+      "semantic_id": "building_blueprint_plan_board"
+    },
+    {
+      "x": 565,
+      "y": 819,
+      "width": 258,
+      "height": 231,
+      "semantic_id": "construction_sign"
+    },
+    {
+      "x": 819,
+      "y": 873,
+      "width": 334,
+      "height": 177,
+      "semantic_id": "construction_materials_stack"
+    },
+    {
+      "x": 1146,
+      "y": 797,
+      "width": 292,
+      "height": 266,
+      "semantic_id": "wooden_scaffold"
+    }
+  ]
+}

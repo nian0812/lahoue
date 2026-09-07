@@ -1,6 +1,7 @@
 extends PanelContainer
 
 const vnd_format: GDScript = preload("res://scripts/ui/vnd_formatter.gd")
+const ui_style: GDScript = preload("res://scripts/ui/ui_style.gd")
 
 var tab_container: TabContainer
 var seeds_container: VBoxContainer
@@ -30,10 +31,11 @@ func _build_ui() -> void:
 
 	var header: HBoxContainer = HBoxContainer.new()
 	vbox.add_child(header)
+	header.add_child(ui_style.make_icon_slot("crop"))
 
 	var title: Label = Label.new()
 	title.text = "SHOP"
-	title.add_theme_font_size_override("font_size", 22)
+	title.theme_type_variation = &"PanelTitle"
 	header.add_child(title)
 
 	var close_btn: Button = Button.new()
@@ -49,7 +51,7 @@ func _build_ui() -> void:
 	# Seeds Tab
 	var scroll_seeds: ScrollContainer = ScrollContainer.new()
 	scroll_seeds.name = "Seeds"
-	scroll_seeds.custom_minimum_size = Vector2(500, 300)
+	scroll_seeds.custom_minimum_size = Vector2(0, 180)
 	tab_container.add_child(scroll_seeds)
 
 	var margin_seeds: MarginContainer = MarginContainer.new()
@@ -68,7 +70,7 @@ func _build_ui() -> void:
 	# Animals Tab
 	var scroll_animals: ScrollContainer = ScrollContainer.new()
 	scroll_animals.name = "Animals"
-	scroll_animals.custom_minimum_size = Vector2(500, 300)
+	scroll_animals.custom_minimum_size = Vector2(0, 180)
 	tab_container.add_child(scroll_animals)
 
 	var margin_animals: MarginContainer = MarginContainer.new()
@@ -86,48 +88,38 @@ func _build_ui() -> void:
 
 
 func _on_close_pressed() -> void:
-	visible = false
 	var ui_manager: Node = get_parent()
-	if ui_manager and ui_manager.get("active_panel") == self:
-		ui_manager.set("active_panel", null)
+	if ui_manager and ui_manager.has_method("_close_active_panel"):
+		ui_manager.call("_close_active_panel")
+	else:
+		visible = false
 
 
 func _refresh_seeds() -> void:
 	for child in seeds_container.get_children():
 		child.queue_free()
 
-	var items_dataset: Dictionary = data_manager.get_dataset("items")
-	var entries: Dictionary = items_dataset.get("entries", {})
+	var crops_dataset: Dictionary = data_manager.get_dataset("crops")
+	var entries: Dictionary = crops_dataset.get("entries", {})
 	var seed_ids: Array[String] = []
 
-	for item_id_value: Variant in entries:
-		var item_id: String = String(item_id_value)
-		var data: Dictionary = entries[item_id_value] as Dictionary
-		if String(data.get("category", "")) == "seed":
-			seed_ids.append(item_id)
+	for crop_id_value: Variant in entries:
+		var data: Dictionary = entries[crop_id_value] as Dictionary
+		var seed_item: String = String(data.get("seed_item", ""))
+		if not seed_item.is_empty() and not seed_ids.has(seed_item):
+			seed_ids.append(seed_item)
 
 	seed_ids.sort()
 
 	for seed_id: String in seed_ids:
-		var row: PanelContainer = PanelContainer.new()
-		var style: StyleBoxFlat = StyleBoxFlat.new()
-		style.bg_color = Color(0.1, 0.08, 0.06, 0.4)
-		style.corner_radius_top_left = 4
-		style.corner_radius_top_right = 4
-		style.corner_radius_bottom_right = 4
-		style.corner_radius_bottom_left = 4
-		style.content_margin_left = 12
-		style.content_margin_right = 12
-		style.content_margin_top = 8
-		style.content_margin_bottom = 8
-		row.add_theme_stylebox_override("panel", style)
+		var row: PanelContainer = ui_style.make_card()
 
 		var hbox: HBoxContainer = HBoxContainer.new()
 		hbox.add_theme_constant_override("separation", 16)
 		row.add_child(hbox)
+		hbox.add_child(ui_style.make_item_icon_slot(seed_id, "planting", true))
 
-		var item_data: Dictionary = entries[seed_id] as Dictionary
-		var buy_price: int = int(item_data.get("buy_price", 0))
+		var buy_price: int = data_manager.get_item_buy_price(seed_id)
 		var req_level: int = data_manager.get_item_required_level(seed_id)
 		var owned: int = inventory_manager.get_amount(seed_id)
 
@@ -147,7 +139,7 @@ func _refresh_seeds() -> void:
 		hbox.add_child(own_lbl)
 
 		var price_lbl: Label = Label.new()
-		price_lbl.text = vnd_format.format(buy_price)
+		price_lbl.text = vnd_format.format_vnd(buy_price)
 		price_lbl.custom_minimum_size = Vector2(80, 0)
 		price_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		if not can_afford:
@@ -160,10 +152,14 @@ func _refresh_seeds() -> void:
 
 		if not level_ok:
 			buy_btn.disabled = true
-			buy_btn.text = "Lv %d" % req_level
-			row.modulate = Color(1, 1, 1, 0.5)
-		elif not can_afford or not has_cap:
+			buy_btn.text = "Requires Level %d" % req_level
+			row.theme_type_variation = &"WarningCard"
+		elif not can_afford:
 			buy_btn.disabled = true
+			buy_btn.text = "Not Enough Money"
+		elif not has_cap:
+			buy_btn.disabled = true
+			buy_btn.text = "Warehouse Full"
 
 		buy_btn.pressed.connect(_on_buy_seed.bind(seed_id))
 		hbox.add_child(buy_btn)
@@ -172,7 +168,7 @@ func _refresh_seeds() -> void:
 			row.modulate = Color(1.2, 1.2, 1.2)
 			var t_data: Dictionary = {"title": vnd_format.format_item_name(seed_id), "description": "Category: Seed"}
 			if buy_price > 0:
-				t_data["cost"] = vnd_format.format(buy_price)
+				t_data["cost"] = vnd_format.format_vnd(buy_price)
 			var ui: Node = get_parent()
 			if ui and ui.has_method("show_tooltip"):
 				ui.call("show_tooltip", t_data, row.global_position)
@@ -196,7 +192,7 @@ func _on_buy_seed(seed_id: String) -> void:
 			if not inventory_manager.can_add(1):
 				ui_manager.get("notification_node").call("show_notification", "Inventory Full!", "error")
 			elif game_manager.money < data_manager.get_item_buy_price(seed_id):
-				ui_manager.get("notification_node").call("show_notification", "Not enough money", "error")
+				ui_manager.get("notification_node").call("show_notification", "Not Enough Money", "warning")
 
 
 func _refresh_animals() -> void:
@@ -213,18 +209,7 @@ func _refresh_animals() -> void:
 	animal_ids.sort()
 
 	for animal_id: String in animal_ids:
-		var row: PanelContainer = PanelContainer.new()
-		var style: StyleBoxFlat = StyleBoxFlat.new()
-		style.bg_color = Color(0.1, 0.08, 0.06, 0.4)
-		style.corner_radius_top_left = 4
-		style.corner_radius_top_right = 4
-		style.corner_radius_bottom_right = 4
-		style.corner_radius_bottom_left = 4
-		style.content_margin_left = 12
-		style.content_margin_right = 12
-		style.content_margin_top = 8
-		style.content_margin_bottom = 8
-		row.add_theme_stylebox_override("panel", style)
+		var row: PanelContainer = ui_style.make_card()
 
 		var hbox: HBoxContainer = HBoxContainer.new()
 		hbox.add_theme_constant_override("separation", 16)
@@ -243,25 +228,32 @@ func _refresh_animals() -> void:
 		var has_cap: bool = false
 		var curr_count: int = 0
 		var max_cap: int = 0
+		var owned_count: int = 0
 
 		if main_world and main_world.has_method("_get_animal_housing_count"):
 			curr_count = main_world.call("_get_animal_housing_count", housing_id)
 			max_cap = data_manager.get_animal_housing_capacity(housing_id, main_world.call("get_upgrade_level", housing_id))
 			has_cap = curr_count < max_cap
+			owned_count = main_world.call("_get_owned_animal_count", animal_id)
+
+		var housing_name: String = "Coop" if housing_id == "coop" else "Pig Pen" if housing_id == "pig_pen" else "Cow Barn" if housing_id == "cow_barn" else "Housing"
+		var icon_kind: String = "layer_chicken" if animal_id == "chicken" else "meat_chicken" if animal_id == "meat_chicken" else "animal"
+		hbox.add_child(ui_style.make_icon_slot(icon_kind, true))
 
 		var name_lbl: Label = Label.new()
-		name_lbl.text = vnd_format.format_item_name(animal_id)
+		name_lbl.text = String(animal_data.get("display_name", animal_id.replace("_", " ").capitalize()))
 		name_lbl.size_flags_horizontal = SIZE_EXPAND_FILL
 		hbox.add_child(name_lbl)
 
 		var cap_lbl: Label = Label.new()
-		cap_lbl.text = "Housing: %d/%d" % [curr_count, max_cap]
-		cap_lbl.custom_minimum_size = Vector2(100, 0)
+		var product_id: String = String(animal_data.get("primary_product", ""))
+		cap_lbl.text = "Product: %s | Owned: %d | %s: %d/%d" % [data_manager.get_item_display_name(product_id), owned_count, housing_name, curr_count, max_cap]
+		cap_lbl.custom_minimum_size = Vector2(280, 0)
 		cap_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		hbox.add_child(cap_lbl)
 
 		var price_lbl: Label = Label.new()
-		price_lbl.text = vnd_format.format(buy_price)
+		price_lbl.text = vnd_format.format_vnd(buy_price)
 		price_lbl.custom_minimum_size = Vector2(80, 0)
 		price_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		if not can_afford:
@@ -274,10 +266,14 @@ func _refresh_animals() -> void:
 
 		if not level_ok:
 			buy_btn.disabled = true
-			buy_btn.text = "Lv %d" % req_level
-			row.modulate = Color(1, 1, 1, 0.5)
-		elif not can_afford or not has_cap:
+			buy_btn.text = "Requires Level %d" % req_level
+			row.theme_type_variation = &"WarningCard"
+		elif not can_afford:
 			buy_btn.disabled = true
+			buy_btn.text = "Not Enough Money"
+		elif not has_cap:
+			buy_btn.disabled = true
+			buy_btn.text = "%s Full" % housing_name
 
 		buy_btn.pressed.connect(_on_buy_animal.bind(animal_id))
 		hbox.add_child(buy_btn)

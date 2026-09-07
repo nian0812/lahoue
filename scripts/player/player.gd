@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 signal interaction_requested(target: Node)
+signal interaction_completed(target: Node, succeeded: bool)
 signal selected_seed_changed(seed_item_id: String)
 
 @export var movement_speed: float = 240.0
@@ -86,21 +87,16 @@ func _get_available_seed_items() -> Array[String]:
 	crop_ids.sort()
 
 	for crop_id: String in crop_ids:
-		var crop_value: Variant = entries.get(crop_id)
-		if typeof(crop_value) != TYPE_DICTIONARY:
+		var crop_data_value: Variant = entries.get(crop_id)
+		if typeof(crop_data_value) != TYPE_DICTIONARY:
 			continue
 
-		var crop_data: Dictionary = crop_value as Dictionary
-		var required_level: int = data_manager.get_crop_required_level(crop_id)
-		if required_level <= 0 or required_level > game_manager.level:
-			continue
-
+		var crop_data: Dictionary = crop_data_value as Dictionary
 		var seed_item_id: String = String(crop_data.get("seed_item", ""))
-		var item_value: Variant = data_manager.get_entry("items", seed_item_id)
-		if typeof(item_value) != TYPE_DICTIONARY:
+		
+		if seed_item_id.is_empty():
 			continue
-		if String((item_value as Dictionary).get("category", "")) != "seed":
-			continue
+
 		if inventory_manager.has_item(seed_item_id) and not available_seed_items.has(seed_item_id):
 			available_seed_items.append(seed_item_id)
 
@@ -153,7 +149,8 @@ func _try_interact() -> void:
 		return
 
 	interaction_requested.emit(closest_target)
-	closest_target.call("interact", self)
+	var succeeded: bool = bool(closest_target.call("interact", self))
+	interaction_completed.emit(closest_target, succeeded)
 
 
 func _resolve_interactable(area: Area2D) -> Node:

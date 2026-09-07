@@ -1,8 +1,9 @@
 extends PanelContainer
 
 const vnd_format: GDScript = preload("res://scripts/ui/vnd_formatter.gd")
+const ui_style: GDScript = preload("res://scripts/ui/ui_style.gd")
 
-var item_list_container: VBoxContainer
+var item_list_container: GridContainer
 var capacity_label: Label
 var capacity_bar: ProgressBar
 var current_filter: String = "all"
@@ -37,10 +38,11 @@ func _build_ui() -> void:
 	# Header
 	var header: HBoxContainer = HBoxContainer.new()
 	vbox.add_child(header)
+	header.add_child(ui_style.make_icon_slot("warehouse"))
 
 	var title: Label = Label.new()
 	title.text = "INVENTORY"
-	title.add_theme_font_size_override("font_size", 22)
+	title.theme_type_variation = &"PanelTitle"
 	header.add_child(title)
 
 	var close_btn: Button = Button.new()
@@ -67,10 +69,11 @@ func _build_ui() -> void:
 	# Scroll area
 	var scroll: ScrollContainer = ScrollContainer.new()
 	scroll.size_flags_vertical = SIZE_EXPAND_FILL
-	scroll.custom_minimum_size = Vector2(500, 300)
+	scroll.custom_minimum_size = Vector2(0, 180)
 	vbox.add_child(scroll)
 
-	item_list_container = VBoxContainer.new()
+	item_list_container = GridContainer.new()
+	item_list_container.columns = 2
 	item_list_container.size_flags_horizontal = SIZE_EXPAND_FILL
 	item_list_container.add_theme_constant_override("separation", 8)
 	scroll.add_child(item_list_container)
@@ -112,10 +115,16 @@ func _on_filter_selected(filter_id: String) -> void:
 
 
 func _on_close_pressed() -> void:
-	visible = false
 	var ui_manager: Node = get_parent()
-	if ui_manager and ui_manager.get("active_panel") == self:
-		ui_manager.set("active_panel", null)
+	if ui_manager and ui_manager.has_method("_close_active_panel"):
+		ui_manager.call("_close_active_panel")
+	else:
+		visible = false
+
+
+func apply_responsive_layout(viewport_size: Vector2) -> void:
+	if item_list_container != null:
+		item_list_container.columns = 1 if viewport_size.x < 760.0 else 2
 
 
 func _on_inventory_changed(_items: Dictionary) -> void:
@@ -190,22 +199,15 @@ func _add_empty_message(text: String) -> void:
 
 
 func _add_item_row(item_id: String, amount: int, item_data: Dictionary) -> void:
-	var row: PanelContainer = PanelContainer.new()
-	var style: StyleBoxFlat = StyleBoxFlat.new()
-	style.bg_color = Color(0.1, 0.08, 0.06, 0.4)
-	style.corner_radius_top_left = 4
-	style.corner_radius_top_right = 4
-	style.corner_radius_bottom_right = 4
-	style.corner_radius_bottom_left = 4
-	style.content_margin_left = 12
-	style.content_margin_right = 12
-	style.content_margin_top = 8
-	style.content_margin_bottom = 8
-	row.add_theme_stylebox_override("panel", style)
-
+	var row: PanelContainer = ui_style.make_card()
+	row.size_flags_horizontal = SIZE_EXPAND_FILL
+	var vbox: VBoxContainer = VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 6)
+	row.add_child(vbox)
 	var hbox: HBoxContainer = HBoxContainer.new()
-	hbox.add_theme_constant_override("separation", 16)
-	row.add_child(hbox)
+	hbox.add_theme_constant_override("separation", 8)
+	vbox.add_child(hbox)
+	hbox.add_child(ui_style.make_item_icon_slot(item_id, "inventory", true))
 
 	var name_lbl: Label = Label.new()
 	name_lbl.text = vnd_format.format_item_name(item_id)
@@ -214,36 +216,38 @@ func _add_item_row(item_id: String, amount: int, item_data: Dictionary) -> void:
 
 	var qty_lbl: Label = Label.new()
 	qty_lbl.text = "x%d" % amount
-	qty_lbl.custom_minimum_size = Vector2(60, 0)
+	qty_lbl.custom_minimum_size = Vector2(46, 0)
 	qty_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	hbox.add_child(qty_lbl)
 
 	var price: int = data_manager.get_item_sell_price(item_id)
+	var actions: HBoxContainer = HBoxContainer.new()
+	actions.alignment = BoxContainer.ALIGNMENT_END
+	actions.add_theme_constant_override("separation", 6)
+	vbox.add_child(actions)
 	if price > 0:
 		var price_lbl: Label = Label.new()
-		price_lbl.text = vnd_format.format(price)
-		price_lbl.modulate = Color(0.8, 0.7, 0.4)
-		price_lbl.custom_minimum_size = Vector2(80, 0)
-		price_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		hbox.add_child(price_lbl)
+		price_lbl.text = "Unit value: %s" % vnd_format.format_vnd(price)
+		price_lbl.theme_type_variation = &"Premium"
+		price_lbl.size_flags_horizontal = SIZE_EXPAND_FILL
+		actions.add_child(price_lbl)
 
 		var sell_btn: Button = Button.new()
 		sell_btn.text = "Sell 1"
-		sell_btn.custom_minimum_size = Vector2(70, 0)
+		sell_btn.custom_minimum_size = Vector2(64, 0)
 		sell_btn.pressed.connect(func() -> void: inventory_manager.sell_item(item_id, 1))
-		hbox.add_child(sell_btn)
+		actions.add_child(sell_btn)
 
 		var sell_all_btn: Button = Button.new()
 		sell_all_btn.text = "Sell All"
-		sell_all_btn.custom_minimum_size = Vector2(80, 0)
+		sell_all_btn.custom_minimum_size = Vector2(72, 0)
 		sell_all_btn.pressed.connect(func() -> void: inventory_manager.sell_item(item_id, inventory_manager.get_amount(item_id)))
-		hbox.add_child(sell_all_btn)
+		actions.add_child(sell_all_btn)
 	else:
 		var no_sell: Label = Label.new()
 		no_sell.text = "Cannot sell"
-		no_sell.modulate = Color(1, 1, 1, 0.4)
-		no_sell.custom_minimum_size = Vector2(166, 0)
-		no_sell.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		hbox.add_child(no_sell)
+		no_sell.theme_type_variation = &"Muted"
+		no_sell.size_flags_horizontal = SIZE_EXPAND_FILL
+		actions.add_child(no_sell)
 
 	item_list_container.add_child(row)

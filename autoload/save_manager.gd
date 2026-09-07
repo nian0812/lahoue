@@ -11,12 +11,26 @@ const backup_path: String = "user://savegame.backup.json"
 const temporary_save_path: String = "user://savegame.tmp.json"
 const save_version: int = 1
 const max_safe_json_integer: int = 9007199254740991
+const legacy_warehouse_max_level: int = 10
 const animal_script: Script = preload("res://scripts/animals/animal.gd")
 const aquaculture_container_script: Script = preload("res://scripts/aquaculture/aquaculture_container.gd")
 const restaurant_table_script: Script = preload("res://scripts/restaurant/restaurant_table.gd")
 const customer_script: Script = preload("res://scripts/restaurant/customer.gd")
 const restaurant_script: Script = preload("res://scripts/restaurant/restaurant.gd")
 const staff_script: Script = preload("res://scripts/restaurant/staff.gd")
+const premium_market_script: Script = preload("res://scripts/premium_market/premium_market.gd")
+const tutorial_controller_script: Script = preload("res://scripts/tutorial/tutorial_controller.gd")
+
+var _request_new_game: bool = false
+
+func request_new_game() -> void:
+	_request_new_game = true
+
+func is_new_game_requested() -> bool:
+	return _request_new_game
+
+func clear_new_game_request() -> void:
+	_request_new_game = false
 
 
 func has_save() -> bool:
@@ -160,19 +174,21 @@ func _validate_save_state(state: Dictionary) -> Dictionary:
 		"exp": 0,
 		"level": 1,
 		"warehouse_level": 1,
-		"coop_level": 1,
-		"cow_barn_level": 1,
+		"coop_level": 0,
+		"pig_pen_level": 0,
+		"cow_barn_level": 0,
+		"resort_level": 0,
 		"restaurant_level": 0,
 		"kitchen_level": 0,
 		"beverage_counter": 0
 	}
 
 	for field: String in integer_minimums:
-		var integer_result: Dictionary = _read_integer_field(
-			state,
-			field,
-			int(integer_minimums[field])
-		)
+		var integer_result: Dictionary
+		if field == "pig_pen_level" or field == "resort_level":
+			integer_result = _read_integer_value(state.get(field, 0), "field '%s'" % field, int(integer_minimums[field]))
+		else:
+			integer_result = _read_integer_field(state, field, int(integer_minimums[field]))
 		if not bool(integer_result.get("ok", false)):
 			return _validation_error(String(integer_result.get("error", "invalid integer")))
 
@@ -214,13 +230,17 @@ func _validate_save_state(state: Dictionary) -> Dictionary:
 		return _validation_error("field 'exp' must be below the next level threshold")
 
 	var warehouse_level: int = int(normalized_state["warehouse_level"])
+	var warehouse_max_level: int = data_manager.get_progression_max_level("warehouse")
+	if warehouse_level > warehouse_max_level and warehouse_level <= legacy_warehouse_max_level:
+		warehouse_level = warehouse_max_level
+		normalized_state["warehouse_level"] = warehouse_level
 	var warehouse_capacity: int = data_manager.get_warehouse_capacity(warehouse_level)
 	if warehouse_capacity <= 0:
 		return _validation_error("field 'warehouse_level' is not defined in progression data")
 
-	for system_id: String in ["coop", "cow_barn"]:
-		var upgrade_level: int = int(normalized_state.get("%s_level" % system_id, 1))
-		if data_manager.get_progression_effect(system_id, upgrade_level) <= 0:
+	for system_id: String in ["coop", "pig_pen", "cow_barn", "resort"]:
+		var upgrade_level: int = int(normalized_state.get("%s_level" % system_id, 0))
+		if upgrade_level > 0 and data_manager.get_progression_effect(system_id, upgrade_level) <= 0:
 			return _validation_error("field '%s_level' is not defined in progression data" % system_id)
 	var aquaculture_level_result: Dictionary = _read_integer_value(
 		state.get("aquaculture_level", 1),
@@ -269,6 +289,14 @@ func _validate_save_state(state: Dictionary) -> Dictionary:
 
 	normalized_state["inventory"] = normalized_inventory
 
+	var economy_error: String = _validate_economy_progression_state(state, normalized_state)
+	if not economy_error.is_empty():
+		return _validation_error(economy_error)
+
+	var premium_market_error: String = _validate_premium_market_state(state, normalized_state)
+	if not premium_market_error.is_empty():
+		return _validation_error(premium_market_error)
+
 	var farming_error: String = _validate_farming_state(state, normalized_state)
 	if not farming_error.is_empty():
 		return _validation_error(farming_error)
@@ -294,6 +322,23 @@ func _validate_save_state(state: Dictionary) -> Dictionary:
 	if not achievement_error.is_empty():
 		return _validation_error(achievement_error)
 
+	var tutorial_result: Dictionary = tutorial_controller_script.validate_save_state(
+		state.get("tutorial", {})
+	)
+	if not bool(tutorial_result.get("ok", false)):
+		return _validation_error(String(tutorial_result.get("error", "invalid tutorial state")))
+	var normalized_tutorial: Dictionary = tutorial_result.get("state", {}) as Dictionary
+	if int(normalized_state.get("level", 1)) < maximum_player_level and String(normalized_tutorial.get("state", "")) == tutorial_controller_script.state_completed:
+		var completed_features: Dictionary = normalized_tutorial.get("completed_features", {}) as Dictionary
+		if bool(completed_features.get("level_10", false)):
+			completed_features["level_10"] = false
+			normalized_tutorial["completed_features"] = completed_features
+			normalized_tutorial["state"] = tutorial_controller_script.state_active
+			normalized_tutorial["current_tutorial"] = ""
+			normalized_tutorial["current_step"] = 0
+			normalized_tutorial["queue"] = []
+	normalized_state["tutorial"] = normalized_tutorial
+
 	var array_fields: Array[String] = [
 		"unlocked_recipes",
 		"unlocked_items"
@@ -307,6 +352,289 @@ func _validate_save_state(state: Dictionary) -> Dictionary:
 		"state": normalized_state,
 		"error": ""
 	}
+
+
+func _validate_economy_progression_state(state: Dictionary, normalized_state: Dictionary) -> String:
+	var is_legacy: bool = not state.has("building_ownership") or not state.has("purchased_farm_plots") or not state.has("pond_levels")
+	if is_legacy and int(normalized_state.get("restaurant_level", 0)) == 0 and int(normalized_state.get("level", 1)) >= data_manager.get_restaurant_unlock_level():
+		normalized_state["restaurant_level"] = 1
+		normalized_state["kitchen_level"] = 1
+	if is_legacy and int(normalized_state.get("restaurant_level", 0)) > 0:
+		var required_capacity: int = (state.get("restaurant_tables", {}) as Dictionary).size() if typeof(state.get("restaurant_tables", {})) == TYPE_DICTIONARY else 0
+		var migrated_restaurant_level: int = maxi(int(normalized_state.get("restaurant_level", 0)), int(normalized_state.get("kitchen_level", 0)))
+		while migrated_restaurant_level < data_manager.get_progression_max_level("restaurant") and data_manager.get_restaurant_table_capacity(migrated_restaurant_level) < required_capacity:
+			migrated_restaurant_level += 1
+		normalized_state["restaurant_level"] = migrated_restaurant_level
+		normalized_state["kitchen_level"] = migrated_restaurant_level
+	var maximum_plots: int = data_manager.get_farm_plot_maximum()
+	var purchased_plots: Array[String] = []
+	if is_legacy:
+		for plot_number: int in range(1, mini(maximum_plots, 6) + 1):
+			purchased_plots.append("farm_%02d" % plot_number)
+		var legacy_crops: Variant = state.get("crops", {})
+		if typeof(legacy_crops) == TYPE_DICTIONARY:
+			for tile_id_value: Variant in legacy_crops:
+				var tile_id: String = String(tile_id_value)
+				if not purchased_plots.has(tile_id):
+					purchased_plots.append(tile_id)
+	else:
+		var plots_value: Variant = state.get("purchased_farm_plots")
+		if typeof(plots_value) != TYPE_ARRAY:
+			return "field 'purchased_farm_plots' must be an array"
+		for tile_id_value: Variant in plots_value as Array:
+			if typeof(tile_id_value) != TYPE_STRING:
+				return "purchased farm plot ids must be strings"
+			var tile_id: String = String(tile_id_value)
+			if not tile_id.begins_with("farm_") or not tile_id.trim_prefix("farm_").is_valid_int():
+				return "purchased farm plot id '%s' is invalid" % tile_id
+			var plot_number: int = int(tile_id.trim_prefix("farm_"))
+			if plot_number < 1 or plot_number > maximum_plots or purchased_plots.has(tile_id):
+				return "purchased farm plot id '%s' is invalid or duplicated" % tile_id
+			purchased_plots.append(tile_id)
+	if not purchased_plots.has("farm_01") or purchased_plots.size() > maximum_plots:
+		return "purchased farm plots must include farm_01 and stay within the configured maximum"
+	purchased_plots.sort()
+	normalized_state["purchased_farm_plots"] = purchased_plots
+
+	var known_buildings: Array[String] = [
+		"warehouse", "coop", "pig_pen", "cow_barn", "restaurant",
+		"vip_area", "international_license", "helipad", "resort",
+	]
+	var ownership: Dictionary = {}
+	var ownership_value: Variant = state.get("building_ownership", {})
+	if not is_legacy and typeof(ownership_value) != TYPE_DICTIONARY:
+		return "field 'building_ownership' must be a dictionary"
+	var saved_ownership: Dictionary = ownership_value as Dictionary if typeof(ownership_value) == TYPE_DICTIONARY else {}
+	for building_id: String in known_buildings:
+		if not is_legacy and saved_ownership.has(building_id) and typeof(saved_ownership[building_id]) != TYPE_BOOL:
+			return "building ownership flag '%s' must be a boolean" % building_id
+		ownership[building_id] = bool(saved_ownership.get(building_id, false))
+	ownership["warehouse"] = true
+	if is_legacy:
+		ownership["coop"] = int(normalized_state.get("coop_level", 0)) > 0
+		ownership["pig_pen"] = int(normalized_state.get("pig_pen_level", 0)) > 0
+		ownership["cow_barn"] = int(normalized_state.get("cow_barn_level", 0)) > 0
+		ownership["restaurant"] = int(normalized_state.get("restaurant_level", 0)) > 0
+		ownership["resort"] = int(normalized_state.get("resort_level", 0)) > 0
+		var has_legacy_shipment: bool = typeof(state.get("premium_import_shipment", {})) == TYPE_DICTIONARY and not (state.get("premium_import_shipment", {}) as Dictionary).is_empty()
+		ownership["international_license"] = has_legacy_shipment
+		ownership["helipad"] = has_legacy_shipment
+
+	var levelled_buildings: Dictionary = {
+		"coop": int(normalized_state.get("coop_level", 0)),
+		"pig_pen": int(normalized_state.get("pig_pen_level", 0)),
+		"cow_barn": int(normalized_state.get("cow_barn_level", 0)),
+		"restaurant": int(normalized_state.get("restaurant_level", 0)),
+		"resort": int(normalized_state.get("resort_level", 0)),
+	}
+	for building_id: String in levelled_buildings:
+		var system_level: int = int(levelled_buildings[building_id])
+		if (system_level > 0) != bool(ownership[building_id]):
+			return "building ownership for '%s' is inconsistent with its level" % building_id
+		if not is_legacy and system_level > 0:
+			var required_level: int = data_manager.get_system_required_player_level(building_id, system_level)
+			if required_level <= 0 or int(normalized_state.get("level", 1)) < required_level:
+				return "building '%s' exceeds the saved player level permission" % building_id
+	if not is_legacy:
+		for building_id: String in ["vip_area", "international_license", "helipad"]:
+			if bool(ownership[building_id]) and int(normalized_state.get("level", 1)) < data_manager.get_building_unlock_level(building_id):
+				return "building '%s' is owned below its unlock level" % building_id
+	normalized_state["building_ownership"] = ownership
+
+	var kitchen_level: int = int(normalized_state.get("kitchen_level", 0))
+	var restaurant_level: int = int(normalized_state.get("restaurant_level", 0))
+	if is_legacy:
+		normalized_state["kitchen_level"] = restaurant_level
+	elif kitchen_level != restaurant_level:
+		return "kitchen level must match restaurant level"
+
+	var pond_assignments: Dictionary = {
+		"aquaculture_fish": "fish",
+		"aquaculture_shrimp": "shrimp",
+		"aquaculture_crab": "crab",
+		"aquaculture_squid": "squid",
+		"aquaculture_octopus": "octopus",
+	}
+	var pond_levels: Dictionary = {}
+	var pond_levels_value: Variant = state.get("pond_levels", {})
+	if not is_legacy and typeof(pond_levels_value) != TYPE_DICTIONARY:
+		return "field 'pond_levels' must be a dictionary"
+	var saved_pond_levels: Dictionary = pond_levels_value as Dictionary if typeof(pond_levels_value) == TYPE_DICTIONARY else {}
+	for container_id: String in pond_assignments:
+		var aquaculture_id: String = String(pond_assignments[container_id])
+		var fallback_level: int = 1 if is_legacy and int(normalized_state.get("level", 1)) >= data_manager.get_pond_unlock_level(aquaculture_id) else 0
+		var pond_result: Dictionary = _read_integer_value(saved_pond_levels.get(container_id, fallback_level), "pond level for '%s'" % container_id, 0)
+		if not bool(pond_result.get("ok", false)):
+			return String(pond_result.get("error", "invalid pond level"))
+		var pond_level: int = int(pond_result.get("value", 0))
+		if pond_level > data_manager.get_pond_max_level(aquaculture_id):
+			return "pond level for '%s' exceeds its maximum" % container_id
+		if not is_legacy and pond_level > 0 and int(normalized_state.get("level", 1)) < data_manager.get_pond_unlock_level(aquaculture_id):
+			return "pond '%s' is owned below its unlock level" % container_id
+		pond_levels[container_id] = pond_level
+	normalized_state["pond_levels"] = pond_levels
+
+	var resort_state_value: Variant = state.get("resort_state", {})
+	if typeof(resort_state_value) != TYPE_DICTIONARY:
+		return "field 'resort_state' must be a dictionary"
+	var resort_state: Dictionary = resort_state_value as Dictionary
+	var booking_elapsed_result: Dictionary = _read_number_value(resort_state.get("booking_elapsed", 0.0), "resort booking_elapsed", 0.0)
+	var total_bookings_result: Dictionary = _read_integer_value(resort_state.get("total_bookings", 0), "resort total_bookings", 0)
+	var tourist_traffic_result: Dictionary = _read_integer_value(resort_state.get("tourist_traffic", 0), "resort tourist_traffic", 0)
+	if not bool(booking_elapsed_result.get("ok", false)):
+		return String(booking_elapsed_result.get("error", "invalid resort timer"))
+	if not bool(total_bookings_result.get("ok", false)) or not bool(tourist_traffic_result.get("ok", false)):
+		return "resort counters are invalid"
+	var booking_elapsed: float = float(booking_elapsed_result.get("value", 0.0))
+	var resort_level: int = int(normalized_state.get("resort_level", 0))
+	if resort_level <= 0 and not is_zero_approx(booking_elapsed):
+		return "inactive resort has an active booking timer"
+	if resort_level > 0:
+		var interval: float = float(data_manager.get_progression_level_data("resort", resort_level).get("booking_interval", 0.0))
+		if interval <= 0.0 or booking_elapsed > interval:
+			return "resort booking timer exceeds its configured interval"
+	normalized_state["resort_state"] = {
+		"booking_elapsed": booking_elapsed,
+		"total_bookings": int(total_bookings_result.get("value", 0)),
+		"tourist_traffic": int(tourist_traffic_result.get("value", 0)),
+	}
+	return ""
+
+
+func _validate_premium_market_state(state: Dictionary, normalized_state: Dictionary) -> String:
+	var level_result: Dictionary = _read_integer_value(
+		state.get("helicopter_level", 1),
+		"field 'helicopter_level'",
+		1
+	)
+	if not bool(level_result.get("ok", false)):
+		return String(level_result.get("error", "invalid helicopter level"))
+	var helicopter_level: int = int(level_result.get("value", 1))
+	var helicopter_data: Dictionary = data_manager.get_helicopter_level_data(helicopter_level)
+	if helicopter_data.is_empty():
+		return "field 'helicopter_level' is not defined in progression data"
+	var saved_ownership: Dictionary = normalized_state.get("building_ownership", {}) as Dictionary
+	if state.has("building_ownership") and helicopter_level > 1 and not bool(saved_ownership.get("helipad", false)):
+		return "helicopter is upgraded without Helipad ownership"
+
+	var state_value: Variant = state.get("helicopter_state", premium_market_script.state_ready)
+	if typeof(state_value) != TYPE_STRING:
+		return "field 'helicopter_state' must be a string"
+	var helicopter_state: String = String(state_value)
+	if not premium_market_script.is_valid_state(helicopter_state):
+		return "field 'helicopter_state' is invalid"
+
+	var phase_value: Variant = state.get("helicopter_phase_elapsed", 0.0)
+	if typeof(phase_value) != TYPE_INT and typeof(phase_value) != TYPE_FLOAT:
+		return "field 'helicopter_phase_elapsed' must be a number"
+	var phase_elapsed: float = float(phase_value)
+	if not is_finite(phase_elapsed) or phase_elapsed < 0.0:
+		return "field 'helicopter_phase_elapsed' is invalid"
+
+	var shipment_value: Variant = state.get("premium_import_shipment", {})
+	if typeof(shipment_value) != TYPE_DICTIONARY:
+		return "field 'premium_import_shipment' must be a dictionary"
+	var shipment: Dictionary = shipment_value as Dictionary
+	if shipment.is_empty():
+		if helicopter_state != premium_market_script.state_ready or not is_zero_approx(phase_elapsed):
+			return "empty premium import shipment has an inconsistent helicopter state"
+		normalized_state["helicopter_level"] = helicopter_level
+		normalized_state["helicopter_state"] = premium_market_script.state_ready
+		normalized_state["helicopter_phase_elapsed"] = 0.0
+		normalized_state["premium_import_shipment"] = {}
+		return ""
+
+	var ownership: Dictionary = normalized_state.get("building_ownership", {}) as Dictionary
+	if not bool(ownership.get("international_license", false)) or not bool(ownership.get("helipad", false)):
+		return "active premium import shipment requires International License and Helipad ownership"
+	if state.has("building_ownership") and int(normalized_state.get("level", 1)) < data_manager.get_premium_market_unlock_level():
+		return "active premium import shipment exists below its unlock level"
+	if helicopter_state == premium_market_script.state_ready:
+		return "active premium import shipment has a ready helicopter"
+	if typeof(shipment.get("delivery_completed")) != TYPE_BOOL or bool(shipment.get("delivery_completed", false)):
+		return "active premium import shipment has an invalid delivery guard"
+
+	var items_value: Variant = shipment.get("items")
+	if typeof(items_value) != TYPE_DICTIONARY or (items_value as Dictionary).is_empty():
+		return "active premium import shipment must contain cargo"
+	var normalized_items: Dictionary = {}
+	var total_load: int = 0
+	var expected_cost: int = 0
+	var premium_ids: Array[String] = data_manager.get_premium_import_item_ids()
+	for item_id_value: Variant in items_value as Dictionary:
+		if typeof(item_id_value) != TYPE_STRING:
+			return "premium import cargo item ids must be strings"
+		var item_id: String = String(item_id_value)
+		if not premium_ids.has(item_id):
+			return "premium import shipment contains invalid item '%s'" % item_id
+		var amount_result: Dictionary = _read_integer_value(
+			(items_value as Dictionary)[item_id_value],
+			"premium import amount for '%s'" % item_id,
+			1
+		)
+		if not bool(amount_result.get("ok", false)):
+			return String(amount_result.get("error", "invalid premium import amount"))
+		var amount: int = int(amount_result.get("value", 0))
+		var unit_price: int = data_manager.get_item_buy_price(item_id)
+		if (
+			unit_price <= 0
+			or amount > max_safe_json_integer / unit_price
+			or expected_cost > max_safe_json_integer - unit_price * amount
+		):
+			return "premium import shipment cost is invalid"
+		total_load += amount
+		expected_cost += unit_price * amount
+		normalized_items[item_id] = amount
+	if total_load > int(helicopter_data.get("capacity", 0)):
+		return "premium import shipment exceeds helicopter capacity"
+
+	var cost_result: Dictionary = _read_integer_value(
+		shipment.get("total_cost"),
+		"premium import total cost",
+		1
+	)
+	if not bool(cost_result.get("ok", false)):
+		return String(cost_result.get("error", "invalid premium import cost"))
+	if int(cost_result.get("value", 0)) != expected_cost:
+		return "premium import total cost does not match cargo data"
+
+	var configured_time: float = float(helicopter_data.get("shipping_time", 0.0))
+	var total_value: Variant = shipment.get("shipping_total")
+	var remaining_value: Variant = shipment.get("shipping_remaining")
+	if (
+		(typeof(total_value) != TYPE_INT and typeof(total_value) != TYPE_FLOAT)
+		or (typeof(remaining_value) != TYPE_INT and typeof(remaining_value) != TYPE_FLOAT)
+	):
+		return "premium import shipping timers must be numbers"
+	var shipping_total: float = float(total_value)
+	var shipping_remaining: float = float(remaining_value)
+	if (
+		not is_finite(shipping_total)
+		or not is_equal_approx(shipping_total, configured_time)
+		or not is_finite(shipping_remaining)
+		or shipping_remaining < 0.0
+		or shipping_remaining > shipping_total
+	):
+		return "premium import shipping timer is invalid"
+	if helicopter_state == premium_market_script.state_departing and not is_equal_approx(shipping_remaining, shipping_total):
+		return "departing helicopter has an inconsistent shipping timer"
+	if (
+		(helicopter_state == premium_market_script.state_returning or helicopter_state == premium_market_script.state_arrived)
+		and not is_zero_approx(shipping_remaining)
+	):
+		return "returning helicopter has an incomplete shipping timer"
+
+	normalized_state["helicopter_level"] = helicopter_level
+	normalized_state["helicopter_state"] = helicopter_state
+	normalized_state["helicopter_phase_elapsed"] = phase_elapsed
+	normalized_state["premium_import_shipment"] = {
+		"items": normalized_items,
+		"total_cost": expected_cost,
+		"shipping_remaining": shipping_remaining,
+		"shipping_total": shipping_total,
+		"delivery_completed": false,
+	}
+	return ""
 
 
 func _validate_achievement_state(state: Dictionary, normalized_state: Dictionary) -> String:
@@ -390,6 +718,8 @@ func _validate_farming_state(state: Dictionary, normalized_state: Dictionary) ->
 			return "farming tile ids must be non-empty strings"
 
 		var tile_id: String = String(tile_id_value)
+		if not (normalized_state.get("purchased_farm_plots", []) as Array).has(tile_id):
+			return "crop is saved on unpurchased farm tile '%s'" % tile_id
 		if (
 			current_scene != null
 			and current_scene.has_method("has_farm_tile")
@@ -461,7 +791,7 @@ func _validate_animal_state(state: Dictionary, normalized_state: Dictionary) -> 
 	var animal_age: Dictionary = age_value as Dictionary
 	var normalized_animals: Dictionary = {}
 	var normalized_age: Dictionary = {}
-	var housing_counts: Dictionary = {"coop": 0, "cow_barn": 0}
+	var housing_counts: Dictionary = {"coop": 0, "pig_pen": 0, "cow_barn": 0}
 	var saved_day: int = int(normalized_state.get("day", 1))
 
 	for instance_id_value: Variant in animals:
@@ -643,7 +973,7 @@ func _validate_animal_state(state: Dictionary, normalized_state: Dictionary) -> 
 		if typeof(instance_id_value) != TYPE_STRING or not animals.has(String(instance_id_value)):
 			return "animal_age contains an orphan entry"
 	for housing_id: String in housing_counts:
-		var housing_level: int = int(normalized_state.get("%s_level" % housing_id, 1))
+		var housing_level: int = int(normalized_state.get("%s_level" % housing_id, 0))
 		var housing_capacity: int = data_manager.get_animal_housing_capacity(housing_id, housing_level)
 		if int(housing_counts[housing_id]) > housing_capacity:
 			return "animals exceed %s capacity at level %d" % [housing_id, housing_level]
@@ -884,12 +1214,15 @@ func _validate_aquaculture_state(state: Dictionary, normalized_state: Dictionary
 		var container_state: String = String(state_value)
 		if not aquaculture_container_script.is_valid_state(container_state):
 			return "state for aquaculture container '%s' is invalid" % container_id
+		var pond_level: int = int((normalized_state.get("pond_levels", {}) as Dictionary).get(container_id, 0))
+		if pond_level <= 0 and container_state != aquaculture_container_script.state_empty:
+			return "unpurchased aquaculture container '%s' has an active cycle" % container_id
 
 		var timer_value: Variant = saved_container.get("growth_timer")
 		if typeof(timer_value) != TYPE_INT and typeof(timer_value) != TYPE_FLOAT:
 			return "growth_timer for aquaculture container '%s' must be a number" % container_id
 		var growth_timer: float = float(timer_value)
-		var growth_time: float = data_manager.get_aquaculture_growth_time_seconds(aquaculture_id)
+		var growth_time: float = data_manager.get_pond_cycle_time(aquaculture_id, maxi(pond_level, 1))
 		if not is_finite(growth_timer) or growth_timer < 0.0 or growth_timer > growth_time:
 			return "growth_timer for aquaculture container '%s' is outside the valid range" % container_id
 
@@ -1013,7 +1346,6 @@ func _validate_restaurant_state(state: Dictionary, normalized_state: Dictionary)
 		return "field 'restaurant_tables' must be a dictionary"
 	var saved_tables: Dictionary = tables_value as Dictionary
 	var normalized_tables: Dictionary = {}
-	var current_scene: Node = get_tree().current_scene
 	var maximum_tables: int = data_manager.get_restaurant_table_capacity(maxi(restaurant_level, 1))
 	if saved_tables.size() > maximum_tables:
 		return "restaurant table state exceeds configured capacity"
@@ -1024,7 +1356,8 @@ func _validate_restaurant_state(state: Dictionary, normalized_state: Dictionary)
 		var table_id: String = String(table_id_value)
 		if table_id.is_empty() or table_id != table_id.to_lower() or not table_id.is_valid_identifier():
 			return "restaurant table id '%s' is invalid" % table_id
-		if current_scene != null and current_scene.has_method("has_restaurant_table") and not bool(current_scene.call("has_restaurant_table", table_id)):
+		var table_number_text: String = table_id.trim_prefix("table_")
+		if not table_id.begins_with("table_") or not table_number_text.is_valid_int() or int(table_number_text) < 1 or int(table_number_text) > maximum_tables:
 			return "restaurant state contains unknown table '%s'" % table_id
 
 		var table_state_value: Variant = saved_tables[table_id_value]
@@ -1075,9 +1408,6 @@ func _validate_restaurant_state(state: Dictionary, normalized_state: Dictionary)
 	var saved_customers: Dictionary = customers_value as Dictionary
 	if restaurant_level == 0 and not saved_customers.is_empty():
 		return "locked restaurant contains customers"
-	if saved_customers.size() > maximum_tables:
-		return "restaurant customer state exceeds configured table capacity"
-
 	var normalized_customers: Dictionary = {}
 	var claimed_tables: Dictionary = {}
 	for customer_id_value: Variant in saved_customers:
@@ -1162,6 +1492,16 @@ func _validate_restaurant_staff(
 	var player_level: int = int(normalized_state.get("level", 1))
 	var normalized_staff: Dictionary = {}
 	var claimed_jobs: Dictionary = {}
+	var default_staff_type: String = String(data_manager.get_staff_settings().get("default_staff_type", "waiter"))
+	var has_saved_chef: bool = false
+	for saved_staff_entry_value: Variant in saved_staff.values():
+		if typeof(saved_staff_entry_value) != TYPE_DICTIONARY:
+			continue
+		var saved_staff_entry: Dictionary = saved_staff_entry_value as Dictionary
+		var saved_role: String = String(saved_staff_entry.get("staff_type_id", default_staff_type))
+		if saved_role == "chef":
+			has_saved_chef = true
+			break
 	for staff_id_value: Variant in saved_staff:
 		if typeof(staff_id_value) != TYPE_STRING:
 			return "staff ids must be strings"
@@ -1172,19 +1512,35 @@ func _validate_restaurant_staff(
 		if typeof(saved_staff_value) != TYPE_DICTIONARY:
 			return "staff state for '%s' must be a dictionary" % staff_id
 		var saved_entry: Dictionary = saved_staff_value as Dictionary
-		var staff_type_value: Variant = saved_entry.get("staff_type_id")
+		var staff_type_value: Variant = saved_entry.get("staff_type_id", default_staff_type)
 		var state_value: Variant = saved_entry.get("state")
 		if typeof(staff_type_value) != TYPE_STRING or typeof(state_value) != TYPE_STRING:
 			return "staff '%s' has invalid identity or state" % staff_id
 		var staff_type_id: String = String(staff_type_value)
+		if staff_type_id.is_empty():
+			staff_type_id = default_staff_type
 		var staff_data: Dictionary = data_manager.get_staff_type(staff_type_id)
 		if staff_data.is_empty():
 			return "staff '%s' has unknown type '%s'" % [staff_id, staff_type_id]
-		if player_level < int(staff_data.get("unlock_level", 0)):
+		if state.has("building_ownership") and player_level < int(staff_data.get("unlock_level", 0)):
 			return "staff '%s' is locked at the saved player level" % staff_id
 		var staff_state: String = String(state_value)
 		if not staff_script.is_valid_state(staff_state):
 			return "staff '%s' has invalid state '%s'" % [staff_id, staff_state]
+		var paid_value: Variant = saved_entry.get("is_paid", true)
+		if typeof(paid_value) != TYPE_BOOL:
+			return "staff '%s' payroll status must be a boolean" % staff_id
+		var is_paid: bool = bool(paid_value)
+		var debt_result: Dictionary = _read_integer_value(saved_entry.get("salary_debt", 0), "salary debt for staff '%s'" % staff_id, 0)
+		if not bool(debt_result.get("ok", false)):
+			return String(debt_result.get("error", "invalid staff salary debt"))
+		var salary_debt: int = int(debt_result.get("value", 0))
+		if is_paid != (salary_debt == 0):
+			return "staff '%s' payroll status is inconsistent with salary debt" % staff_id
+		if not is_paid and staff_state != staff_script.state_off_duty and staff_state != staff_script.state_returning:
+			return "unpaid staff '%s' must be OFF DUTY or returning home" % staff_id
+		if is_paid and staff_state == staff_script.state_off_duty:
+			return "paid staff '%s' cannot remain OFF DUTY" % staff_id
 		var position_result: Dictionary = _validate_staff_position(saved_entry.get("position"), staff_id)
 		if not bool(position_result.get("ok", false)):
 			return String(position_result.get("error", "invalid staff position"))
@@ -1192,7 +1548,7 @@ func _validate_restaurant_staff(
 		if typeof(active_job_value) != TYPE_DICTIONARY:
 			return "staff '%s' active_job must be a dictionary" % staff_id
 		var active_job: Dictionary = active_job_value as Dictionary
-		if staff_state == staff_script.state_idle or staff_state == staff_script.state_returning:
+		if staff_state == staff_script.state_idle or staff_state == staff_script.state_returning or staff_state == staff_script.state_off_duty:
 			if not active_job.is_empty():
 				return "staff '%s' has a job while idle or returning" % staff_id
 		else:
@@ -1204,7 +1560,10 @@ func _validate_restaurant_staff(
 				normalized_tables,
 				normalized_customers,
 				normalized_cooking,
-				claimed_jobs
+				normalized_state.get("animals", {}) as Dictionary,
+				normalized_state.get("aquaculture", {}) as Dictionary,
+				claimed_jobs,
+				staff_type_id == "waiter" and not has_saved_chef
 			)
 			if not bool(job_result.get("ok", false)):
 				return String(job_result.get("error", "invalid staff job"))
@@ -1214,6 +1573,8 @@ func _validate_restaurant_staff(
 			"position": position_result.get("value", {}),
 			"state": staff_state,
 			"active_job": active_job.duplicate(true),
+			"is_paid": is_paid,
+			"salary_debt": salary_debt,
 		}
 	normalized_state["staff"] = normalized_staff
 	return ""
@@ -1227,7 +1588,10 @@ func _validate_staff_job(
 	tables: Dictionary,
 	customers: Dictionary,
 	cooking: Dictionary,
-	claimed_jobs: Dictionary
+	animals: Dictionary,
+	aquaculture: Dictionary,
+	claimed_jobs: Dictionary,
+	allow_waiter_cook_fallback: bool
 ) -> Dictionary:
 	var job_type_value: Variant = active_job.get("job_type")
 	var target_id_value: Variant = active_job.get("target_id")
@@ -1235,7 +1599,10 @@ func _validate_staff_job(
 		return _value_error("staff '%s' job identity is invalid" % staff_id)
 	var job_type: String = String(job_type_value)
 	var target_id: String = String(target_id_value)
-	if not staff_script.is_valid_job_type(job_type) or not (staff_data.get("allowed_jobs", []) as Array).has(job_type):
+	var role_allows_job: bool = (staff_data.get("allowed_jobs", []) as Array).has(job_type) or (
+		allow_waiter_cook_fallback and job_type == staff_script.job_cook
+	)
+	if not staff_script.is_valid_job_type(job_type) or not role_allows_job:
 		return _value_error("staff '%s' cannot perform job '%s'" % [staff_id, job_type])
 	if target_id.is_empty():
 		return _value_error("staff '%s' job target is empty" % staff_id)
@@ -1253,6 +1620,28 @@ func _validate_staff_job(
 		var table: Dictionary = tables.get(target_id, {}) as Dictionary
 		if String(table.get("state", "")) != restaurant_table_script.state_needs_cleanup:
 			return _value_error("staff '%s' cleaning job references a clean table" % staff_id)
+	elif job_type == staff_script.job_harvest:
+		if elapsed != 0.0:
+			return _value_error("staff '%s' harvest job has an invalid timer" % staff_id)
+		if staff_state != staff_script.state_moving and staff_state != staff_script.state_harvesting:
+			return _value_error("staff '%s' harvest job has an inconsistent state" % staff_id)
+		var current_scene: Node = get_tree().current_scene
+		if current_scene != null and current_scene.has_method("has_farm_tile") and not bool(current_scene.call("has_farm_tile", target_id)):
+			return _value_error("staff '%s' harvest job references unknown farm tile '%s'" % [staff_id, target_id])
+	elif job_type == staff_script.job_collect_animal:
+		if elapsed != 0.0:
+			return _value_error("staff '%s' animal collection job has an invalid timer" % staff_id)
+		if staff_state != staff_script.state_moving and staff_state != staff_script.state_collecting:
+			return _value_error("staff '%s' animal collection job has an inconsistent state" % staff_id)
+		if not animals.has(target_id):
+			return _value_error("staff '%s' animal collection job references unknown animal '%s'" % [staff_id, target_id])
+	elif job_type == staff_script.job_collect_aquaculture:
+		if elapsed != 0.0:
+			return _value_error("staff '%s' aquaculture collection job has an invalid timer" % staff_id)
+		if staff_state != staff_script.state_moving and staff_state != staff_script.state_collecting:
+			return _value_error("staff '%s' aquaculture collection job has an inconsistent state" % staff_id)
+		if not aquaculture.has(target_id):
+			return _value_error("staff '%s' aquaculture collection job references unknown container '%s'" % [staff_id, target_id])
 	else:
 		if elapsed != 0.0:
 			return _value_error("staff '%s' non-cleaning job has an invalid timer" % staff_id)
@@ -1575,16 +1964,18 @@ func _read_integer_value(value: Variant, label: String, minimum: int) -> Diction
 func _read_number_field(state: Dictionary, field: String, minimum: float) -> Dictionary:
 	if not state.has(field):
 		return _value_error("missing required field '%s'" % field)
+	return _read_number_value(state[field], "field '%s'" % field, minimum)
 
-	var value: Variant = state[field]
+
+func _read_number_value(value: Variant, label: String, minimum: float) -> Dictionary:
 	if typeof(value) != TYPE_INT and typeof(value) != TYPE_FLOAT:
-		return _value_error("field '%s' must be a number" % field)
+		return _value_error("%s must be a number" % label)
 
 	var number_value: float = float(value)
 	if not is_finite(number_value):
-		return _value_error("field '%s' must be finite" % field)
+		return _value_error("%s must be finite" % label)
 	if number_value < minimum:
-		return _value_error("field '%s' must be at least %s" % [field, minimum])
+		return _value_error("%s must be at least %s" % [label, minimum])
 
 	return {
 		"ok": true,
@@ -1748,13 +2139,29 @@ func _build_save_state() -> Dictionary:
 		else staff_value
 	)
 	var progression_state: Dictionary = _get_progression_save_state()
-	state["coop_level"] = progression_state.get("coop_level", 1)
-	state["cow_barn_level"] = progression_state.get("cow_barn_level", 1)
+	state["coop_level"] = progression_state.get("coop_level", 0)
+	state["pig_pen_level"] = progression_state.get("pig_pen_level", 0)
+	state["cow_barn_level"] = progression_state.get("cow_barn_level", 0)
 	state["aquaculture_level"] = progression_state.get("aquaculture_level", 1)
+	state["resort_level"] = progression_state.get("resort_level", 0)
+	state["purchased_farm_plots"] = (progression_state.get("purchased_farm_plots", ["farm_01"]) as Array).duplicate()
+	state["building_ownership"] = (progression_state.get("building_ownership", {"warehouse": true}) as Dictionary).duplicate(true)
+	state["pond_levels"] = (progression_state.get("pond_levels", {}) as Dictionary).duplicate(true)
+	state["resort_state"] = (progression_state.get("resort_state", {}) as Dictionary).duplicate(true)
 	state["beverage_counter"] = 0
 	state["unlocked_recipes"] = []
 	state["unlocked_items"] = []
 	state["achievements"] = _get_achievement_save_state()
+	var truck_state: Dictionary = _get_truck_save_state()
+	state["truck_level"] = truck_state.get("truck_level", 1)
+	state["truck_count"] = truck_state.get("truck_count", 1)
+	state["truck_deliveries"] = truck_state.get("deliveries", [])
+	var premium_market_state: Dictionary = _get_premium_market_save_state()
+	state["helicopter_level"] = premium_market_state.get("helicopter_level", 1)
+	state["helicopter_state"] = premium_market_state.get("helicopter_state", premium_market_script.state_ready)
+	state["helicopter_phase_elapsed"] = premium_market_state.get("helicopter_phase_elapsed", 0.0)
+	state["premium_import_shipment"] = premium_market_state.get("premium_import_shipment", {})
+	state["tutorial"] = _get_tutorial_save_state()
 
 	return state
 
@@ -1768,23 +2175,68 @@ func _apply_save_state(state: Dictionary) -> void:
 	_apply_aquaculture_save_state(state)
 	_apply_restaurant_save_state(state)
 	_apply_achievement_save_state(state.get("achievements", []) as Array)
+	_apply_truck_save_state({
+		"truck_level": state.get("truck_level", 1),
+		"truck_count": state.get("truck_count", 1),
+		"deliveries": state.get("truck_deliveries", [])
+	})
+	_apply_premium_market_save_state({
+		"helicopter_level": state.get("helicopter_level", 1),
+		"helicopter_state": state.get("helicopter_state", premium_market_script.state_ready),
+		"helicopter_phase_elapsed": state.get("helicopter_phase_elapsed", 0.0),
+		"premium_import_shipment": state.get("premium_import_shipment", {}),
+	})
+	_apply_tutorial_save_state(state.get("tutorial", {}) as Dictionary)
 
 
 func create_new_game() -> void:
+	var progression: Dictionary = data_manager.get_dataset("progression")
+	var entries: Dictionary = progression.get("entries", {}) as Dictionary
+	var starting_money: int = int(entries.get("starting_money", 0))
+
 	game_manager.apply_save_state({
 		"day": 1,
 		"day_timer": 0.0,
-		"money": 0,
+		"money": starting_money,
 		"exp": 0,
 		"level": 1,
 		"reputation": 1.0
 	})
 
 	inventory_manager.clear()
+	var starting_items: Variant = entries.get("starting_items")
+	if typeof(starting_items) == TYPE_DICTIONARY:
+		for item_id_val: Variant in (starting_items as Dictionary):
+			var item_id: String = String(item_id_val)
+			var amount: int = int((starting_items as Dictionary).get(item_id, 0))
+			if amount > 0:
+				inventory_manager.add_item(item_id, amount)
 	_apply_progression_save_state({
-		"coop_level": 1,
-		"cow_barn_level": 1,
+		"coop_level": 0,
+		"pig_pen_level": 0,
+		"cow_barn_level": 0,
 		"aquaculture_level": 1,
+		"resort_level": 0,
+		"purchased_farm_plots": ["farm_01"],
+		"building_ownership": {
+			"warehouse": true,
+			"coop": false,
+			"pig_pen": false,
+			"cow_barn": false,
+			"restaurant": false,
+			"vip_area": false,
+			"international_license": false,
+			"helipad": false,
+			"resort": false,
+		},
+		"pond_levels": {
+			"aquaculture_fish": 0,
+			"aquaculture_shrimp": 0,
+			"aquaculture_crab": 0,
+			"aquaculture_squid": 0,
+			"aquaculture_octopus": 0,
+		},
+		"resort_state": {"booking_elapsed": 0.0, "total_bookings": 0, "tourist_traffic": 0},
 	})
 	_apply_farming_save_state({
 		"crops": {},
@@ -1793,7 +2245,7 @@ func create_new_game() -> void:
 	_apply_animal_save_state({
 		"animals": {},
 		"animal_age": {},
-		"animals_initialized": false
+		"animals_initialized": true
 	})
 	_apply_aquaculture_save_state({"aquaculture": {}})
 	_apply_restaurant_save_state({
@@ -1807,23 +2259,47 @@ func create_new_game() -> void:
 		"staff": {},
 	})
 	_apply_achievement_save_state([])
+	_apply_truck_save_state({
+		"truck_level": 1,
+		"truck_count": 1,
+		"deliveries": []
+	})
+	_apply_premium_market_save_state({
+		"helicopter_level": 1,
+		"helicopter_state": premium_market_script.state_ready,
+		"helicopter_phase_elapsed": 0.0,
+		"premium_import_shipment": {},
+	})
+	_apply_tutorial_save_state({})
 
 
 func _get_progression_save_state() -> Dictionary:
 	var current_scene: Node = get_tree().current_scene
 	if current_scene == null or not current_scene.has_method("get_progression_save_state"):
 		return {
-			"coop_level": 1,
-			"cow_barn_level": 1,
+			"coop_level": 0,
+			"pig_pen_level": 0,
+			"cow_barn_level": 0,
 			"aquaculture_level": 1,
+			"resort_level": 0,
+			"purchased_farm_plots": ["farm_01"],
+			"building_ownership": {"warehouse": true},
+			"pond_levels": {},
+			"resort_state": {},
 		}
 	var progression_state_value: Variant = current_scene.call("get_progression_save_state")
 	if typeof(progression_state_value) != TYPE_DICTIONARY:
 		push_error("save_manager: current scene returned an invalid progression save state")
 		return {
-			"coop_level": progression_state_value,
-			"cow_barn_level": 1,
+			"coop_level": 0,
+			"pig_pen_level": 0,
+			"cow_barn_level": 0,
 			"aquaculture_level": 1,
+			"resort_level": 0,
+			"purchased_farm_plots": ["farm_01"],
+			"building_ownership": {"warehouse": true},
+			"pond_levels": {},
+			"resort_state": {},
 		}
 	return progression_state_value as Dictionary
 
@@ -1950,6 +2426,60 @@ func _apply_achievement_save_state(state: Array) -> void:
 	var current_scene: Node = get_tree().current_scene
 	if current_scene != null and current_scene.has_method("apply_achievement_save_state"):
 		current_scene.call("apply_achievement_save_state", state)
+
+
+func _get_tutorial_save_state() -> Dictionary:
+	var current_scene: Node = get_tree().current_scene
+	if current_scene == null or not current_scene.has_method("get_tutorial_save_state"):
+		return {}
+	var tutorial_state_value: Variant = current_scene.call("get_tutorial_save_state")
+	if typeof(tutorial_state_value) != TYPE_DICTIONARY:
+		push_error("save_manager: current scene returned an invalid tutorial save state")
+		return {}
+	return (tutorial_state_value as Dictionary).duplicate(true)
+
+
+func _apply_tutorial_save_state(state: Dictionary) -> void:
+	var current_scene: Node = get_tree().current_scene
+	if current_scene != null and current_scene.has_method("apply_tutorial_save_state"):
+		current_scene.call("apply_tutorial_save_state", state)
+
+
+func _get_truck_save_state() -> Dictionary:
+	var current_scene: Node = get_tree().current_scene
+	if current_scene == null:
+		return {}
+	var truck_mgr: Node = current_scene.get_node_or_null("truck_manager")
+	if truck_mgr == null or not truck_mgr.has_method("get_save_state"):
+		return {}
+	return truck_mgr.call("get_save_state") as Dictionary
+
+
+func _apply_truck_save_state(state: Dictionary) -> void:
+	var current_scene: Node = get_tree().current_scene
+	if current_scene != null:
+		var truck_mgr: Node = current_scene.get_node_or_null("truck_manager")
+		if truck_mgr != null and truck_mgr.has_method("apply_save_state"):
+			truck_mgr.call("apply_save_state", state)
+
+
+func _get_premium_market_save_state() -> Dictionary:
+	var current_scene: Node = get_tree().current_scene
+	if current_scene == null:
+		return {}
+	var premium_market: Node = current_scene.get_node_or_null("hub/premium_market")
+	if premium_market == null or not premium_market.has_method("get_save_state"):
+		return {}
+	return premium_market.call("get_save_state") as Dictionary
+
+
+func _apply_premium_market_save_state(state: Dictionary) -> void:
+	var current_scene: Node = get_tree().current_scene
+	if current_scene == null:
+		return
+	var premium_market: Node = current_scene.get_node_or_null("hub/premium_market")
+	if premium_market != null and premium_market.has_method("apply_save_state"):
+		premium_market.call("apply_save_state", state)
 
 
 func _fail_save(reason: String) -> bool:

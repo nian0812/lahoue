@@ -1,5 +1,7 @@
 extends Area2D
 
+const asset_catalog: GDScript = preload("res://scripts/visual/lahoue_asset_catalog.gd")
+
 signal animal_interacted(animal_instance_id: String, animal_id: String)
 signal state_changed(animal_instance_id: String, state: String)
 signal product_created(animal_instance_id: String, item_id: String, amount: int, kind: String)
@@ -74,6 +76,10 @@ func _process(delta: float) -> void:
 	# Subtle breathing/bobbing
 	body.scale.y = 1.0 + sin(_idle_offset * 2.0) * 0.05
 	body.scale.x = 1.0 + cos(_idle_offset * 1.5) * 0.02
+	var artwork_root: Node2D = get_node_or_null("AssetVisualRoot") as Node2D
+	if artwork_root != null:
+		artwork_root.scale.y = body.scale.y
+		artwork_root.scale.x = body.scale.x
 
 
 func _initialize_from_data() -> void:
@@ -348,9 +354,40 @@ func _update_visual() -> void:
 	if not is_node_ready():
 		return
 
-	body.color = animal_color
+	match animal_id:
+		"chicken":
+			body.color = Color("#efd56f")
+		"meat_chicken":
+			body.color = Color("#cf7657")
+		"pig":
+			body.color = Color("#e99aab")
+		"dairy_cow":
+			body.color = Color("#e5e5df")
+		"cow":
+			body.color = Color("#8c6045")
+		_:
+			body.color = animal_color
 	body.modulate.a = 0.45 if current_state == state_completed else 1.0
+	var artwork_root: Node = get_node_or_null("AssetVisualRoot")
+	if artwork_root != null:
+		var asset_id: String = asset_catalog.get_bound_id("animals", animal_id)
+		if not asset_id.is_empty() and String(artwork_root.get("semantic_id")) != asset_id:
+			artwork_root.call("set_semantic_id", asset_id)
+		artwork_root.call(
+			"set_artwork_modulate",
+			Color(1.0, 1.0, 1.0, 0.45 if current_state == state_completed else 1.0)
+		)
 	product_indicator.visible = not pending_products.is_empty()
+	
+	var name_lbl: Label = get_node_or_null("name_label") as Label
+	if name_lbl != null:
+		var animal_data: Dictionary = _get_animal_data()
+		name_lbl.text = String(animal_data.get("display_name", animal_id.capitalize()))
+		name_lbl.visible = (current_state != state_completed)
+		var label_row: int = maxi(animal_instance_id.get_slice("_", animal_instance_id.get_slice_count("_") - 1).to_int() - 1, 0) % 2
+		name_lbl.offset_top = 30.0 + float(label_row * 14)
+		name_lbl.offset_bottom = name_lbl.offset_top + 16.0
+
 	product_indicator.color = (
 		Color(0.95, 0.42, 0.24, 1.0)
 		if current_state == state_end_of_life

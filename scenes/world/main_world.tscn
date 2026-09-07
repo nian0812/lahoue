@@ -1,27 +1,39 @@
-[gd_scene load_steps=27 format=3]
+[gd_scene load_steps=37 format=3]
 
 [ext_resource type="Script" path="res://scripts/world/main_world.gd" id="1_main"]
 [ext_resource type="Script" path="res://scripts/player/player.gd" id="2_player"]
-[ext_resource type="PackedScene" path="res://scenes/farming/farm_tile.tscn" id="3_farm_tile"]
-[ext_resource type="PackedScene" path="res://scenes/animals/animal.tscn" id="4_animal"]
-[ext_resource type="PackedScene" path="res://scenes/aquaculture/aquaculture_container.tscn" id="5_aquaculture"]
-[ext_resource type="PackedScene" path="res://scenes/restaurant/restaurant.tscn" id="6_restaurant"]
-[ext_resource type="Script" path="res://scripts/achievements/achievement_tracker.gd" id="7_achievement"]
-[ext_resource type="Script" path="res://scripts/ui/ui_manager.gd" id="8_ui_manager"]
-[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="9_hud"]
-[ext_resource type="PackedScene" path="res://scenes/ui/interaction_prompt.tscn" id="10_prompt"]
-[ext_resource type="PackedScene" path="res://scenes/ui/notification_popup.tscn" id="11_notification"]
-[ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="12_pause"]
-[ext_resource type="PackedScene" path="res://scenes/ui/inventory_panel.tscn" id="13_inventory"]
-[ext_resource type="PackedScene" path="res://scenes/ui/shop_panel.tscn" id="14_shop"]
-[ext_resource type="PackedScene" path="res://scenes/ui/recipe_panel.tscn" id="15_recipe"]
-[ext_resource type="PackedScene" path="res://scenes/ui/restaurant_panel.tscn" id="16_rest"]
-[ext_resource type="PackedScene" path="res://scenes/ui/upgrade_panel.tscn" id="17_upg"]
-[ext_resource type="PackedScene" path="res://scenes/ui/staff_panel.tscn" id="18_stf"]
-[ext_resource type="PackedScene" path="res://scenes/ui/achievement_panel.tscn" id="19_ach"]
-[ext_resource type="PackedScene" path="res://scenes/ui/level_up_popup.tscn" id="20_lvlup"]
-[ext_resource type="PackedScene" path="res://scenes/ui/day_summary_panel.tscn" id="21_day"]
-[ext_resource type="PackedScene" path="res://scenes/ui/tooltip_panel.tscn" id="22_tt"]
+[ext_resource type="Script" path="res://scripts/achievements/achievement_tracker.gd" id="3_achievement"]
+[ext_resource type="Script" path="res://scripts/tutorial/tutorial_controller.gd" id="4_tutorial_controller"]
+[ext_resource type="PackedScene" path="res://scenes/world/zones/hub_connections.tscn" id="5_hub"]
+[ext_resource type="PackedScene" path="res://scenes/world/zones/farm_zone.tscn" id="6_farm"]
+[ext_resource type="PackedScene" path="res://scenes/world/zones/animal_zone.tscn" id="7_animal"]
+[ext_resource type="PackedScene" path="res://scenes/world/zones/aquaculture_zone.tscn" id="8_aquaculture"]
+[ext_resource type="PackedScene" path="res://scenes/restaurant/restaurant.tscn" id="9_restaurant"]
+[ext_resource type="PackedScene" path="res://scenes/world/zones/logistics_zone.tscn" id="10_logistics"]
+[ext_resource type="Script" path="res://scripts/truck/truck_manager.gd" id="11_truck_manager"]
+[ext_resource type="Script" path="res://scripts/world/world_bounds_controller.gd" id="12_bounds"]
+[ext_resource type="Script" path="res://scripts/ui/ui_manager.gd" id="13_ui_manager"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="14_hud"]
+[ext_resource type="PackedScene" path="res://scenes/ui/interaction_prompt.tscn" id="15_prompt"]
+[ext_resource type="PackedScene" path="res://scenes/ui/notification_popup.tscn" id="16_notification"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="17_pause"]
+[ext_resource type="PackedScene" path="res://scenes/ui/inventory_panel.tscn" id="18_inventory"]
+[ext_resource type="PackedScene" path="res://scenes/ui/shop_panel.tscn" id="19_shop"]
+[ext_resource type="PackedScene" path="res://scenes/ui/recipe_panel.tscn" id="20_recipe"]
+[ext_resource type="PackedScene" path="res://scenes/ui/restaurant_panel.tscn" id="21_restaurant_panel"]
+[ext_resource type="PackedScene" path="res://scenes/ui/upgrade_panel.tscn" id="22_upgrade"]
+[ext_resource type="PackedScene" path="res://scenes/ui/staff_panel.tscn" id="23_staff"]
+[ext_resource type="PackedScene" path="res://scenes/ui/achievement_panel.tscn" id="24_achievement_panel"]
+[ext_resource type="PackedScene" path="res://scenes/ui/level_up_popup.tscn" id="25_level"]
+[ext_resource type="PackedScene" path="res://scenes/ui/day_summary_panel.tscn" id="26_day"]
+[ext_resource type="PackedScene" path="res://scenes/ui/tooltip_panel.tscn" id="27_tooltip"]
+[ext_resource type="Script" path="res://scripts/ui/shortcut_hint.gd" id="28_shortcut"]
+[ext_resource type="Script" path="res://scripts/ui/bottom_toolbar.gd" id="29_toolbar"]
+[ext_resource type="Script" path="res://scripts/ui/truck_panel.gd" id="30_truck_panel"]
+[ext_resource type="PackedScene" path="res://scenes/ui/premium_market_panel.tscn" id="31_premium_panel"]
+[ext_resource type="PackedScene" path="res://scenes/ui/tutorial_popup.tscn" id="32_tutorial_popup"]
+[ext_resource type="Script" path="res://scripts/visual/manifest_sprite.gd" id="33_visual"]
+[ext_resource type="PackedScene" path="res://scenes/world/visual/zone_ground_visual.tscn" id="34_ground"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_player"]
 radius = 18.0
@@ -29,78 +41,98 @@ radius = 18.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_interaction"]
 radius = 42.0
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_horizontal_boundary"]
-size = Vector2(1984, 64)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_vertical_boundary"]
-size = Vector2(64, 1080)
-
 [node name="main_world" type="Node2D"]
 script = ExtResource("1_main")
 
+[node name="GroundVisual" type="Node2D" parent="."]
+z_index = -40
+metadata/visual_only = true
+
+[node name="GroundLayers" type="Node2D" parent="GroundVisual"]
+
+[node name="WorldGrass" parent="GroundVisual/GroundLayers" instance=ExtResource("34_ground")]
+profile = 0
+area_rect = Rect2(0, 0, 1920, 1080)
+detail_seed = 37
+
+[node name="NaturalDetails" type="Node2D" parent="GroundVisual"]
+
+[node name="TallGrassWest" type="Node2D" parent="GroundVisual/NaturalDetails"]
+script = ExtResource("33_visual")
+atlas_id = "natural_props_atlas"
+semantic_id = "tall_grass_clump"
+target_rect = Rect2(120, 180, 32, 26)
+artwork_z_index = 5
+
+[node name="SingleRockWest" type="Node2D" parent="GroundVisual/NaturalDetails"]
+script = ExtResource("33_visual")
+atlas_id = "natural_props_atlas"
+semantic_id = "single_rock"
+target_rect = Rect2(220, 530, 24, 16)
+artwork_z_index = 5
+
+[node name="WildflowersNorth" type="Node2D" parent="GroundVisual/NaturalDetails"]
+script = ExtResource("33_visual")
+atlas_id = "natural_props_atlas"
+semantic_id = "wildflower_grass_clump"
+target_rect = Rect2(760, 160, 34, 26)
+artwork_z_index = 5
+
+[node name="HedgeNorthEast" type="Node2D" parent="GroundVisual/NaturalDetails"]
+script = ExtResource("33_visual")
+atlas_id = "natural_props_atlas"
+semantic_id = "hedge_cluster"
+target_rect = Rect2(1630, 175, 70, 40)
+artwork_z_index = 5
+
+[node name="FloweringBushEast" type="Node2D" parent="GroundVisual/NaturalDetails"]
+script = ExtResource("33_visual")
+atlas_id = "natural_props_atlas"
+semantic_id = "flowering_bush"
+target_rect = Rect2(1760, 480, 48, 34)
+artwork_z_index = 5
+
+[node name="TreeStumpSouthWest" type="Node2D" parent="GroundVisual/NaturalDetails"]
+script = ExtResource("33_visual")
+atlas_id = "natural_props_atlas"
+semantic_id = "tree_stump"
+target_rect = Rect2(190, 840, 38, 28)
+artwork_z_index = 5
+
+[node name="RockClusterSouth" type="Node2D" parent="GroundVisual/NaturalDetails"]
+script = ExtResource("33_visual")
+atlas_id = "natural_props_atlas"
+semantic_id = "rock_cluster"
+target_rect = Rect2(1070, 820, 30, 20)
+artwork_z_index = 5
+
 [node name="achievement_tracker" type="Node" parent="."]
-script = ExtResource("7_achievement")
+script = ExtResource("3_achievement")
 
-[node name="ground" type="Polygon2D" parent="."]
-z_index = -10
-polygon = PackedVector2Array(0, 0, 1920, 0, 1920, 1080, 0, 1080)
-color = Color(0.184, 0.31, 0.184, 1)
+[node name="tutorial_controller" type="Node" parent="."]
+script = ExtResource("4_tutorial_controller")
 
-[node name="hub" type="Node2D" parent="."]
+[node name="hub" parent="." instance=ExtResource("5_hub")]
 
-[node name="farm" type="Node2D" parent="."]
+[node name="farm" parent="." instance=ExtResource("6_farm")]
 
-[node name="tile_01" parent="farm" instance=ExtResource("3_farm_tile")]
-position = Vector2(760, 324)
-tile_id = "farm_01"
+[node name="animals" parent="." instance=ExtResource("7_animal")]
 
-[node name="tile_02" parent="farm" instance=ExtResource("3_farm_tile")]
-position = Vector2(832, 324)
-tile_id = "farm_02"
+[node name="aquaculture" parent="." instance=ExtResource("8_aquaculture")]
 
-[node name="tile_03" parent="farm" instance=ExtResource("3_farm_tile")]
-position = Vector2(904, 324)
-tile_id = "farm_03"
-
-[node name="tile_04" parent="farm" instance=ExtResource("3_farm_tile")]
-position = Vector2(760, 396)
-tile_id = "farm_04"
-
-[node name="tile_05" parent="farm" instance=ExtResource("3_farm_tile")]
-position = Vector2(832, 396)
-tile_id = "farm_05"
-
-[node name="tile_06" parent="farm" instance=ExtResource("3_farm_tile")]
-position = Vector2(904, 396)
-tile_id = "farm_06"
-
-[node name="animals" type="Node2D" parent="."]
-
-[node name="chicken_01" parent="animals" instance=ExtResource("4_animal")]
-position = Vector2(1080, 320)
-animal_instance_id = "chicken_01"
-animal_id = "chicken"
-animal_color = Color(0.94, 0.84, 0.55, 1)
-
-[node name="aquaculture" type="Node2D" parent="."]
-
-[node name="fish_container" parent="aquaculture" instance=ExtResource("5_aquaculture")]
-position = Vector2(1280, 300)
-container_id = "aquaculture_fish"
-aquaculture_id = "fish"
-
-[node name="squid_container" parent="aquaculture" instance=ExtResource("5_aquaculture")]
-position = Vector2(1390, 400)
-container_id = "aquaculture_squid"
-aquaculture_id = "squid"
-
-[node name="octopus_container" parent="aquaculture" instance=ExtResource("5_aquaculture")]
-position = Vector2(1280, 500)
-container_id = "aquaculture_octopus"
-aquaculture_id = "octopus"
-
-[node name="restaurant" parent="." instance=ExtResource("6_restaurant")]
+[node name="restaurant" parent="." instance=ExtResource("9_restaurant")]
 position = Vector2(1640, 780)
+
+[node name="truck_road" parent="." instance=ExtResource("10_logistics")]
+
+[node name="truck_manager" type="Node" parent="."]
+script = ExtResource("11_truck_manager")
+
+[node name="farm_worker_home_marker" type="Marker2D" parent="."]
+
+[node name="animal_worker_home_marker" type="Marker2D" parent="."]
+
+[node name="aquaculture_worker_home_marker" type="Marker2D" parent="."]
 
 [node name="player" type="CharacterBody2D" parent="."]
 position = Vector2(640, 360)
@@ -110,6 +142,14 @@ script = ExtResource("2_player")
 [node name="body" type="Polygon2D" parent="player"]
 polygon = PackedVector2Array(0, -24, 18, -12, 18, 18, 0, 26, -18, 18, -18, -12)
 color = Color(0.95, 0.78, 0.24, 1)
+
+[node name="AssetVisualRoot" type="Node2D" parent="player"]
+script = ExtResource("33_visual")
+manifest_id = "characters"
+section_id = "characters"
+semantic_id = "player"
+target_rect = Rect2(-18, -28, 36, 54)
+placeholder_paths = PackedStringArray("../body")
 
 [node name="collision_shape" type="CollisionShape2D" parent="player"]
 shape = SubResource("CircleShape2D_player")
@@ -125,10 +165,6 @@ shape = SubResource("CircleShape2D_interaction")
 
 [node name="camera" type="Camera2D" parent="player"]
 enabled = true
-limit_left = 0
-limit_top = 0
-limit_right = 1920
-limit_bottom = 1080
 position_smoothing_enabled = true
 position_smoothing_speed = 8.0
 
@@ -137,48 +173,53 @@ collision_layer = 2
 collision_mask = 1
 
 [node name="top" type="CollisionShape2D" parent="world_boundaries"]
-position = Vector2(960, -32)
-shape = SubResource("RectangleShape2D_horizontal_boundary")
-
 [node name="bottom" type="CollisionShape2D" parent="world_boundaries"]
-position = Vector2(960, 1112)
-shape = SubResource("RectangleShape2D_horizontal_boundary")
-
 [node name="left" type="CollisionShape2D" parent="world_boundaries"]
-position = Vector2(-32, 540)
-shape = SubResource("RectangleShape2D_vertical_boundary")
-
 [node name="right" type="CollisionShape2D" parent="world_boundaries"]
-position = Vector2(1952, 540)
-shape = SubResource("RectangleShape2D_vertical_boundary")
+
+[node name="world_bounds_controller" type="Node" parent="."]
+script = ExtResource("12_bounds")
 
 [node name="ui" type="CanvasLayer" parent="."]
-script = ExtResource("8_ui_manager")
+script = ExtResource("13_ui_manager")
 
-[node name="hud" parent="ui" instance=ExtResource("9_hud")]
+[node name="hud" parent="ui" instance=ExtResource("14_hud")]
+[node name="interaction_prompt" parent="ui" instance=ExtResource("15_prompt")]
+[node name="notification_popup" parent="ui" instance=ExtResource("16_notification")]
+[node name="tutorial_popup" parent="ui" instance=ExtResource("32_tutorial_popup")]
+[node name="pause_menu" parent="ui" instance=ExtResource("17_pause")]
+[node name="inventory_panel" parent="ui" instance=ExtResource("18_inventory")]
+[node name="shop_panel" parent="ui" instance=ExtResource("19_shop")]
+[node name="recipe_panel" parent="ui" instance=ExtResource("20_recipe")]
+[node name="restaurant_panel" parent="ui" instance=ExtResource("21_restaurant_panel")]
+[node name="upgrade_panel" parent="ui" instance=ExtResource("22_upgrade")]
+[node name="staff_panel" parent="ui" instance=ExtResource("23_staff")]
+[node name="achievement_panel" parent="ui" instance=ExtResource("24_achievement_panel")]
+[node name="level_up_popup" parent="ui" instance=ExtResource("25_level")]
+[node name="day_summary_panel" parent="ui" instance=ExtResource("26_day")]
+[node name="tooltip_panel" parent="ui" instance=ExtResource("27_tooltip")]
 
-[node name="interaction_prompt" parent="ui" instance=ExtResource("10_prompt")]
+[node name="truck_panel" type="PanelContainer" parent="ui"]
+script = ExtResource("30_truck_panel")
 
-[node name="notification_popup" parent="ui" instance=ExtResource("11_notification")]
+[node name="premium_market_panel" parent="ui" instance=ExtResource("31_premium_panel")]
 
-[node name="pause_menu" parent="ui" instance=ExtResource("12_pause")]
+[node name="shortcut_hint" type="Control" parent="ui"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("28_shortcut")
 
-[node name="inventory_panel" parent="ui" instance=ExtResource("13_inventory")]
-
-[node name="shop_panel" parent="ui" instance=ExtResource("14_shop")]
-
-[node name="recipe_panel" parent="ui" instance=ExtResource("15_recipe")]
-
-[node name="restaurant_panel" parent="ui" instance=ExtResource("16_rest")]
-
-[node name="upgrade_panel" parent="ui" instance=ExtResource("17_upg")]
-
-[node name="staff_panel" parent="ui" instance=ExtResource("18_stf")]
-
-[node name="achievement_panel" parent="ui" instance=ExtResource("19_ach")]
-
-[node name="level_up_popup" parent="ui" instance=ExtResource("20_lvlup")]
-
-[node name="day_summary_panel" parent="ui" instance=ExtResource("21_day")]
-
-[node name="tooltip_panel" parent="ui" instance=ExtResource("22_tt")]
+[node name="bottom_toolbar" type="Control" parent="ui"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("29_toolbar")

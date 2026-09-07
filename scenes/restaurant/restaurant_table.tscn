@@ -1,11 +1,19 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/restaurant/restaurant_table.gd" id="1_table"]
+[ext_resource type="Script" path="res://scripts/visual/manifest_sprite.gd" id="2_visual"]
 
 [node name="restaurant_table" type="Node2D"]
 script = ExtResource("1_table")
 
-[node name="table_visual" type="Polygon2D" parent="."]
+[node name="VisualRoot" type="Node2D" parent="."]
+script = ExtResource("2_visual")
+atlas_id = "outdoor_dining_set_atlas"
+semantic_id = "outdoor_dining_set_square_table_umbrella"
+target_rect = Rect2(-32, -42, 64, 64)
+placeholder_paths = PackedStringArray("table_visual")
+
+[node name="table_visual" type="Polygon2D" parent="VisualRoot"]
 polygon = PackedVector2Array(-32, -22, 32, -22, 32, 22, -32, 22)
 color = Color(0.780392, 0.572549, 0.309804, 1)
 

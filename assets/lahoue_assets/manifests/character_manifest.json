@@ -1,0 +1,29 @@
+{
+  "count": 8,
+  "characters": {
+    "player": {
+      "file": "characters/player.png"
+    },
+    "waiter": {
+      "file": "characters/waiter.png"
+    },
+    "chef": {
+      "file": "characters/chef.png"
+    },
+    "farm_worker": {
+      "file": "characters/farm_worker.png"
+    },
+    "animal_worker": {
+      "file": "characters/animal_worker.png"
+    },
+    "aquaculture_worker": {
+      "file": "characters/aquaculture_worker.png"
+    },
+    "customer": {
+      "file": "characters/customer.png"
+    },
+    "vip_customer": {
+      "file": "characters/vip_customer.png"
+    }
+  }
+}

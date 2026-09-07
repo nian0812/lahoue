@@ -1,0 +1,17 @@
+{
+  "atlases": {
+    "road_tiles_kit": "manifests/atlases/road_tiles_kit.json",
+    "restaurant_kitchen_cooking_station_module_set": "manifests/atlases/restaurant_kitchen_cooking_station_module_set.json",
+    "logistics_props_atlas": "manifests/atlases/logistics_props_atlas.json",
+    "directional_signs_kit": "manifests/atlases/directional_signs_kit.json",
+    "farm_warehouse_utility_props_atlas": "manifests/atlases/farm_warehouse_utility_props_atlas.json",
+    "natural_props_atlas": "manifests/atlases/natural_props_atlas.json",
+    "outdoor_dining_set_atlas": "manifests/atlases/outdoor_dining_set_atlas.json",
+    "world_interaction_production_markers_sheet": "manifests/atlases/world_interaction_production_markers_sheet.json",
+    "building_purchase_upgrade_construction_kit": "manifests/atlases/building_purchase_upgrade_construction_kit.json",
+    "map_zone_expansion_visual_kit": "manifests/atlases/map_zone_expansion_visual_kit.json",
+    "frame_and_button_base_kit": "manifests/atlases/frame_and_button_base_kit.json",
+    "achievement_badges_and_emblems_sheet": "manifests/atlases/achievement_badges_and_emblems_sheet.json",
+    "tutorial_help_shortcut_visual_kit": "manifests/atlases/tutorial_help_shortcut_visual_kit.json"
+  }
+}

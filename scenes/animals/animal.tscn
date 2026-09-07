@@ -1,6 +1,8 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/animals/animal.gd" id="1_animal"]
+[ext_resource type="Script" path="res://scripts/visual/manifest_sprite.gd" id="2_visual"]
+[ext_resource type="PackedScene" path="res://scenes/world/visual/contact_shadow.tscn" id="3_shadow"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_animal"]
 radius = 28.0
@@ -11,15 +13,39 @@ collision_mask = 0
 monitoring = false
 script = ExtResource("1_animal")
 
+[node name="ContactShadow" parent="." instance=ExtResource("3_shadow")]
+shadow_size = Vector2(48, 13)
+shadow_offset = Vector2(0, 19)
+opacity = 0.14
+
 [node name="body" type="Polygon2D" parent="."]
 polygon = PackedVector2Array(-28, -18, 18, -22, 30, -5, 24, 20, -20, 22, -32, 4)
 color = Color(0.92, 0.82, 0.58, 1)
+
+[node name="AssetVisualRoot" type="Node2D" parent="."]
+script = ExtResource("2_visual")
+manifest_id = "animals"
+section_id = "animals"
+target_rect = Rect2(-32, -26, 64, 48)
+placeholder_paths = PackedStringArray("../body")
 
 [node name="product_indicator" type="Polygon2D" parent="."]
 visible = false
 position = Vector2(0, -36)
 polygon = PackedVector2Array(0, -8, 8, 0, 0, 8, -8, 0)
 color = Color(1, 0.9, 0.25, 1)
+
+[node name="name_label" type="Label" parent="."]
+offset_left = -44.0
+offset_top = 30.0
+offset_right = 44.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0.96, 0.98, 0.92, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.06, 0.04, 0.95)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 10
+text = "Animal"
+horizontal_alignment = 1
 
 [node name="collision_shape" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_animal")

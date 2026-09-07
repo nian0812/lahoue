@@ -81,7 +81,9 @@ func _unlock(achievement_id: String) -> bool:
 		return false
 	state["unlocked"] = true
 	achievement_unlocked.emit(achievement_id)
-	claim_reward(achievement_id)
+	var definition: Dictionary = definitions.get(achievement_id, {}) as Dictionary
+	if definition.get("reward", null) == null:
+		claim_reward(achievement_id)
 	return true
 
 

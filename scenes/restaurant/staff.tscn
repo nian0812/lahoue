@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/restaurant/staff.gd" id="1_staff"]
+[ext_resource type="Script" path="res://scripts/visual/manifest_sprite.gd" id="2_visual"]
 
 [node name="staff" type="Node2D"]
 script = ExtResource("1_staff")
@@ -8,3 +9,22 @@ script = ExtResource("1_staff")
 [node name="staff_visual" type="Polygon2D" parent="."]
 polygon = PackedVector2Array(0, -14, 11, 10, -11, 10)
 color = Color(0.356863, 0.560784, 0.792157, 1)
+
+[node name="AssetVisualRoot" type="Node2D" parent="."]
+script = ExtResource("2_visual")
+manifest_id = "characters"
+section_id = "characters"
+target_rect = Rect2(-14, -30, 28, 40)
+placeholder_paths = PackedStringArray("../staff_visual")
+
+[node name="staff_label" type="Label" parent="."]
+offset_left = -32.0
+offset_top = -54.0
+offset_right = 32.0
+offset_bottom = -38.0
+theme_override_colors/font_color = Color(0.95, 0.98, 1, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.06, 0.04, 0.95)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 10
+text = "Staff"
+horizontal_alignment = 1

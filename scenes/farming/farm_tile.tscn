@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/farming/farm_tile.gd" id="1_tile"]
 [ext_resource type="Shader" path="res://scenes/farming/crop_wind.gdshader" id="2_shader"]
+[ext_resource type="Script" path="res://scripts/visual/manifest_sprite.gd" id="3_visual"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tile"]
 size = Vector2(60, 60)
@@ -18,15 +19,27 @@ collision_mask = 0
 monitoring = false
 script = ExtResource("1_tile")
 
-[node name="soil" type="Polygon2D" parent="."]
+[node name="VisualRoot" type="Node2D" parent="."]
+script = ExtResource("3_visual")
+section_id = "farm_plots"
+semantic_id = "empty_farm_plot"
+target_rect = Rect2(-30, -30, 60, 60)
+placeholder_paths = PackedStringArray("soil")
+artwork_z_index = -1
+
+[node name="soil" type="Polygon2D" parent="VisualRoot"]
 polygon = PackedVector2Array(-30, -30, 30, -30, 30, 30, -30, 30)
 color = Color(0.34, 0.19, 0.09, 1)
 
-[node name="crop" type="Polygon2D" parent="."]
+[node name="crop" type="Polygon2D" parent="VisualRoot"]
 visible = false
 material = SubResource("ShaderMaterial_crop")
 polygon = PackedVector2Array(0, -23, 18, -8, 13, 20, -13, 20, -18, -8)
 color = Color(0.24, 0.68, 0.25, 1)
+
+[node name="CropArtwork" type="Sprite2D" parent="VisualRoot"]
+visible = false
+z_index = 1
 
 [node name="collision_shape" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_tile")

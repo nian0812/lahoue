@@ -1,53 +1,10 @@
 {
   "schema_version": 1,
   "entries": {
-	"chicken": {
-	  "animal_id": "chicken",
-	  "housing": "coop",
-	  "required_level": 1,
-	  "purchase_price": 30000,
-	  "lifespan_days": 10,
-	  "production_interval_days": 1,
-	  "daily_product": {
-		"item_id": "egg",
-		"amount": 1,
-		"collect_exp": 5
-	  },
-	  "end_of_life_product": {
-		"item_id": "chicken_meat",
-		"amount": 10,
-		"collect_exp": 15
-	  }
-	},
-	"cow": {
-	  "animal_id": "cow",
-	  "housing": "cow_barn",
-	  "required_level": 2,
-	  "purchase_price": 150000,
-	  "lifespan_days": 10,
-	  "production_interval_days": null,
-	  "daily_product": null,
-	  "end_of_life_product": {
-		"item_id": "beef",
-		"amount": 1,
-		"collect_exp": 15
-	  },
-	  "primary_product": "beef"
-	},
-	"dairy_cow": {
-	  "animal_id": "dairy_cow",
-	  "housing": "cow_barn",
-	  "required_level": 2,
-	  "purchase_price": 200000,
-	  "lifespan_days": null,
-	  "production_interval_days": 1,
-	  "daily_product": {
-		"item_id": "cow_milk",
-		"amount": 1,
-		"collect_exp": 8
-	  },
-	  "end_of_life_product": null,
-	  "primary_product": "cow_milk"
-	}
+	"chicken": {"animal_id": "chicken", "display_name": "Layer Chicken", "housing": "coop", "required_level": 3, "purchase_price": 200000, "lifespan_days": null, "production_interval_days": 1, "daily_product": {"item_id": "egg", "amount": 1, "collect_exp": 8}, "end_of_life_product": null, "primary_product": "egg"},
+	"meat_chicken": {"animal_id": "meat_chicken", "display_name": "Meat Chicken", "housing": "coop", "required_level": 3, "purchase_price": 300000, "lifespan_days": null, "production_interval_days": 2, "daily_product": {"item_id": "chicken_meat", "amount": 1, "collect_exp": 12}, "end_of_life_product": null, "primary_product": "chicken_meat"},
+	"pig": {"animal_id": "pig", "display_name": "Pig", "housing": "pig_pen", "required_level": 7, "purchase_price": 500000, "lifespan_days": null, "production_interval_days": 2, "daily_product": {"item_id": "pork", "amount": 1, "collect_exp": 16}, "end_of_life_product": null, "primary_product": "pork"},
+	"dairy_cow": {"animal_id": "dairy_cow", "display_name": "Dairy Cow", "housing": "cow_barn", "required_level": 12, "purchase_price": 1000000, "lifespan_days": null, "production_interval_days": 1, "daily_product": {"item_id": "cow_milk", "amount": 1, "collect_exp": 18}, "end_of_life_product": null, "primary_product": "cow_milk"},
+	"cow": {"animal_id": "cow", "display_name": "Beef Cow", "housing": "cow_barn", "required_level": 12, "purchase_price": 1500000, "lifespan_days": null, "production_interval_days": 2, "daily_product": {"item_id": "beef", "amount": 1, "collect_exp": 24}, "end_of_life_product": null, "primary_product": "beef"}
   }
 }

@@ -15,7 +15,7 @@ const valid_states: Array[String] = [
 
 @export var table_id: String = ""
 
-@onready var table_visual: Polygon2D = $table_visual
+@onready var table_visual: Polygon2D = $VisualRoot/table_visual
 @onready var seat_marker: Marker2D = $seat_marker
 
 var current_state: String = state_available
@@ -104,12 +104,19 @@ func _set_state(value: String) -> void:
 func _refresh_visual() -> void:
 	if not is_instance_valid(table_visual):
 		return
+	var artwork_color: Color = Color.WHITE
 	match current_state:
 		state_available:
 			table_visual.color = Color("#c7924f")
 		state_reserved:
 			table_visual.color = Color("#e0bb55")
+			artwork_color = Color(1.0, 0.92, 0.64, 1.0)
 		state_occupied:
 			table_visual.color = Color("#d56a4b")
+			artwork_color = Color(1.0, 0.76, 0.68, 1.0)
 		state_needs_cleanup:
 			table_visual.color = Color("#77716b")
+			artwork_color = Color(0.58, 0.58, 0.58, 1.0)
+	var visual_root: Node = get_node_or_null("VisualRoot")
+	if visual_root != null and visual_root.has_method("set_artwork_modulate"):
+		visual_root.call("set_artwork_modulate", artwork_color)

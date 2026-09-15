@@ -1,0 +1,256 @@
+{
+	"achievements": [
+		{
+			"achievement_id": "earn_100k",
+			"progress": 100000,
+			"reward_claimed": false,
+			"unlocked": true
+		},
+		{
+			"achievement_id": "earn_1m",
+			"progress": 200000,
+			"reward_claimed": false,
+			"unlocked": false
+		},
+		{
+			"achievement_id": "first_harvest",
+			"progress": 1,
+			"reward_claimed": false,
+			"unlocked": true
+		},
+		{
+			"achievement_id": "first_shipment",
+			"progress": 1,
+			"reward_claimed": false,
+			"unlocked": true
+		},
+		{
+			"achievement_id": "harvest_250",
+			"progress": 21,
+			"reward_claimed": false,
+			"unlocked": false
+		},
+		{
+			"achievement_id": "harvest_50",
+			"progress": 21,
+			"reward_claimed": false,
+			"unlocked": false
+		},
+		{
+			"achievement_id": "truck_25",
+			"progress": 2,
+			"reward_claimed": false,
+			"unlocked": false
+		}
+	],
+	"animal_age": {},
+	"animals": {},
+	"animals_initialized": true,
+	"aquaculture": {
+		"aquaculture_crab": {
+			"aquaculture_id": "crab",
+			"growth_timer": 90.0,
+			"pending_product": {
+				"amount": 2,
+				"exp": 30,
+				"item_id": "crab"
+			},
+			"position": {
+				"x": 1390.0,
+				"y": 500.0
+			},
+			"product_collected": false,
+			"state": "ready"
+		},
+		"aquaculture_fish": {
+			"aquaculture_id": "fish",
+			"growth_timer": 0.0,
+			"pending_product": {},
+			"position": {
+				"x": 1280.0,
+				"y": 300.0
+			},
+			"product_collected": true,
+			"state": "empty"
+		},
+		"aquaculture_octopus": {
+			"aquaculture_id": "octopus",
+			"growth_timer": 120.0,
+			"pending_product": {
+				"amount": 1,
+				"exp": 40,
+				"item_id": "octopus"
+			},
+			"position": {
+				"x": 1280.0,
+				"y": 500.0
+			},
+			"product_collected": false,
+			"state": "ready"
+		},
+		"aquaculture_shrimp": {
+			"aquaculture_id": "shrimp",
+			"growth_timer": 75.0,
+			"pending_product": {
+				"amount": 2,
+				"exp": 24,
+				"item_id": "shrimp"
+			},
+			"position": {
+				"x": 1390.0,
+				"y": 300.0
+			},
+			"product_collected": false,
+			"state": "ready"
+		},
+		"aquaculture_squid": {
+			"aquaculture_id": "squid",
+			"growth_timer": 0.0,
+			"pending_product": {},
+			"position": {
+				"x": 1390.0,
+				"y": 400.0
+			},
+			"product_collected": true,
+			"state": "empty"
+		}
+	},
+	"aquaculture_level": 1,
+	"beverage_counter": 0,
+	"building_ownership": {
+		"coop": false,
+		"cow_barn": false,
+		"helipad": false,
+		"international_license": false,
+		"pig_pen": false,
+		"resort": false,
+		"restaurant": false,
+		"vip_area": false,
+		"warehouse": true
+	},
+	"coop_level": 0,
+	"cow_barn_level": 0,
+	"crop_growth": {
+		"farm_01": 30.0,
+		"farm_02": 30.0,
+		"farm_03": 30.0
+	},
+	"crops": {
+		"farm_01": "rice",
+		"farm_02": "rice",
+		"farm_03": "rice"
+	},
+	"day": 14,
+	"day_timer": 6.03030600000001,
+	"exp": 0,
+	"helicopter_level": 1,
+	"helicopter_phase_elapsed": 0.0,
+	"helicopter_state": "ready",
+	"inventory": {
+		"rice": 29,
+		"wheat": 10
+	},
+	"kitchen_level": 0,
+	"layout_version": 2,
+	"legacy_housing_allowance": {},
+	"level": 100,
+	"migration_inventory": {},
+	"money": 988500000,
+	"pig_pen_level": 0,
+	"pond_levels": {
+		"aquaculture_crab": 1,
+		"aquaculture_fish": 1,
+		"aquaculture_octopus": 1,
+		"aquaculture_shrimp": 1,
+		"aquaculture_squid": 1
+	},
+	"premium_import_shipment": {},
+	"profile_level_override": true,
+	"purchased_farm_plots": [
+		"farm_01",
+		"farm_02",
+		"farm_03"
+	],
+	"purchased_restaurant_tables": 2,
+	"reputation": 1.0,
+	"resort_level": 0,
+	"resort_state": {
+		"booking_elapsed": 0.0,
+		"total_bookings": 0,
+		"tourist_traffic": 0
+	},
+	"restaurant_cooking": {},
+	"restaurant_customer_sequence": 0,
+	"restaurant_customers": {},
+	"restaurant_level": 0,
+	"restaurant_spawn_elapsed": 0.0,
+	"restaurant_tables": {
+		"table_01": {
+			"occupant_id": "",
+			"state": "available"
+		},
+		"table_02": {
+			"occupant_id": "",
+			"state": "available"
+		}
+	},
+	"save_version": 1,
+	"staff": {},
+	"truck_count": 1,
+	"truck_deliveries": [
+		{},
+		{},
+		{}
+	],
+	"truck_level": 1,
+	"tutorial": {
+		"completed_features": {
+			"achievements": false,
+			"animal": false,
+			"aquaculture": false,
+			"cooking": false,
+			"level_10": false,
+			"level_up": false,
+			"market": false,
+			"new_game": false,
+			"premium_market": false,
+			"premium_recipes": false,
+			"restaurant": false,
+			"staff": false,
+			"truck": false
+		},
+		"current_step": 0,
+		"current_tutorial": "",
+		"milestones": {
+			"achievement_unlocked": true,
+			"animal_product_collected": false,
+			"aquaculture_cycle_started": true,
+			"aquaculture_product_collected": false,
+			"cooking_started": false,
+			"crop_harvested": true,
+			"crop_planted": true,
+			"farm_reached": true,
+			"food_ready": false,
+			"import_arrived": false,
+			"import_started": false,
+			"interaction": true,
+			"inventory_opened": false,
+			"movement": true,
+			"premium_panel_opened": false,
+			"restaurant_payment": false,
+			"rice_selected": true,
+			"staff_hired": false,
+			"truck_delivery_completed": true,
+			"truck_delivery_started": false,
+			"truck_panel_opened": false
+		},
+		"one_time_hints": {
+			"helicopter_upgrade": false
+		},
+		"queue": [],
+		"state": "SKIPPED"
+	},
+	"unlocked_items": [],
+	"unlocked_recipes": [],
+	"warehouse_level": 1
+}

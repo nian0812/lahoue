@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/buildings/building_base.tscn" id="1_base"]
+
+[node name="LogicRoot" instance=ExtResource("1_base")]
+building_id = "warehouse"
+building_label = "Warehouse"
+building_color = Color(0.45, 0.4, 0.35, 1)
+building_size = Vector2(80, 60)

@@ -1,0 +1,61 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/zone_root.gd" id="1_zone"]
+[ext_resource type="PackedScene" path="res://scenes/aquaculture/aquaculture_container.tscn" id="2_pond"]
+[ext_resource type="PackedScene" path="res://scenes/world/visual/zone_ground_visual.tscn" id="3_ground"]
+
+[node name="ZoneRoot" type="Node2D"]
+script = ExtResource("1_zone")
+zone_id = "aquaculture"
+local_bounds = Rect2(1180, 200, 330, 400)
+
+[node name="Ground" type="Node2D" parent="."]
+[node name="GroundLayers" type="Node2D" parent="Ground"]
+[node name="GroundVisual" parent="Ground/GroundLayers" instance=ExtResource("3_ground")]
+profile = 3
+area_rect = Rect2(1175, 195, 340, 410)
+detail_seed = 41
+[node name="Roads" type="Node2D" parent="."]
+[node name="Props" type="Node2D" parent="."]
+[node name="Buildings" type="Node2D" parent="."]
+[node name="Interactables" type="Node2D" parent="."]
+[node name="NPCMarkers" type="Node2D" parent="."]
+
+[node name="AquacultureWorkerHome01" type="Marker2D" parent="NPCMarkers"]
+position = Vector2(1200, 400)
+
+[node name="Paths" type="Node2D" parent="."]
+[node name="ExpansionAnchors" type="Node2D" parent="."]
+[node name="North" type="Marker2D" parent="ExpansionAnchors"]
+position = Vector2(1345, 200)
+[node name="East" type="Marker2D" parent="ExpansionAnchors"]
+position = Vector2(1510, 400)
+[node name="South" type="Marker2D" parent="ExpansionAnchors"]
+position = Vector2(1345, 600)
+[node name="West" type="Marker2D" parent="ExpansionAnchors"]
+position = Vector2(1180, 400)
+
+[node name="fish_container" parent="." instance=ExtResource("2_pond")]
+position = Vector2(1280, 300)
+container_id = "aquaculture_fish"
+aquaculture_id = "fish"
+
+[node name="squid_container" parent="." instance=ExtResource("2_pond")]
+position = Vector2(1390, 400)
+container_id = "aquaculture_squid"
+aquaculture_id = "squid"
+
+[node name="octopus_container" parent="." instance=ExtResource("2_pond")]
+position = Vector2(1280, 500)
+container_id = "aquaculture_octopus"
+aquaculture_id = "octopus"
+
+[node name="shrimp_container" parent="." instance=ExtResource("2_pond")]
+position = Vector2(1390, 300)
+container_id = "aquaculture_shrimp"
+aquaculture_id = "shrimp"
+
+[node name="crab_container" parent="." instance=ExtResource("2_pond")]
+position = Vector2(1390, 500)
+container_id = "aquaculture_crab"
+aquaculture_id = "crab"

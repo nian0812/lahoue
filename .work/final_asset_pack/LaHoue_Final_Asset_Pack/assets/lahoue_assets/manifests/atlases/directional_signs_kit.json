@@ -1,0 +1,74 @@
+{
+  "atlas_id": "directional_signs_kit",
+  "image": "world/props/directional_signs_kit.png",
+  "canvas": {
+    "width": 1536,
+    "height": 1024
+  },
+  "coordinate_system": "top_left_origin_pixels",
+  "components": [
+    {
+      "x": 6,
+      "y": 70,
+      "width": 745,
+      "height": 475,
+      "semantic_id": "main_farm_sign"
+    },
+    {
+      "x": 730,
+      "y": 133,
+      "width": 285,
+      "height": 397,
+      "semantic_id": "restaurant_direction_sign"
+    },
+    {
+      "x": 992,
+      "y": 122,
+      "width": 284,
+      "height": 409,
+      "semantic_id": "warehouse_direction_sign"
+    },
+    {
+      "x": 1253,
+      "y": 117,
+      "width": 276,
+      "height": 411,
+      "semantic_id": "truck_depot_direction_sign"
+    },
+    {
+      "x": 24,
+      "y": 557,
+      "width": 286,
+      "height": 403,
+      "semantic_id": "animal_zone_direction_sign"
+    },
+    {
+      "x": 314,
+      "y": 557,
+      "width": 292,
+      "height": 403,
+      "semantic_id": "aquaculture_direction_sign"
+    },
+    {
+      "x": 611,
+      "y": 557,
+      "width": 289,
+      "height": 403,
+      "semantic_id": "market_direction_sign"
+    },
+    {
+      "x": 900,
+      "y": 557,
+      "width": 302,
+      "height": 403,
+      "semantic_id": "vip_resort_direction_sign"
+    },
+    {
+      "x": 1206,
+      "y": 555,
+      "width": 305,
+      "height": 403,
+      "semantic_id": "blank_direction_sign"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+LAHOUE — FINAL COMPLETE PROJECT PASS
+Engine: Godot 4.7.1
+
+You are the senior Godot engineer responsible for finishing LaHoue end-to-end in this pass.
+
+FIRST READ THESE FILES FROM THE PROVIDED ASSET PACK:
+- README_FIRST.md
+- docs/FINAL_SCOPE.md
+- docs/ASSET_INTEGRATION_SPEC.md
+- docs/RUNTIME_STATE_MAP.json
+- assets/lahoue_assets/manifests/*
+Treat `docs/FINAL_SCOPE.md` as the Definition of Done and source of truth for the final scope. `references/approved_concepts/` is visual/layout reference only; never import whole concept/poster sheets as runtime sprites.
+
+HARD RULES
+- NEVER use Git commands: no status/diff/log/show/checkout/restore/commit/push/audit.
+- Preserve working gameplay, IDs, progression, routes, markers and `user://savegame.json` compatibility.
+- Do not create duplicate managers/systems or do unrelated refactors.
+- Keep current modular architecture and VisualRoot/presentation separation.
+- Backspace stays hidden dev-only and must never appear in Tutorial/Help/Shortcut UI.
+- Do not guess dish mappings; use existing data/manifests only.
+- Missing animation frames must NOT stop the pass: keep static fallback, add safe presentation where possible, and finish all runtime work.
+- Do not stop after planning. Audit briefly, then implement continuously until Definition of Done or a true external-file blocker.
+
+FINAL PASS MUST COVER ALL OF THIS
+1. Fix parse/runtime blockers first and preserve New Game/Continue/save/load.
+2. World/farm: final maximum 28 individual plots, legacy-safe migration, compact layout, crop overlays, dusty rustic ground/road transitions, sensible building scale.
+3. Restaurant Lv1–5: fixed purchased table slots with capacities 2/4/7/11/15; Lv3+ real open-air rooftop; stair landing always clear; visible Bar + separate Food Pass; Food Pass empty by default and shows the correct ready dish; manual serve without Waiter and automatic serve with Waiter; customer walk→sit→wait→eat→payment→leave must read correctly on screen.
+4. Staff: keep current roles/jobs; add presentation for idle/walk/cook/serve/payment/clean/harvest/collect without delaying gameplay.
+5. Animals: coop/pen/barn progression and capacities from FINAL_SCOPE; entities remain separate from buildings, stay within movement bounds, use restrained representative visual counts, keep repeating production behavior.
+6. Aquaculture: Fish/Shrimp/Crab/Squid/Octopus remain separate from ponds, stay inside water bounds, use subtle movement and non-obstructive ready markers.
+7. Truck/Depot: depot faces the real road; up to 3 trucks; keep existing economy/timers; phases Ready/Outbound/Delivering/Returning; fix parked/outbound/return orientation, cropped cab and movement feel; do not use `scale.x = -1` when it breaks isometric perspective; Fast Forward/skip-day remains compatible.
+8. Premium Market/Helicopter: keep existing progression and shipment timing; states ready/departing/importing/returning/arrived; add safe takeoff/flight/landing/rotor-style presentation using available assets/fallbacks.
+9. Warehouse: preserve all 7 gameplay levels/capacities; do not reduce to five visual levels.
+10. Economy/progression/50 recipes/achievements/tutorial/UI: preserve all working systems; customer orders only unlocked dishes; P remains Market; Day Summary exposes Enter to continue; no Backspace hint.
+11. Settings: `user://settings.cfg`; persist resolution/fullscreen/master/music/SFX. Support 1280x720, 1366x768, 1600x900, 1920x1080, 2560x1440 + native when available. Windowed resize must work in a standalone game window; fullscreen uses native and restores selected windowed resolution when leaving fullscreen. Do not judge resize only from Godot Embedded Game.
+12. Camera/rendering: fix root cause of movement jitter/shimmer/subpixel instability by auditing Camera2D, smoothing, transforms, viewport/stretch/content scale, snapping/interpolation. Do not patch individual sprites as a workaround.
+13. Save migration: persistent ownership/progression saves correctly; transient visual state does not. Old farm/table layouts must not crash or lose money/items.
+14. Validate with focused tests for every changed system, then run the existing full regression suite.
+
+WORK ORDER
+Audit/smoke test → fatal blockers → world/28 plots → restaurant → animals/aquaculture → truck/helicopter → character/staff presentation → settings/resolution → camera/jitter → UI/tutorial/save migration → full regression.
+
+Do not ask for approval between phases. Continue automatically.
+
+FINAL REPORT ONLY WHEN FINISHED:
+1. COMPLETED
+2. Main files changed
+3. Systems completed/fixed
+4. Tests PASS/FAIL
+5. Remaining true blockers
+6. Exact missing external asset/files, if any

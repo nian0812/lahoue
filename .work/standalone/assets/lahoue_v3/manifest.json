@@ -1,0 +1,4760 @@
+{
+  "characters/player/idle_static": {
+    "file": "res://assets/lahoue_v3/characters/player/idle_static.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      204,
+      0,
+      315,
+      155
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      17,
+      12,
+      79,
+      155
+    ],
+    "canvas": null,
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/player/idle": {
+    "file": "res://assets/lahoue_v3/characters/player/idle.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      204,
+      0,
+      315,
+      155
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      17,
+      12,
+      79,
+      155
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/player/walk_0": {
+    "file": "res://assets/lahoue_v3/characters/player/walk_0.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      366,
+      0,
+      477,
+      155
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      11,
+      11,
+      97,
+      155
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/player/walk_1": {
+    "file": "res://assets/lahoue_v3/characters/player/walk_1.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      536,
+      0,
+      652,
+      155
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      11,
+      12,
+      97,
+      155
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/player/carry": {
+    "file": "res://assets/lahoue_v3/characters/player/carry.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      696,
+      0,
+      840,
+      155
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      32,
+      14,
+      112,
+      155
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "review/player_sit_composite": {
+    "file": "res://assets/lahoue_v3/review/player_sit_composite.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      880,
+      0,
+      1030,
+      155
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      11,
+      15,
+      123,
+      155
+    ],
+    "canvas": null,
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "review/player_eat_composite": {
+    "file": "res://assets/lahoue_v3/review/player_eat_composite.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      1042,
+      0,
+      1205,
+      155
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      8,
+      15,
+      142,
+      154
+    ],
+    "canvas": null,
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "review/player_pay_composite": {
+    "file": "res://assets/lahoue_v3/review/player_pay_composite.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      1220,
+      0,
+      1430,
+      155
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      13,
+      24,
+      172,
+      155
+    ],
+    "canvas": null,
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/waiter/idle_static": {
+    "file": "res://assets/lahoue_v3/characters/waiter/idle_static.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      204,
+      190,
+      315,
+      339
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      15,
+      3,
+      80,
+      149
+    ],
+    "canvas": null,
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/waiter/idle": {
+    "file": "res://assets/lahoue_v3/characters/waiter/idle.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      204,
+      190,
+      315,
+      339
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      15,
+      3,
+      80,
+      149
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/waiter/walk_0": {
+    "file": "res://assets/lahoue_v3/characters/waiter/walk_0.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      366,
+      190,
+      477,
+      339
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      18,
+      6,
+      99,
+      149
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/waiter/walk_1": {
+    "file": "res://assets/lahoue_v3/characters/waiter/walk_1.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      536,
+      190,
+      652,
+      339
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      12,
+      5,
+      98,
+      149
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/waiter/carry": {
+    "file": "res://assets/lahoue_v3/characters/waiter/carry.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      696,
+      190,
+      840,
+      339
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      27,
+      4,
+      125,
+      149
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "review/waiter_sit_composite": {
+    "file": "res://assets/lahoue_v3/review/waiter_sit_composite.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      880,
+      190,
+      1030,
+      339
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      10,
+      15,
+      125,
+      149
+    ],
+    "canvas": null,
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "review/waiter_eat_composite": {
+    "file": "res://assets/lahoue_v3/review/waiter_eat_composite.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      1042,
+      190,
+      1205,
+      339
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      20,
+      15,
+      144,
+      149
+    ],
+    "canvas": null,
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "review/waiter_pay_composite": {
+    "file": "res://assets/lahoue_v3/review/waiter_pay_composite.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      1220,
+      190,
+      1430,
+      339
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      15,
+      18,
+      172,
+      149
+    ],
+    "canvas": null,
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/chef/idle_static": {
+    "file": "res://assets/lahoue_v3/characters/chef/idle_static.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      204,
+      373,
+      315,
+      530
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      11,
+      0,
+      98,
+      157
+    ],
+    "canvas": null,
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/chef/idle": {
+    "file": "res://assets/lahoue_v3/characters/chef/idle.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      204,
+      373,
+      315,
+      530
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      11,
+      0,
+      98,
+      157
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/chef/walk_0": {
+    "file": "res://assets/lahoue_v3/characters/chef/walk_0.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      366,
+      373,
+      477,
+      530
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      17,
+      0,
+      103,
+      157
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/chef/walk_1": {
+    "file": "res://assets/lahoue_v3/characters/chef/walk_1.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      536,
+      373,
+      652,
+      530
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      15,
+      0,
+      100,
+      157
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/chef/carry": {
+    "file": "res://assets/lahoue_v3/characters/chef/carry.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      696,
+      373,
+      840,
+      530
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      15,
+      0,
+      122,
+      157
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "review/chef_sit_composite": {
+    "file": "res://assets/lahoue_v3/review/chef_sit_composite.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      880,
+      373,
+      1030,
+      530
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      11,
+      10,
+      127,
+      157
+    ],
+    "canvas": null,
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "review/chef_eat_composite": {
+    "file": "res://assets/lahoue_v3/review/chef_eat_composite.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      1042,
+      373,
+      1205,
+      530
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      17,
+      10,
+      143,
+      157
+    ],
+    "canvas": null,
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "review/chef_pay_composite": {
+    "file": "res://assets/lahoue_v3/review/chef_pay_composite.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      1220,
+      373,
+      1430,
+      530
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      18,
+      12,
+      166,
+      157
+    ],
+    "canvas": null,
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/customer/idle_static": {
+    "file": "res://assets/lahoue_v3/characters/customer/idle_static.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      204,
+      560,
+      315,
+      706
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      20,
+      6,
+      84,
+      146
+    ],
+    "canvas": null,
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/customer/idle": {
+    "file": "res://assets/lahoue_v3/characters/customer/idle.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      204,
+      560,
+      315,
+      706
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      20,
+      6,
+      84,
+      146
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/customer/walk_0": {
+    "file": "res://assets/lahoue_v3/characters/customer/walk_0.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      366,
+      560,
+      477,
+      706
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      12,
+      4,
+      98,
+      146
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/customer/walk_1": {
+    "file": "res://assets/lahoue_v3/characters/customer/walk_1.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      536,
+      560,
+      652,
+      706
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      9,
+      5,
+      90,
+      146
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/customer/carry": {
+    "file": "res://assets/lahoue_v3/characters/customer/carry.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      696,
+      560,
+      840,
+      706
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      27,
+      8,
+      112,
+      146
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "review/customer_sit_composite": {
+    "file": "res://assets/lahoue_v3/review/customer_sit_composite.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      880,
+      560,
+      1030,
+      706
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      12,
+      11,
+      128,
+      146
+    ],
+    "canvas": null,
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "review/customer_eat_composite": {
+    "file": "res://assets/lahoue_v3/review/customer_eat_composite.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      1042,
+      560,
+      1205,
+      706
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      15,
+      9,
+      144,
+      146
+    ],
+    "canvas": null,
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "review/customer_pay_composite": {
+    "file": "res://assets/lahoue_v3/review/customer_pay_composite.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      1220,
+      560,
+      1430,
+      706
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      21,
+      13,
+      172,
+      146
+    ],
+    "canvas": null,
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/customer_woman/idle_static": {
+    "file": "res://assets/lahoue_v3/characters/customer_woman/idle_static.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      204,
+      742,
+      315,
+      881
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      14,
+      2,
+      94,
+      139
+    ],
+    "canvas": null,
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/customer_woman/idle": {
+    "file": "res://assets/lahoue_v3/characters/customer_woman/idle.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      204,
+      742,
+      315,
+      881
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      14,
+      2,
+      94,
+      139
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/customer_woman/walk_0": {
+    "file": "res://assets/lahoue_v3/characters/customer_woman/walk_0.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      366,
+      742,
+      477,
+      881
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      19,
+      3,
+      100,
+      139
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/customer_woman/walk_1": {
+    "file": "res://assets/lahoue_v3/characters/customer_woman/walk_1.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      536,
+      742,
+      652,
+      881
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      18,
+      2,
+      95,
+      139
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/customer_woman/carry": {
+    "file": "res://assets/lahoue_v3/characters/customer_woman/carry.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      696,
+      742,
+      840,
+      881
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      20,
+      3,
+      116,
+      139
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "review/customer_woman_sit_composite": {
+    "file": "res://assets/lahoue_v3/review/customer_woman_sit_composite.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      880,
+      742,
+      1030,
+      881
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      11,
+      3,
+      122,
+      139
+    ],
+    "canvas": null,
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "review/customer_woman_eat_composite": {
+    "file": "res://assets/lahoue_v3/review/customer_woman_eat_composite.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      1042,
+      742,
+      1205,
+      881
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      11,
+      11,
+      142,
+      139
+    ],
+    "canvas": null,
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "review/customer_woman_pay_composite": {
+    "file": "res://assets/lahoue_v3/review/customer_woman_pay_composite.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      1220,
+      742,
+      1430,
+      881
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      20,
+      10,
+      170,
+      139
+    ],
+    "canvas": null,
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/vip_customer/idle_static": {
+    "file": "res://assets/lahoue_v3/characters/vip_customer/idle_static.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      204,
+      913,
+      315,
+      1045
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      13,
+      0,
+      84,
+      132
+    ],
+    "canvas": null,
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/vip_customer/idle": {
+    "file": "res://assets/lahoue_v3/characters/vip_customer/idle.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      204,
+      913,
+      315,
+      1045
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      13,
+      0,
+      84,
+      132
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/vip_customer/walk_0": {
+    "file": "res://assets/lahoue_v3/characters/vip_customer/walk_0.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      366,
+      913,
+      477,
+      1045
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      12,
+      0,
+      102,
+      132
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/vip_customer/walk_1": {
+    "file": "res://assets/lahoue_v3/characters/vip_customer/walk_1.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      536,
+      913,
+      652,
+      1045
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      19,
+      0,
+      94,
+      132
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/vip_customer/carry": {
+    "file": "res://assets/lahoue_v3/characters/vip_customer/carry.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      696,
+      913,
+      840,
+      1045
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      32,
+      1,
+      124,
+      132
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "review/vip_customer_sit_composite": {
+    "file": "res://assets/lahoue_v3/review/vip_customer_sit_composite.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      880,
+      913,
+      1030,
+      1045
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      14,
+      0,
+      136,
+      132
+    ],
+    "canvas": null,
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "review/vip_customer_eat_composite": {
+    "file": "res://assets/lahoue_v3/review/vip_customer_eat_composite.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      1042,
+      913,
+      1205,
+      1045
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      14,
+      3,
+      148,
+      132
+    ],
+    "canvas": null,
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "review/vip_customer_pay_composite": {
+    "file": "res://assets/lahoue_v3/review/vip_customer_pay_composite.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      1220,
+      913,
+      1430,
+      1045
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      18,
+      10,
+      170,
+      132
+    ],
+    "canvas": null,
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "animals/layer_chicken/idle": {
+    "file": "res://assets/lahoue_v3/animals/layer_chicken/idle.png",
+    "source": "animals/farm_animal_sprite_sheet.png",
+    "crop": [
+      195,
+      15,
+      423,
+      204
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      37,
+      15,
+      172,
+      169
+    ],
+    "canvas": [
+      265,
+      220
+    ],
+    "source_sha256": "3b7ffa4b38b88e4daa4d843c131661e194e630bf3ffe54454c3c69918ee5a294"
+  },
+  "animals/layer_chicken/walk_0": {
+    "file": "res://assets/lahoue_v3/animals/layer_chicken/walk_0.png",
+    "source": "animals/farm_animal_sprite_sheet.png",
+    "crop": [
+      430,
+      15,
+      668,
+      204
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      25,
+      19,
+      163,
+      168
+    ],
+    "canvas": [
+      265,
+      220
+    ],
+    "source_sha256": "3b7ffa4b38b88e4daa4d843c131661e194e630bf3ffe54454c3c69918ee5a294"
+  },
+  "animals/layer_chicken/walk_1": {
+    "file": "res://assets/lahoue_v3/animals/layer_chicken/walk_1.png",
+    "source": "animals/farm_animal_sprite_sheet.png",
+    "crop": [
+      670,
+      15,
+      923,
+      204
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      20,
+      25,
+      165,
+      173
+    ],
+    "canvas": [
+      265,
+      220
+    ],
+    "source_sha256": "3b7ffa4b38b88e4daa4d843c131661e194e630bf3ffe54454c3c69918ee5a294"
+  },
+  "animals/layer_chicken/eat": {
+    "file": "res://assets/lahoue_v3/animals/layer_chicken/eat.png",
+    "source": "animals/farm_animal_sprite_sheet.png",
+    "crop": [
+      925,
+      15,
+      1184,
+      204
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      26,
+      135,
+      172
+    ],
+    "canvas": [
+      265,
+      220
+    ],
+    "source_sha256": "3b7ffa4b38b88e4daa4d843c131661e194e630bf3ffe54454c3c69918ee5a294"
+  },
+  "animals/meat_chicken/idle": {
+    "file": "res://assets/lahoue_v3/animals/meat_chicken/idle.png",
+    "source": "animals/farm_animal_sprite_sheet.png",
+    "crop": [
+      195,
+      205,
+      423,
+      392
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      42,
+      14,
+      176,
+      164
+    ],
+    "canvas": [
+      265,
+      220
+    ],
+    "source_sha256": "3b7ffa4b38b88e4daa4d843c131661e194e630bf3ffe54454c3c69918ee5a294"
+  },
+  "animals/meat_chicken/walk_0": {
+    "file": "res://assets/lahoue_v3/animals/meat_chicken/walk_0.png",
+    "source": "animals/farm_animal_sprite_sheet.png",
+    "crop": [
+      430,
+      205,
+      668,
+      392
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      20,
+      15,
+      176,
+      162
+    ],
+    "canvas": [
+      265,
+      220
+    ],
+    "source_sha256": "3b7ffa4b38b88e4daa4d843c131661e194e630bf3ffe54454c3c69918ee5a294"
+  },
+  "animals/meat_chicken/walk_1": {
+    "file": "res://assets/lahoue_v3/animals/meat_chicken/walk_1.png",
+    "source": "animals/farm_animal_sprite_sheet.png",
+    "crop": [
+      670,
+      205,
+      923,
+      392
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      28,
+      10,
+      175,
+      167
+    ],
+    "canvas": [
+      265,
+      220
+    ],
+    "source_sha256": "3b7ffa4b38b88e4daa4d843c131661e194e630bf3ffe54454c3c69918ee5a294"
+  },
+  "animals/meat_chicken/eat": {
+    "file": "res://assets/lahoue_v3/animals/meat_chicken/eat.png",
+    "source": "animals/farm_animal_sprite_sheet.png",
+    "crop": [
+      925,
+      205,
+      1184,
+      392
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      10,
+      38,
+      190,
+      166
+    ],
+    "canvas": [
+      265,
+      220
+    ],
+    "source_sha256": "3b7ffa4b38b88e4daa4d843c131661e194e630bf3ffe54454c3c69918ee5a294"
+  },
+  "animals/pig/idle": {
+    "file": "res://assets/lahoue_v3/animals/pig/idle.png",
+    "source": "animals/farm_animal_sprite_sheet.png",
+    "crop": [
+      195,
+      394,
+      423,
+      578
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      9,
+      10,
+      202,
+      163
+    ],
+    "canvas": [
+      265,
+      220
+    ],
+    "source_sha256": "3b7ffa4b38b88e4daa4d843c131661e194e630bf3ffe54454c3c69918ee5a294"
+  },
+  "animals/pig/walk_0": {
+    "file": "res://assets/lahoue_v3/animals/pig/walk_0.png",
+    "source": "animals/farm_animal_sprite_sheet.png",
+    "crop": [
+      430,
+      394,
+      668,
+      578
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      8,
+      12,
+      217,
+      171
+    ],
+    "canvas": [
+      265,
+      220
+    ],
+    "source_sha256": "3b7ffa4b38b88e4daa4d843c131661e194e630bf3ffe54454c3c69918ee5a294"
+  },
+  "animals/pig/walk_1": {
+    "file": "res://assets/lahoue_v3/animals/pig/walk_1.png",
+    "source": "animals/farm_animal_sprite_sheet.png",
+    "crop": [
+      670,
+      394,
+      923,
+      578
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      3,
+      10,
+      214,
+      176
+    ],
+    "canvas": [
+      265,
+      220
+    ],
+    "source_sha256": "3b7ffa4b38b88e4daa4d843c131661e194e630bf3ffe54454c3c69918ee5a294"
+  },
+  "animals/pig/eat": {
+    "file": "res://assets/lahoue_v3/animals/pig/eat.png",
+    "source": "animals/farm_animal_sprite_sheet.png",
+    "crop": [
+      925,
+      394,
+      1184,
+      578
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      14,
+      7,
+      228,
+      184
+    ],
+    "canvas": [
+      265,
+      220
+    ],
+    "source_sha256": "3b7ffa4b38b88e4daa4d843c131661e194e630bf3ffe54454c3c69918ee5a294"
+  },
+  "animals/dairy_cow/idle": {
+    "file": "res://assets/lahoue_v3/animals/dairy_cow/idle.png",
+    "source": "animals/farm_animal_sprite_sheet.png",
+    "crop": [
+      195,
+      580,
+      423,
+      796
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      3,
+      19,
+      225,
+      207
+    ],
+    "canvas": [
+      265,
+      220
+    ],
+    "source_sha256": "3b7ffa4b38b88e4daa4d843c131661e194e630bf3ffe54454c3c69918ee5a294"
+  },
+  "animals/dairy_cow/walk_0": {
+    "file": "res://assets/lahoue_v3/animals/dairy_cow/walk_0.png",
+    "source": "animals/farm_animal_sprite_sheet.png",
+    "crop": [
+      430,
+      580,
+      668,
+      796
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      8,
+      7,
+      229,
+      209
+    ],
+    "canvas": [
+      265,
+      220
+    ],
+    "source_sha256": "3b7ffa4b38b88e4daa4d843c131661e194e630bf3ffe54454c3c69918ee5a294"
+  },
+  "animals/dairy_cow/walk_1": {
+    "file": "res://assets/lahoue_v3/animals/dairy_cow/walk_1.png",
+    "source": "animals/farm_animal_sprite_sheet.png",
+    "crop": [
+      670,
+      580,
+      923,
+      796
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      6,
+      14,
+      247,
+      214
+    ],
+    "canvas": [
+      265,
+      220
+    ],
+    "source_sha256": "3b7ffa4b38b88e4daa4d843c131661e194e630bf3ffe54454c3c69918ee5a294"
+  },
+  "animals/dairy_cow/eat": {
+    "file": "res://assets/lahoue_v3/animals/dairy_cow/eat.png",
+    "source": "animals/farm_animal_sprite_sheet.png",
+    "crop": [
+      925,
+      580,
+      1184,
+      796
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      4,
+      8,
+      254,
+      216
+    ],
+    "canvas": [
+      265,
+      220
+    ],
+    "source_sha256": "3b7ffa4b38b88e4daa4d843c131661e194e630bf3ffe54454c3c69918ee5a294"
+  },
+  "animals/beef_cow/idle": {
+    "file": "res://assets/lahoue_v3/animals/beef_cow/idle.png",
+    "source": "animals/farm_animal_sprite_sheet.png",
+    "crop": [
+      195,
+      791,
+      423,
+      1005
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      8,
+      6,
+      227,
+      202
+    ],
+    "canvas": [
+      265,
+      220
+    ],
+    "source_sha256": "3b7ffa4b38b88e4daa4d843c131661e194e630bf3ffe54454c3c69918ee5a294"
+  },
+  "animals/beef_cow/walk_0": {
+    "file": "res://assets/lahoue_v3/animals/beef_cow/walk_0.png",
+    "source": "animals/farm_animal_sprite_sheet.png",
+    "crop": [
+      430,
+      791,
+      668,
+      1005
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      6,
+      5,
+      235,
+      206
+    ],
+    "canvas": [
+      265,
+      220
+    ],
+    "source_sha256": "3b7ffa4b38b88e4daa4d843c131661e194e630bf3ffe54454c3c69918ee5a294"
+  },
+  "animals/beef_cow/walk_1": {
+    "file": "res://assets/lahoue_v3/animals/beef_cow/walk_1.png",
+    "source": "animals/farm_animal_sprite_sheet.png",
+    "crop": [
+      670,
+      791,
+      923,
+      1005
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      4,
+      6,
+      242,
+      204
+    ],
+    "canvas": [
+      265,
+      220
+    ],
+    "source_sha256": "3b7ffa4b38b88e4daa4d843c131661e194e630bf3ffe54454c3c69918ee5a294"
+  },
+  "animals/beef_cow/eat": {
+    "file": "res://assets/lahoue_v3/animals/beef_cow/eat.png",
+    "source": "animals/farm_animal_sprite_sheet.png",
+    "crop": [
+      925,
+      791,
+      1184,
+      1005
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      0,
+      237,
+      214
+    ],
+    "canvas": [
+      265,
+      220
+    ],
+    "source_sha256": "3b7ffa4b38b88e4daa4d843c131661e194e630bf3ffe54454c3c69918ee5a294"
+  },
+  "buildings/coop_1": {
+    "file": "res://assets/lahoue_v3/buildings/coop_1.png",
+    "source": "animals/isometric_farm_building_progression_sheet.png",
+    "crop": [
+      0,
+      48,
+      272,
+      345
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      71,
+      272,
+      297
+    ],
+    "canvas": null,
+    "source_sha256": "8d96885105bb1194d37c47fa07f10d48f6429281ab7fa96c2b3b44dd433b32af"
+  },
+  "buildings/coop_2": {
+    "file": "res://assets/lahoue_v3/buildings/coop_2.png",
+    "source": "animals/isometric_farm_building_progression_sheet.png",
+    "crop": [
+      273,
+      48,
+      536,
+      345
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      73,
+      263,
+      294
+    ],
+    "canvas": null,
+    "source_sha256": "8d96885105bb1194d37c47fa07f10d48f6429281ab7fa96c2b3b44dd433b32af"
+  },
+  "buildings/coop_3": {
+    "file": "res://assets/lahoue_v3/buildings/coop_3.png",
+    "source": "animals/isometric_farm_building_progression_sheet.png",
+    "crop": [
+      538,
+      48,
+      818,
+      345
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      66,
+      280,
+      297
+    ],
+    "canvas": null,
+    "source_sha256": "8d96885105bb1194d37c47fa07f10d48f6429281ab7fa96c2b3b44dd433b32af"
+  },
+  "buildings/coop_4": {
+    "file": "res://assets/lahoue_v3/buildings/coop_4.png",
+    "source": "animals/isometric_farm_building_progression_sheet.png",
+    "crop": [
+      819,
+      48,
+      1116,
+      345
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      57,
+      297,
+      297
+    ],
+    "canvas": null,
+    "source_sha256": "8d96885105bb1194d37c47fa07f10d48f6429281ab7fa96c2b3b44dd433b32af"
+  },
+  "buildings/coop_5": {
+    "file": "res://assets/lahoue_v3/buildings/coop_5.png",
+    "source": "animals/isometric_farm_building_progression_sheet.png",
+    "crop": [
+      1117,
+      48,
+      1448,
+      345
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      19,
+      331,
+      297
+    ],
+    "canvas": null,
+    "source_sha256": "8d96885105bb1194d37c47fa07f10d48f6429281ab7fa96c2b3b44dd433b32af"
+  },
+  "buildings/cow_barn_1": {
+    "file": "res://assets/lahoue_v3/buildings/cow_barn_1.png",
+    "source": "animals/isometric_farm_building_progression_sheet.png",
+    "crop": [
+      0,
+      439,
+      272,
+      707
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      2,
+      75,
+      272,
+      262
+    ],
+    "canvas": null,
+    "source_sha256": "8d96885105bb1194d37c47fa07f10d48f6429281ab7fa96c2b3b44dd433b32af"
+  },
+  "buildings/cow_barn_2": {
+    "file": "res://assets/lahoue_v3/buildings/cow_barn_2.png",
+    "source": "animals/isometric_farm_building_progression_sheet.png",
+    "crop": [
+      273,
+      439,
+      536,
+      707
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      59,
+      263,
+      268
+    ],
+    "canvas": null,
+    "source_sha256": "8d96885105bb1194d37c47fa07f10d48f6429281ab7fa96c2b3b44dd433b32af"
+  },
+  "buildings/cow_barn_3": {
+    "file": "res://assets/lahoue_v3/buildings/cow_barn_3.png",
+    "source": "animals/isometric_farm_building_progression_sheet.png",
+    "crop": [
+      538,
+      439,
+      818,
+      707
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      20,
+      280,
+      268
+    ],
+    "canvas": null,
+    "source_sha256": "8d96885105bb1194d37c47fa07f10d48f6429281ab7fa96c2b3b44dd433b32af"
+  },
+  "buildings/cow_barn_4": {
+    "file": "res://assets/lahoue_v3/buildings/cow_barn_4.png",
+    "source": "animals/isometric_farm_building_progression_sheet.png",
+    "crop": [
+      819,
+      439,
+      1116,
+      707
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      20,
+      297,
+      268
+    ],
+    "canvas": null,
+    "source_sha256": "8d96885105bb1194d37c47fa07f10d48f6429281ab7fa96c2b3b44dd433b32af"
+  },
+  "buildings/cow_barn_5": {
+    "file": "res://assets/lahoue_v3/buildings/cow_barn_5.png",
+    "source": "animals/isometric_farm_building_progression_sheet.png",
+    "crop": [
+      1117,
+      439,
+      1448,
+      707
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      13,
+      331,
+      268
+    ],
+    "canvas": null,
+    "source_sha256": "8d96885105bb1194d37c47fa07f10d48f6429281ab7fa96c2b3b44dd433b32af"
+  },
+  "buildings/pig_pen_1": {
+    "file": "res://assets/lahoue_v3/buildings/pig_pen_1.png",
+    "source": "animals/isometric_farm_building_progression_sheet.png",
+    "crop": [
+      0,
+      775,
+      272,
+      1007
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      8,
+      60,
+      258,
+      232
+    ],
+    "canvas": null,
+    "source_sha256": "8d96885105bb1194d37c47fa07f10d48f6429281ab7fa96c2b3b44dd433b32af"
+  },
+  "buildings/pig_pen_2": {
+    "file": "res://assets/lahoue_v3/buildings/pig_pen_2.png",
+    "source": "animals/isometric_farm_building_progression_sheet.png",
+    "crop": [
+      273,
+      775,
+      536,
+      1007
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      43,
+      257,
+      232
+    ],
+    "canvas": null,
+    "source_sha256": "8d96885105bb1194d37c47fa07f10d48f6429281ab7fa96c2b3b44dd433b32af"
+  },
+  "buildings/pig_pen_3": {
+    "file": "res://assets/lahoue_v3/buildings/pig_pen_3.png",
+    "source": "animals/isometric_farm_building_progression_sheet.png",
+    "crop": [
+      538,
+      775,
+      818,
+      1007
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      25,
+      280,
+      232
+    ],
+    "canvas": null,
+    "source_sha256": "8d96885105bb1194d37c47fa07f10d48f6429281ab7fa96c2b3b44dd433b32af"
+  },
+  "buildings/pig_pen_4": {
+    "file": "res://assets/lahoue_v3/buildings/pig_pen_4.png",
+    "source": "animals/isometric_farm_building_progression_sheet.png",
+    "crop": [
+      819,
+      775,
+      1116,
+      1007
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      24,
+      297,
+      232
+    ],
+    "canvas": null,
+    "source_sha256": "8d96885105bb1194d37c47fa07f10d48f6429281ab7fa96c2b3b44dd433b32af"
+  },
+  "buildings/pig_pen_5": {
+    "file": "res://assets/lahoue_v3/buildings/pig_pen_5.png",
+    "source": "animals/isometric_farm_building_progression_sheet.png",
+    "crop": [
+      1117,
+      775,
+      1448,
+      1007
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      3,
+      323,
+      232
+    ],
+    "canvas": null,
+    "source_sha256": "8d96885105bb1194d37c47fa07f10d48f6429281ab7fa96c2b3b44dd433b32af"
+  },
+  "buildings/pond_1": {
+    "file": "res://assets/lahoue_v3/buildings/pond_1.png",
+    "source": "aquaculture/aquaculture_facility_asset_sheet.png",
+    "crop": [
+      5,
+      68,
+      398,
+      334
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      18,
+      6,
+      377,
+      266
+    ],
+    "canvas": null,
+    "source_sha256": "c716aa7a435a689194f35d15463425363e62e27b41956f700f7243dff19954db"
+  },
+  "buildings/pond_2": {
+    "file": "res://assets/lahoue_v3/buildings/pond_2.png",
+    "source": "aquaculture/aquaculture_facility_asset_sheet.png",
+    "crop": [
+      403,
+      0,
+      877,
+      333
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      8,
+      11,
+      465,
+      333
+    ],
+    "canvas": null,
+    "source_sha256": "c716aa7a435a689194f35d15463425363e62e27b41956f700f7243dff19954db"
+  },
+  "buildings/pond_3": {
+    "file": "res://assets/lahoue_v3/buildings/pond_3.png",
+    "source": "aquaculture/aquaculture_facility_asset_sheet.png",
+    "crop": [
+      885,
+      0,
+      1448,
+      379
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      5,
+      10,
+      545,
+      379
+    ],
+    "canvas": null,
+    "source_sha256": "c716aa7a435a689194f35d15463425363e62e27b41956f700f7243dff19954db"
+  },
+  "buildings/pond_4": {
+    "file": "res://assets/lahoue_v3/buildings/pond_4.png",
+    "source": "aquaculture/aquaculture_facility_asset_sheet.png",
+    "crop": [
+      84,
+      372,
+      699,
+      718
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      13,
+      0,
+      601,
+      346
+    ],
+    "canvas": null,
+    "source_sha256": "c716aa7a435a689194f35d15463425363e62e27b41956f700f7243dff19954db"
+  },
+  "buildings/pond_5": {
+    "file": "res://assets/lahoue_v3/buildings/pond_5.png",
+    "source": "aquaculture/aquaculture_facility_asset_sheet.png",
+    "crop": [
+      727,
+      338,
+      1439,
+      746
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      6,
+      2,
+      617,
+      408
+    ],
+    "canvas": null,
+    "source_sha256": "c716aa7a435a689194f35d15463425363e62e27b41956f700f7243dff19954db"
+  },
+  "aquaculture/fish/walk_0": {
+    "file": "res://assets/lahoue_v3/aquaculture/fish/walk_0.png",
+    "source": "aquaculture/aquaculture_facility_asset_sheet.png",
+    "crop": [
+      7,
+      803,
+      75,
+      882
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      7,
+      9,
+      68,
+      55
+    ],
+    "canvas": [
+      86,
+      84
+    ],
+    "source_sha256": "c716aa7a435a689194f35d15463425363e62e27b41956f700f7243dff19954db"
+  },
+  "aquaculture/fish/walk_1": {
+    "file": "res://assets/lahoue_v3/aquaculture/fish/walk_1.png",
+    "source": "aquaculture/aquaculture_facility_asset_sheet.png",
+    "crop": [
+      75,
+      803,
+      143,
+      882
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      10,
+      66,
+      67
+    ],
+    "canvas": [
+      86,
+      84
+    ],
+    "source_sha256": "c716aa7a435a689194f35d15463425363e62e27b41956f700f7243dff19954db"
+  },
+  "aquaculture/fish/idle": {
+    "file": "res://assets/lahoue_v3/aquaculture/fish/idle.png",
+    "source": "aquaculture/aquaculture_facility_asset_sheet.png",
+    "crop": [
+      143,
+      803,
+      210,
+      882
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      3,
+      61,
+      62
+    ],
+    "canvas": [
+      86,
+      84
+    ],
+    "source_sha256": "c716aa7a435a689194f35d15463425363e62e27b41956f700f7243dff19954db"
+  },
+  "aquaculture/shrimp/walk_0": {
+    "file": "res://assets/lahoue_v3/aquaculture/shrimp/walk_0.png",
+    "source": "aquaculture/aquaculture_facility_asset_sheet.png",
+    "crop": [
+      282,
+      803,
+      351,
+      882
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      3,
+      10,
+      69,
+      67
+    ],
+    "canvas": [
+      86,
+      84
+    ],
+    "source_sha256": "c716aa7a435a689194f35d15463425363e62e27b41956f700f7243dff19954db"
+  },
+  "aquaculture/shrimp/walk_1": {
+    "file": "res://assets/lahoue_v3/aquaculture/shrimp/walk_1.png",
+    "source": "aquaculture/aquaculture_facility_asset_sheet.png",
+    "crop": [
+      351,
+      803,
+      421,
+      882
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      5,
+      5,
+      67,
+      73
+    ],
+    "canvas": [
+      86,
+      84
+    ],
+    "source_sha256": "c716aa7a435a689194f35d15463425363e62e27b41956f700f7243dff19954db"
+  },
+  "aquaculture/shrimp/idle": {
+    "file": "res://assets/lahoue_v3/aquaculture/shrimp/idle.png",
+    "source": "aquaculture/aquaculture_facility_asset_sheet.png",
+    "crop": [
+      421,
+      803,
+      486,
+      882
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      4,
+      61,
+      74
+    ],
+    "canvas": [
+      86,
+      84
+    ],
+    "source_sha256": "c716aa7a435a689194f35d15463425363e62e27b41956f700f7243dff19954db"
+  },
+  "aquaculture/crab/walk_0": {
+    "file": "res://assets/lahoue_v3/aquaculture/crab/walk_0.png",
+    "source": "aquaculture/aquaculture_facility_asset_sheet.png",
+    "crop": [
+      566,
+      803,
+      639,
+      882
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      5,
+      10,
+      68,
+      70
+    ],
+    "canvas": [
+      86,
+      84
+    ],
+    "source_sha256": "c716aa7a435a689194f35d15463425363e62e27b41956f700f7243dff19954db"
+  },
+  "aquaculture/crab/walk_1": {
+    "file": "res://assets/lahoue_v3/aquaculture/crab/walk_1.png",
+    "source": "aquaculture/aquaculture_facility_asset_sheet.png",
+    "crop": [
+      639,
+      803,
+      710,
+      882
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      4,
+      14,
+      69,
+      70
+    ],
+    "canvas": [
+      86,
+      84
+    ],
+    "source_sha256": "c716aa7a435a689194f35d15463425363e62e27b41956f700f7243dff19954db"
+  },
+  "aquaculture/crab/idle": {
+    "file": "res://assets/lahoue_v3/aquaculture/crab/idle.png",
+    "source": "aquaculture/aquaculture_facility_asset_sheet.png",
+    "crop": [
+      710,
+      803,
+      785,
+      882
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      1,
+      13,
+      72,
+      72
+    ],
+    "canvas": [
+      86,
+      84
+    ],
+    "source_sha256": "c716aa7a435a689194f35d15463425363e62e27b41956f700f7243dff19954db"
+  },
+  "aquaculture/squid/walk_0": {
+    "file": "res://assets/lahoue_v3/aquaculture/squid/walk_0.png",
+    "source": "aquaculture/aquaculture_facility_asset_sheet.png",
+    "crop": [
+      872,
+      803,
+      938,
+      882
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      5,
+      6,
+      50,
+      74
+    ],
+    "canvas": [
+      86,
+      84
+    ],
+    "source_sha256": "c716aa7a435a689194f35d15463425363e62e27b41956f700f7243dff19954db"
+  },
+  "aquaculture/squid/walk_1": {
+    "file": "res://assets/lahoue_v3/aquaculture/squid/walk_1.png",
+    "source": "aquaculture/aquaculture_facility_asset_sheet.png",
+    "crop": [
+      938,
+      803,
+      1006,
+      882
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      4,
+      7,
+      53,
+      74
+    ],
+    "canvas": [
+      86,
+      84
+    ],
+    "source_sha256": "c716aa7a435a689194f35d15463425363e62e27b41956f700f7243dff19954db"
+  },
+  "aquaculture/squid/idle": {
+    "file": "res://assets/lahoue_v3/aquaculture/squid/idle.png",
+    "source": "aquaculture/aquaculture_facility_asset_sheet.png",
+    "crop": [
+      1006,
+      803,
+      1069,
+      882
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      13,
+      6,
+      55,
+      77
+    ],
+    "canvas": [
+      86,
+      84
+    ],
+    "source_sha256": "c716aa7a435a689194f35d15463425363e62e27b41956f700f7243dff19954db"
+  },
+  "aquaculture/octopus/walk_0": {
+    "file": "res://assets/lahoue_v3/aquaculture/octopus/walk_0.png",
+    "source": "aquaculture/aquaculture_facility_asset_sheet.png",
+    "crop": [
+      1152,
+      803,
+      1227,
+      882
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      7,
+      10,
+      74,
+      75
+    ],
+    "canvas": [
+      86,
+      84
+    ],
+    "source_sha256": "c716aa7a435a689194f35d15463425363e62e27b41956f700f7243dff19954db"
+  },
+  "aquaculture/octopus/walk_1": {
+    "file": "res://assets/lahoue_v3/aquaculture/octopus/walk_1.png",
+    "source": "aquaculture/aquaculture_facility_asset_sheet.png",
+    "crop": [
+      1227,
+      803,
+      1299,
+      882
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      1,
+      14,
+      62,
+      74
+    ],
+    "canvas": [
+      86,
+      84
+    ],
+    "source_sha256": "c716aa7a435a689194f35d15463425363e62e27b41956f700f7243dff19954db"
+  },
+  "aquaculture/octopus/idle": {
+    "file": "res://assets/lahoue_v3/aquaculture/octopus/idle.png",
+    "source": "aquaculture/aquaculture_facility_asset_sheet.png",
+    "crop": [
+      1299,
+      803,
+      1370,
+      882
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      11,
+      71,
+      74
+    ],
+    "canvas": [
+      86,
+      84
+    ],
+    "source_sha256": "c716aa7a435a689194f35d15463425363e62e27b41956f700f7243dff19954db"
+  },
+  "buildings/depot": {
+    "file": "res://assets/lahoue_v3/buildings/depot.png",
+    "source": "logistics/lahoue_truck_depot_asset_sheet.png",
+    "crop": [
+      0,
+      137,
+      777,
+      733
+    ],
+    "exclude_neighbours": [
+      [
+        0,
+        0,
+        285,
+        40
+      ]
+    ],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      11,
+      2,
+      777,
+      596
+    ],
+    "canvas": null,
+    "source_sha256": "83fe6c0322a86fe9b5495621fdb7c651066234b0c229da985361a63e83d5e99f"
+  },
+  "trucks/truck_1_w": {
+    "file": "res://assets/lahoue_v3/trucks/truck_1_w.png",
+    "source": "logistics/lahoue_truck_depot_asset_sheet.png",
+    "crop": [
+      851,
+      310,
+      1021,
+      407
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      8,
+      0,
+      161,
+      97
+    ],
+    "canvas": [
+      180,
+      125
+    ],
+    "source_sha256": "83fe6c0322a86fe9b5495621fdb7c651066234b0c229da985361a63e83d5e99f"
+  },
+  "trucks/truck_1_e": {
+    "file": "res://assets/lahoue_v3/trucks/truck_1_e.png",
+    "source": "logistics/lahoue_truck_depot_asset_sheet.png",
+    "crop": [
+      1023,
+      310,
+      1186,
+      407
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      2,
+      11,
+      151,
+      97
+    ],
+    "canvas": [
+      180,
+      125
+    ],
+    "source_sha256": "83fe6c0322a86fe9b5495621fdb7c651066234b0c229da985361a63e83d5e99f"
+  },
+  "trucks/truck_1_s": {
+    "file": "res://assets/lahoue_v3/trucks/truck_1_s.png",
+    "source": "logistics/lahoue_truck_depot_asset_sheet.png",
+    "crop": [
+      1190,
+      310,
+      1299,
+      407
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      7,
+      4,
+      90,
+      97
+    ],
+    "canvas": [
+      180,
+      125
+    ],
+    "source_sha256": "83fe6c0322a86fe9b5495621fdb7c651066234b0c229da985361a63e83d5e99f"
+  },
+  "trucks/truck_1_n": {
+    "file": "res://assets/lahoue_v3/trucks/truck_1_n.png",
+    "source": "logistics/lahoue_truck_depot_asset_sheet.png",
+    "crop": [
+      1301,
+      310,
+      1448,
+      407
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      6,
+      10,
+      119,
+      97
+    ],
+    "canvas": [
+      180,
+      125
+    ],
+    "source_sha256": "83fe6c0322a86fe9b5495621fdb7c651066234b0c229da985361a63e83d5e99f"
+  },
+  "trucks/truck_2_w": {
+    "file": "res://assets/lahoue_v3/trucks/truck_2_w.png",
+    "source": "logistics/lahoue_truck_depot_asset_sheet.png",
+    "crop": [
+      851,
+      445,
+      1021,
+      548
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      6,
+      0,
+      162,
+      103
+    ],
+    "canvas": [
+      180,
+      125
+    ],
+    "source_sha256": "83fe6c0322a86fe9b5495621fdb7c651066234b0c229da985361a63e83d5e99f"
+  },
+  "trucks/truck_2_e": {
+    "file": "res://assets/lahoue_v3/trucks/truck_2_e.png",
+    "source": "logistics/lahoue_truck_depot_asset_sheet.png",
+    "crop": [
+      1023,
+      445,
+      1186,
+      548
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      6,
+      154,
+      103
+    ],
+    "canvas": [
+      180,
+      125
+    ],
+    "source_sha256": "83fe6c0322a86fe9b5495621fdb7c651066234b0c229da985361a63e83d5e99f"
+  },
+  "trucks/truck_2_s": {
+    "file": "res://assets/lahoue_v3/trucks/truck_2_s.png",
+    "source": "logistics/lahoue_truck_depot_asset_sheet.png",
+    "crop": [
+      1190,
+      445,
+      1299,
+      548
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      3,
+      4,
+      88,
+      103
+    ],
+    "canvas": [
+      180,
+      125
+    ],
+    "source_sha256": "83fe6c0322a86fe9b5495621fdb7c651066234b0c229da985361a63e83d5e99f"
+  },
+  "trucks/truck_2_n": {
+    "file": "res://assets/lahoue_v3/trucks/truck_2_n.png",
+    "source": "logistics/lahoue_truck_depot_asset_sheet.png",
+    "crop": [
+      1301,
+      445,
+      1448,
+      548
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      7,
+      126,
+      101
+    ],
+    "canvas": [
+      180,
+      125
+    ],
+    "source_sha256": "83fe6c0322a86fe9b5495621fdb7c651066234b0c229da985361a63e83d5e99f"
+  },
+  "trucks/truck_3_w": {
+    "file": "res://assets/lahoue_v3/trucks/truck_3_w.png",
+    "source": "logistics/lahoue_truck_depot_asset_sheet.png",
+    "crop": [
+      851,
+      582,
+      1021,
+      690
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      7,
+      2,
+      161,
+      106
+    ],
+    "canvas": [
+      180,
+      125
+    ],
+    "source_sha256": "83fe6c0322a86fe9b5495621fdb7c651066234b0c229da985361a63e83d5e99f"
+  },
+  "trucks/truck_3_e": {
+    "file": "res://assets/lahoue_v3/trucks/truck_3_e.png",
+    "source": "logistics/lahoue_truck_depot_asset_sheet.png",
+    "crop": [
+      1023,
+      582,
+      1186,
+      690
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      1,
+      4,
+      155,
+      108
+    ],
+    "canvas": [
+      180,
+      125
+    ],
+    "source_sha256": "83fe6c0322a86fe9b5495621fdb7c651066234b0c229da985361a63e83d5e99f"
+  },
+  "trucks/truck_3_s": {
+    "file": "res://assets/lahoue_v3/trucks/truck_3_s.png",
+    "source": "logistics/lahoue_truck_depot_asset_sheet.png",
+    "crop": [
+      1190,
+      582,
+      1299,
+      690
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      6,
+      4,
+      96,
+      108
+    ],
+    "canvas": [
+      180,
+      125
+    ],
+    "source_sha256": "83fe6c0322a86fe9b5495621fdb7c651066234b0c229da985361a63e83d5e99f"
+  },
+  "trucks/truck_3_n": {
+    "file": "res://assets/lahoue_v3/trucks/truck_3_n.png",
+    "source": "logistics/lahoue_truck_depot_asset_sheet.png",
+    "crop": [
+      1301,
+      582,
+      1448,
+      690
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      11,
+      126,
+      108
+    ],
+    "canvas": [
+      180,
+      125
+    ],
+    "source_sha256": "83fe6c0322a86fe9b5495621fdb7c651066234b0c229da985361a63e83d5e99f"
+  },
+  "trucks/truck_4_w": {
+    "file": "res://assets/lahoue_v3/trucks/truck_4_w.png",
+    "source": "logistics/lahoue_truck_depot_asset_sheet.png",
+    "crop": [
+      851,
+      722,
+      1021,
+      834
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      4,
+      2,
+      162,
+      112
+    ],
+    "canvas": [
+      180,
+      125
+    ],
+    "source_sha256": "83fe6c0322a86fe9b5495621fdb7c651066234b0c229da985361a63e83d5e99f"
+  },
+  "trucks/truck_4_e": {
+    "file": "res://assets/lahoue_v3/trucks/truck_4_e.png",
+    "source": "logistics/lahoue_truck_depot_asset_sheet.png",
+    "crop": [
+      1023,
+      722,
+      1186,
+      834
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      1,
+      7,
+      156,
+      112
+    ],
+    "canvas": [
+      180,
+      125
+    ],
+    "source_sha256": "83fe6c0322a86fe9b5495621fdb7c651066234b0c229da985361a63e83d5e99f"
+  },
+  "trucks/truck_4_s": {
+    "file": "res://assets/lahoue_v3/trucks/truck_4_s.png",
+    "source": "logistics/lahoue_truck_depot_asset_sheet.png",
+    "crop": [
+      1190,
+      722,
+      1299,
+      834
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      4,
+      98,
+      112
+    ],
+    "canvas": [
+      180,
+      125
+    ],
+    "source_sha256": "83fe6c0322a86fe9b5495621fdb7c651066234b0c229da985361a63e83d5e99f"
+  },
+  "trucks/truck_4_n": {
+    "file": "res://assets/lahoue_v3/trucks/truck_4_n.png",
+    "source": "logistics/lahoue_truck_depot_asset_sheet.png",
+    "crop": [
+      1301,
+      722,
+      1448,
+      834
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      8,
+      125,
+      110
+    ],
+    "canvas": [
+      180,
+      125
+    ],
+    "source_sha256": "83fe6c0322a86fe9b5495621fdb7c651066234b0c229da985361a63e83d5e99f"
+  },
+  "trucks/truck_5_w": {
+    "file": "res://assets/lahoue_v3/trucks/truck_5_w.png",
+    "source": "logistics/lahoue_truck_depot_asset_sheet.png",
+    "crop": [
+      851,
+      870,
+      1021,
+      988
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      2,
+      4,
+      170,
+      118
+    ],
+    "canvas": [
+      180,
+      125
+    ],
+    "source_sha256": "83fe6c0322a86fe9b5495621fdb7c651066234b0c229da985361a63e83d5e99f"
+  },
+  "trucks/truck_5_e": {
+    "file": "res://assets/lahoue_v3/trucks/truck_5_e.png",
+    "source": "logistics/lahoue_truck_depot_asset_sheet.png",
+    "crop": [
+      1023,
+      870,
+      1186,
+      988
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      5,
+      11,
+      158,
+      118
+    ],
+    "canvas": [
+      180,
+      125
+    ],
+    "source_sha256": "83fe6c0322a86fe9b5495621fdb7c651066234b0c229da985361a63e83d5e99f"
+  },
+  "trucks/truck_5_s": {
+    "file": "res://assets/lahoue_v3/trucks/truck_5_s.png",
+    "source": "logistics/lahoue_truck_depot_asset_sheet.png",
+    "crop": [
+      1190,
+      870,
+      1299,
+      988
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      2,
+      3,
+      97,
+      118
+    ],
+    "canvas": [
+      180,
+      125
+    ],
+    "source_sha256": "83fe6c0322a86fe9b5495621fdb7c651066234b0c229da985361a63e83d5e99f"
+  },
+  "trucks/truck_5_n": {
+    "file": "res://assets/lahoue_v3/trucks/truck_5_n.png",
+    "source": "logistics/lahoue_truck_depot_asset_sheet.png",
+    "crop": [
+      1301,
+      870,
+      1448,
+      988
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      5,
+      130,
+      118
+    ],
+    "canvas": [
+      180,
+      125
+    ],
+    "source_sha256": "83fe6c0322a86fe9b5495621fdb7c651066234b0c229da985361a63e83d5e99f"
+  },
+  "helicopters/body_1": {
+    "file": "res://assets/lahoue_v3/helicopters/body_1.png",
+    "source": "logistics/lahoue_logistics_helicopter_asset_sheet.png",
+    "crop": [
+      4,
+      0,
+      289,
+      318
+    ],
+    "exclude_neighbours": [
+      [
+        255,
+        135,
+        285,
+        318
+      ]
+    ],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      14,
+      69,
+      274,
+      310
+    ],
+    "canvas": null,
+    "source_sha256": "6651b6a3eb843403b8ba88b5dcb2e1a9a798170eb42afda7b120a9dd1af20199"
+  },
+  "helicopters/main_1": {
+    "file": "res://assets/lahoue_v3/helicopters/main_1.png",
+    "source": "logistics/lahoue_logistics_helicopter_asset_sheet.png",
+    "crop": [
+      4,
+      393,
+      289,
+      548
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      18,
+      12,
+      285,
+      149
+    ],
+    "canvas": null,
+    "source_sha256": "6651b6a3eb843403b8ba88b5dcb2e1a9a798170eb42afda7b120a9dd1af20199"
+  },
+  "helicopters/tail_1": {
+    "file": "res://assets/lahoue_v3/helicopters/tail_1.png",
+    "source": "logistics/lahoue_logistics_helicopter_asset_sheet.png",
+    "crop": [
+      4,
+      590,
+      289,
+      773
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      132,
+      13,
+      233,
+      178
+    ],
+    "canvas": null,
+    "source_sha256": "6651b6a3eb843403b8ba88b5dcb2e1a9a798170eb42afda7b120a9dd1af20199"
+  },
+  "helicopters/body_2": {
+    "file": "res://assets/lahoue_v3/helicopters/body_2.png",
+    "source": "logistics/lahoue_logistics_helicopter_asset_sheet.png",
+    "crop": [
+      289,
+      0,
+      579,
+      318
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      63,
+      245,
+      311
+    ],
+    "canvas": null,
+    "source_sha256": "6651b6a3eb843403b8ba88b5dcb2e1a9a798170eb42afda7b120a9dd1af20199"
+  },
+  "helicopters/main_2": {
+    "file": "res://assets/lahoue_v3/helicopters/main_2.png",
+    "source": "logistics/lahoue_logistics_helicopter_asset_sheet.png",
+    "crop": [
+      289,
+      393,
+      579,
+      548
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      15,
+      6,
+      280,
+      155
+    ],
+    "canvas": null,
+    "source_sha256": "6651b6a3eb843403b8ba88b5dcb2e1a9a798170eb42afda7b120a9dd1af20199"
+  },
+  "helicopters/tail_2": {
+    "file": "res://assets/lahoue_v3/helicopters/tail_2.png",
+    "source": "logistics/lahoue_logistics_helicopter_asset_sheet.png",
+    "crop": [
+      289,
+      590,
+      579,
+      773
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      111,
+      9,
+      224,
+      179
+    ],
+    "canvas": null,
+    "source_sha256": "6651b6a3eb843403b8ba88b5dcb2e1a9a798170eb42afda7b120a9dd1af20199"
+  },
+  "helicopters/body_3": {
+    "file": "res://assets/lahoue_v3/helicopters/body_3.png",
+    "source": "logistics/lahoue_logistics_helicopter_asset_sheet.png",
+    "crop": [
+      579,
+      0,
+      875,
+      318
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      50,
+      251,
+      313
+    ],
+    "canvas": null,
+    "source_sha256": "6651b6a3eb843403b8ba88b5dcb2e1a9a798170eb42afda7b120a9dd1af20199"
+  },
+  "helicopters/main_3": {
+    "file": "res://assets/lahoue_v3/helicopters/main_3.png",
+    "source": "logistics/lahoue_logistics_helicopter_asset_sheet.png",
+    "crop": [
+      579,
+      393,
+      875,
+      548
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      13,
+      10,
+      287,
+      155
+    ],
+    "canvas": null,
+    "source_sha256": "6651b6a3eb843403b8ba88b5dcb2e1a9a798170eb42afda7b120a9dd1af20199"
+  },
+  "helicopters/tail_3": {
+    "file": "res://assets/lahoue_v3/helicopters/tail_3.png",
+    "source": "logistics/lahoue_logistics_helicopter_asset_sheet.png",
+    "crop": [
+      579,
+      590,
+      875,
+      773
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      109,
+      16,
+      224,
+      179
+    ],
+    "canvas": null,
+    "source_sha256": "6651b6a3eb843403b8ba88b5dcb2e1a9a798170eb42afda7b120a9dd1af20199"
+  },
+  "helicopters/body_4": {
+    "file": "res://assets/lahoue_v3/helicopters/body_4.png",
+    "source": "logistics/lahoue_logistics_helicopter_asset_sheet.png",
+    "crop": [
+      875,
+      0,
+      1161,
+      318
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      55,
+      265,
+      316
+    ],
+    "canvas": null,
+    "source_sha256": "6651b6a3eb843403b8ba88b5dcb2e1a9a798170eb42afda7b120a9dd1af20199"
+  },
+  "helicopters/main_4": {
+    "file": "res://assets/lahoue_v3/helicopters/main_4.png",
+    "source": "logistics/lahoue_logistics_helicopter_asset_sheet.png",
+    "crop": [
+      875,
+      393,
+      1161,
+      548
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      1,
+      2,
+      265,
+      155
+    ],
+    "canvas": null,
+    "source_sha256": "6651b6a3eb843403b8ba88b5dcb2e1a9a798170eb42afda7b120a9dd1af20199"
+  },
+  "helicopters/tail_4": {
+    "file": "res://assets/lahoue_v3/helicopters/tail_4.png",
+    "source": "logistics/lahoue_logistics_helicopter_asset_sheet.png",
+    "crop": [
+      875,
+      590,
+      1161,
+      773
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      44,
+      3,
+      184,
+      183
+    ],
+    "canvas": null,
+    "source_sha256": "6651b6a3eb843403b8ba88b5dcb2e1a9a798170eb42afda7b120a9dd1af20199"
+  },
+  "helicopters/body_5": {
+    "file": "res://assets/lahoue_v3/helicopters/body_5.png",
+    "source": "logistics/lahoue_logistics_helicopter_asset_sheet.png",
+    "crop": [
+      1161,
+      0,
+      1448,
+      318
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      26,
+      270,
+      316
+    ],
+    "canvas": null,
+    "source_sha256": "6651b6a3eb843403b8ba88b5dcb2e1a9a798170eb42afda7b120a9dd1af20199"
+  },
+  "helicopters/main_5": {
+    "file": "res://assets/lahoue_v3/helicopters/main_5.png",
+    "source": "logistics/lahoue_logistics_helicopter_asset_sheet.png",
+    "crop": [
+      1161,
+      393,
+      1448,
+      548
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      5,
+      269,
+      154
+    ],
+    "canvas": null,
+    "source_sha256": "6651b6a3eb843403b8ba88b5dcb2e1a9a798170eb42afda7b120a9dd1af20199"
+  },
+  "helicopters/tail_5": {
+    "file": "res://assets/lahoue_v3/helicopters/tail_5.png",
+    "source": "logistics/lahoue_logistics_helicopter_asset_sheet.png",
+    "crop": [
+      1161,
+      590,
+      1448,
+      773
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      20,
+      0,
+      173,
+      183
+    ],
+    "canvas": null,
+    "source_sha256": "6651b6a3eb843403b8ba88b5dcb2e1a9a798170eb42afda7b120a9dd1af20199"
+  },
+  "helicopters/rotor_slow": {
+    "file": "res://assets/lahoue_v3/helicopters/rotor_slow.png",
+    "source": "logistics/lahoue_logistics_helicopter_asset_sheet.png",
+    "crop": [
+      18,
+      829,
+      309,
+      985
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      20,
+      13,
+      286,
+      151
+    ],
+    "canvas": null,
+    "source_sha256": "6651b6a3eb843403b8ba88b5dcb2e1a9a798170eb42afda7b120a9dd1af20199"
+  },
+  "helicopters/rotor_medium": {
+    "file": "res://assets/lahoue_v3/helicopters/rotor_medium.png",
+    "source": "logistics/lahoue_logistics_helicopter_asset_sheet.png",
+    "crop": [
+      310,
+      829,
+      593,
+      985
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      10,
+      7,
+      279,
+      156
+    ],
+    "canvas": null,
+    "source_sha256": "6651b6a3eb843403b8ba88b5dcb2e1a9a798170eb42afda7b120a9dd1af20199"
+  },
+  "helicopters/rotor_fast": {
+    "file": "res://assets/lahoue_v3/helicopters/rotor_fast.png",
+    "source": "logistics/lahoue_logistics_helicopter_asset_sheet.png",
+    "crop": [
+      596,
+      829,
+      881,
+      985
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      9,
+      5,
+      281,
+      156
+    ],
+    "canvas": null,
+    "source_sha256": "6651b6a3eb843403b8ba88b5dcb2e1a9a798170eb42afda7b120a9dd1af20199"
+  },
+  "restaurant/table_empty": {
+    "file": "res://assets/lahoue_v3/restaurant/table_empty.png",
+    "source": "restaurant/lahoue_restaurant_isometric_asset_sheet.png",
+    "crop": [
+      721,
+      15,
+      1024,
+      224
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      10,
+      25,
+      275,
+      203
+    ],
+    "canvas": null,
+    "source_sha256": "47fcfa4912bcd92de001c966df412b74c867c3fd0329b2b58ec01cfc9e105050"
+  },
+  "restaurant/bar": {
+    "file": "res://assets/lahoue_v3/restaurant/bar.png",
+    "source": "restaurant/lahoue_restaurant_isometric_asset_sheet.png",
+    "crop": [
+      4,
+      429,
+      392,
+      763
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      17,
+      10,
+      370,
+      330
+    ],
+    "canvas": null,
+    "source_sha256": "47fcfa4912bcd92de001c966df412b74c867c3fd0329b2b58ec01cfc9e105050"
+  },
+  "restaurant/food_pass": {
+    "file": "res://assets/lahoue_v3/restaurant/food_pass.png",
+    "source": "restaurant/lahoue_restaurant_isometric_asset_sheet.png",
+    "crop": [
+      396,
+      472,
+      724,
+      762
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      5,
+      2,
+      318,
+      288
+    ],
+    "canvas": null,
+    "source_sha256": "47fcfa4912bcd92de001c966df412b74c867c3fd0329b2b58ec01cfc9e105050"
+  },
+  "restaurant/kitchen": {
+    "file": "res://assets/lahoue_v3/restaurant/kitchen.png",
+    "source": "restaurant/lahoue_restaurant_isometric_asset_sheet.png",
+    "crop": [
+      1061,
+      455,
+      1448,
+      730
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      9,
+      362,
+      275
+    ],
+    "canvas": null,
+    "source_sha256": "47fcfa4912bcd92de001c966df412b74c867c3fd0329b2b58ec01cfc9e105050"
+  },
+  "restaurant/kitchen_work": {
+    "file": "res://assets/lahoue_v3/restaurant/kitchen_work.png",
+    "source": "restaurant/lahoue_restaurant_isometric_asset_sheet.png",
+    "crop": [
+      1059,
+      695,
+      1448,
+      967
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      0,
+      363,
+      262
+    ],
+    "canvas": null,
+    "source_sha256": "47fcfa4912bcd92de001c966df412b74c867c3fd0329b2b58ec01cfc9e105050"
+  },
+  "restaurant/planter": {
+    "file": "res://assets/lahoue_v3/restaurant/planter.png",
+    "source": "restaurant/lahoue_restaurant_isometric_asset_sheet.png",
+    "crop": [
+      410,
+      760,
+      505,
+      921
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      9,
+      95,
+      144
+    ],
+    "canvas": null,
+    "source_sha256": "47fcfa4912bcd92de001c966df412b74c867c3fd0329b2b58ec01cfc9e105050"
+  },
+  "restaurant/railing": {
+    "file": "res://assets/lahoue_v3/restaurant/railing.png",
+    "source": "restaurant/lahoue_restaurant_isometric_asset_sheet.png",
+    "crop": [
+      288,
+      924,
+      543,
+      1078
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      10,
+      0,
+      255,
+      145
+    ],
+    "canvas": null,
+    "source_sha256": "47fcfa4912bcd92de001c966df412b74c867c3fd0329b2b58ec01cfc9e105050"
+  },
+  "restaurant/level_1": {
+    "file": "res://assets/lahoue_v3/restaurant/level_1.png",
+    "source": "restaurant/lahoue_restaurant_upgrade_levels.png",
+    "crop": [
+      142,
+      75,
+      680,
+      469
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      8,
+      10,
+      528,
+      394
+    ],
+    "canvas": null,
+    "source_sha256": "922924af407ec3da9481a28b8a08cefe23ffc0cdc194572909e6e419a692cc23"
+  },
+  "restaurant/level_2": {
+    "file": "res://assets/lahoue_v3/restaurant/level_2.png",
+    "source": "restaurant/lahoue_restaurant_upgrade_levels.png",
+    "crop": [
+      704,
+      24,
+      1370,
+      471
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      5,
+      11,
+      649,
+      447
+    ],
+    "canvas": null,
+    "source_sha256": "922924af407ec3da9481a28b8a08cefe23ffc0cdc194572909e6e419a692cc23"
+  },
+  "restaurant/level_3": {
+    "file": "res://assets/lahoue_v3/restaurant/level_3.png",
+    "source": "restaurant/lahoue_restaurant_upgrade_levels.png",
+    "crop": [
+      0,
+      518,
+      450,
+      1007
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      3,
+      14,
+      450,
+      482
+    ],
+    "canvas": null,
+    "source_sha256": "922924af407ec3da9481a28b8a08cefe23ffc0cdc194572909e6e419a692cc23"
+  },
+  "restaurant/level_4": {
+    "file": "res://assets/lahoue_v3/restaurant/level_4.png",
+    "source": "restaurant/lahoue_restaurant_upgrade_levels.png",
+    "crop": [
+      451,
+      510,
+      927,
+      1011
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      9,
+      476,
+      501
+    ],
+    "canvas": null,
+    "source_sha256": "922924af407ec3da9481a28b8a08cefe23ffc0cdc194572909e6e419a692cc23"
+  },
+  "restaurant/level_5": {
+    "file": "res://assets/lahoue_v3/restaurant/level_5.png",
+    "source": "restaurant/lahoue_restaurant_upgrade_levels.png",
+    "crop": [
+      928,
+      496,
+      1448,
+      1012
+    ],
+    "exclude_neighbours": [
+      [
+        0,
+        0,
+        190,
+        17
+      ]
+    ],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      11,
+      518,
+      516
+    ],
+    "canvas": null,
+    "source_sha256": "922924af407ec3da9481a28b8a08cefe23ffc0cdc194572909e6e419a692cc23"
+  },
+  "terrain/grass": {
+    "file": "res://assets/lahoue_v3/terrain/grass.png",
+    "source": "terrain/isometric_fantasy_settlement_tileset.png",
+    "crop": [
+      5,
+      56,
+      287,
+      276
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      8,
+      7,
+      276,
+      209
+    ],
+    "canvas": null,
+    "source_sha256": "ce3500c71ae15ffd24f571049bc4e77901dce18a266f8782fded1d802f075bcf"
+  },
+  "terrain/dusty_grass": {
+    "file": "res://assets/lahoue_v3/terrain/dusty_grass.png",
+    "source": "terrain/isometric_fantasy_settlement_tileset.png",
+    "crop": [
+      292,
+      54,
+      577,
+      276
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      10,
+      9,
+      279,
+      211
+    ],
+    "canvas": null,
+    "source_sha256": "ce3500c71ae15ffd24f571049bc4e77901dce18a266f8782fded1d802f075bcf"
+  },
+  "terrain/dry": {
+    "file": "res://assets/lahoue_v3/terrain/dry.png",
+    "source": "terrain/isometric_fantasy_settlement_tileset.png",
+    "crop": [
+      582,
+      55,
+      865,
+      276
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      6,
+      7,
+      275,
+      210
+    ],
+    "canvas": null,
+    "source_sha256": "ce3500c71ae15ffd24f571049bc4e77901dce18a266f8782fded1d802f075bcf"
+  },
+  "terrain/plot": {
+    "file": "res://assets/lahoue_v3/terrain/plot.png",
+    "source": "terrain/isometric_fantasy_settlement_tileset.png",
+    "crop": [
+      868,
+      55,
+      1154,
+      276
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      8,
+      8,
+      278,
+      209
+    ],
+    "canvas": null,
+    "source_sha256": "ce3500c71ae15ffd24f571049bc4e77901dce18a266f8782fded1d802f075bcf"
+  },
+  "terrain/watered_plot": {
+    "file": "res://assets/lahoue_v3/terrain/watered_plot.png",
+    "source": "terrain/isometric_fantasy_settlement_tileset.png",
+    "crop": [
+      1158,
+      55,
+      1448,
+      276
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      8,
+      8,
+      278,
+      207
+    ],
+    "canvas": null,
+    "source_sha256": "ce3500c71ae15ffd24f571049bc4e77901dce18a266f8782fded1d802f075bcf"
+  },
+  "terrain/road": {
+    "file": "res://assets/lahoue_v3/terrain/road.png",
+    "source": "terrain/isometric_fantasy_settlement_tileset.png",
+    "crop": [
+      290,
+      318,
+      573,
+      531
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      10,
+      7,
+      272,
+      207
+    ],
+    "canvas": null,
+    "source_sha256": "ce3500c71ae15ffd24f571049bc4e77901dce18a266f8782fded1d802f075bcf"
+  },
+  "terrain/corner": {
+    "file": "res://assets/lahoue_v3/terrain/corner.png",
+    "source": "terrain/isometric_fantasy_settlement_tileset.png",
+    "crop": [
+      575,
+      317,
+      858,
+      531
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      8,
+      6,
+      277,
+      210
+    ],
+    "canvas": null,
+    "source_sha256": "ce3500c71ae15ffd24f571049bc4e77901dce18a266f8782fded1d802f075bcf"
+  },
+  "terrain/junction": {
+    "file": "res://assets/lahoue_v3/terrain/junction.png",
+    "source": "terrain/isometric_fantasy_settlement_tileset.png",
+    "crop": [
+      1157,
+      317,
+      1448,
+      531
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      4,
+      3,
+      277,
+      209
+    ],
+    "canvas": null,
+    "source_sha256": "ce3500c71ae15ffd24f571049bc4e77901dce18a266f8782fded1d802f075bcf"
+  },
+  "terrain/worn": {
+    "file": "res://assets/lahoue_v3/terrain/worn.png",
+    "source": "terrain/isometric_fantasy_settlement_tileset.png",
+    "crop": [
+      7,
+      568,
+      279,
+      786
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      6,
+      10,
+      262,
+      205
+    ],
+    "canvas": null,
+    "source_sha256": "ce3500c71ae15ffd24f571049bc4e77901dce18a266f8782fded1d802f075bcf"
+  },
+  "terrain/shoulder": {
+    "file": "res://assets/lahoue_v3/terrain/shoulder.png",
+    "source": "terrain/isometric_fantasy_settlement_tileset.png",
+    "crop": [
+      282,
+      568,
+      560,
+      786
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      6,
+      259,
+      206
+    ],
+    "canvas": null,
+    "source_sha256": "ce3500c71ae15ffd24f571049bc4e77901dce18a266f8782fded1d802f075bcf"
+  },
+  "terrain/transition": {
+    "file": "res://assets/lahoue_v3/terrain/transition.png",
+    "source": "terrain/isometric_fantasy_settlement_tileset.png",
+    "crop": [
+      562,
+      568,
+      827,
+      786
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      8,
+      257,
+      210
+    ],
+    "canvas": null,
+    "source_sha256": "ce3500c71ae15ffd24f571049bc4e77901dce18a266f8782fded1d802f075bcf"
+  },
+  "terrain/weed": {
+    "file": "res://assets/lahoue_v3/terrain/weed.png",
+    "source": "terrain/isometric_fantasy_settlement_tileset.png",
+    "crop": [
+      1090,
+      561,
+      1200,
+      706
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      6,
+      16,
+      105,
+      130
+    ],
+    "canvas": null,
+    "source_sha256": "ce3500c71ae15ffd24f571049bc4e77901dce18a266f8782fded1d802f075bcf"
+  },
+  "terrain/rock": {
+    "file": "res://assets/lahoue_v3/terrain/rock.png",
+    "source": "terrain/isometric_fantasy_settlement_tileset.png",
+    "crop": [
+      1099,
+      706,
+      1183,
+      790
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      5,
+      0,
+      80,
+      74
+    ],
+    "canvas": null,
+    "source_sha256": "ce3500c71ae15ffd24f571049bc4e77901dce18a266f8782fded1d802f075bcf"
+  },
+  "terrain/base_surface": {
+    "file": "res://assets/lahoue_v3/terrain/base_surface.png",
+    "source": "terrain/isometric_dry_earth_terrain_tile.png",
+    "crop": [
+      400,
+      460,
+      800,
+      660
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      0,
+      400,
+      200
+    ],
+    "canvas": null,
+    "source_sha256": "183148464db9cc4b1b9ef093ffa9fdd0f233d1904875ae770b4888ec5f56cb8f"
+  },
+  "terrain/grass_surface": {
+    "file": "res://assets/lahoue_v3/terrain/grass_surface.png",
+    "source": "terrain/isometric_fantasy_settlement_tileset.png",
+    "crop": [
+      94,
+      123,
+      199,
+      177
+    ],
+    "exclude_neighbours": [],
+    "component": "largest alpha-connected approved object; retain adjacent antialias pixels",
+    "trim": [
+      0,
+      0,
+      105,
+      54
+    ],
+    "canvas": null,
+    "source_sha256": "ce3500c71ae15ffd24f571049bc4e77901dce18a266f8782fded1d802f075bcf"
+  },
+  "characters/player/sit": {
+    "file": "res://assets/lahoue_v3/characters/player/sit.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      880,
+      0,
+      992,
+      135
+    ],
+    "mask": [
+      [
+        40,
+        5
+      ],
+      [
+        88,
+        5
+      ],
+      [
+        94,
+        48
+      ],
+      [
+        101,
+        60
+      ],
+      [
+        96,
+        72
+      ],
+      [
+        75,
+        76
+      ],
+      [
+        67,
+        89
+      ],
+      [
+        48,
+        85
+      ],
+      [
+        40,
+        59
+      ]
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/player/eat": {
+    "file": "res://assets/lahoue_v3/characters/player/eat.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      1042,
+      0,
+      1154,
+      135
+    ],
+    "mask": [
+      [
+        38,
+        4
+      ],
+      [
+        84,
+        4
+      ],
+      [
+        90,
+        37
+      ],
+      [
+        99,
+        52
+      ],
+      [
+        91,
+        66
+      ],
+      [
+        76,
+        65
+      ],
+      [
+        69,
+        90
+      ],
+      [
+        39,
+        91
+      ],
+      [
+        30,
+        74
+      ],
+      [
+        30,
+        39
+      ]
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/player/payment": {
+    "file": "res://assets/lahoue_v3/characters/player/payment.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      1220,
+      0,
+      1332,
+      135
+    ],
+    "mask": [
+      [
+        22,
+        7
+      ],
+      [
+        73,
+        7
+      ],
+      [
+        78,
+        41
+      ],
+      [
+        101,
+        49
+      ],
+      [
+        100,
+        62
+      ],
+      [
+        75,
+        67
+      ],
+      [
+        71,
+        130
+      ],
+      [
+        24,
+        132
+      ],
+      [
+        14,
+        86
+      ],
+      [
+        12,
+        41
+      ]
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/waiter/sit": {
+    "file": "res://assets/lahoue_v3/characters/waiter/sit.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      880,
+      190,
+      992,
+      325
+    ],
+    "mask": [
+      [
+        40,
+        5
+      ],
+      [
+        88,
+        5
+      ],
+      [
+        94,
+        48
+      ],
+      [
+        101,
+        60
+      ],
+      [
+        96,
+        72
+      ],
+      [
+        75,
+        76
+      ],
+      [
+        67,
+        89
+      ],
+      [
+        48,
+        85
+      ],
+      [
+        40,
+        59
+      ]
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/waiter/eat": {
+    "file": "res://assets/lahoue_v3/characters/waiter/eat.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      1042,
+      190,
+      1154,
+      325
+    ],
+    "mask": [
+      [
+        38,
+        4
+      ],
+      [
+        84,
+        4
+      ],
+      [
+        90,
+        37
+      ],
+      [
+        99,
+        52
+      ],
+      [
+        91,
+        66
+      ],
+      [
+        76,
+        65
+      ],
+      [
+        69,
+        90
+      ],
+      [
+        39,
+        91
+      ],
+      [
+        30,
+        74
+      ],
+      [
+        30,
+        39
+      ]
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/waiter/payment": {
+    "file": "res://assets/lahoue_v3/characters/waiter/payment.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      1220,
+      190,
+      1332,
+      325
+    ],
+    "mask": [
+      [
+        22,
+        7
+      ],
+      [
+        73,
+        7
+      ],
+      [
+        78,
+        41
+      ],
+      [
+        101,
+        49
+      ],
+      [
+        100,
+        62
+      ],
+      [
+        75,
+        67
+      ],
+      [
+        71,
+        130
+      ],
+      [
+        24,
+        132
+      ],
+      [
+        14,
+        86
+      ],
+      [
+        12,
+        41
+      ]
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/chef/sit": {
+    "file": "res://assets/lahoue_v3/characters/chef/sit.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      880,
+      373,
+      992,
+      508
+    ],
+    "mask": [
+      [
+        40,
+        5
+      ],
+      [
+        88,
+        5
+      ],
+      [
+        94,
+        48
+      ],
+      [
+        101,
+        60
+      ],
+      [
+        96,
+        72
+      ],
+      [
+        75,
+        76
+      ],
+      [
+        67,
+        89
+      ],
+      [
+        48,
+        85
+      ],
+      [
+        40,
+        59
+      ]
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/chef/eat": {
+    "file": "res://assets/lahoue_v3/characters/chef/eat.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      1042,
+      373,
+      1154,
+      508
+    ],
+    "mask": [
+      [
+        38,
+        4
+      ],
+      [
+        84,
+        4
+      ],
+      [
+        90,
+        37
+      ],
+      [
+        99,
+        52
+      ],
+      [
+        91,
+        66
+      ],
+      [
+        76,
+        65
+      ],
+      [
+        69,
+        90
+      ],
+      [
+        39,
+        91
+      ],
+      [
+        30,
+        74
+      ],
+      [
+        30,
+        39
+      ]
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/chef/payment": {
+    "file": "res://assets/lahoue_v3/characters/chef/payment.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      1220,
+      373,
+      1332,
+      508
+    ],
+    "mask": [
+      [
+        22,
+        7
+      ],
+      [
+        73,
+        7
+      ],
+      [
+        78,
+        41
+      ],
+      [
+        101,
+        49
+      ],
+      [
+        100,
+        62
+      ],
+      [
+        75,
+        67
+      ],
+      [
+        71,
+        130
+      ],
+      [
+        24,
+        132
+      ],
+      [
+        14,
+        86
+      ],
+      [
+        12,
+        41
+      ]
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/customer/sit": {
+    "file": "res://assets/lahoue_v3/characters/customer/sit.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      880,
+      560,
+      992,
+      695
+    ],
+    "mask": [
+      [
+        40,
+        5
+      ],
+      [
+        88,
+        5
+      ],
+      [
+        94,
+        48
+      ],
+      [
+        101,
+        60
+      ],
+      [
+        96,
+        72
+      ],
+      [
+        75,
+        76
+      ],
+      [
+        67,
+        89
+      ],
+      [
+        48,
+        85
+      ],
+      [
+        40,
+        59
+      ]
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/customer/eat": {
+    "file": "res://assets/lahoue_v3/characters/customer/eat.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      1042,
+      560,
+      1154,
+      695
+    ],
+    "mask": [
+      [
+        38,
+        4
+      ],
+      [
+        84,
+        4
+      ],
+      [
+        90,
+        37
+      ],
+      [
+        99,
+        52
+      ],
+      [
+        91,
+        66
+      ],
+      [
+        76,
+        65
+      ],
+      [
+        69,
+        90
+      ],
+      [
+        39,
+        91
+      ],
+      [
+        30,
+        74
+      ],
+      [
+        30,
+        39
+      ]
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/customer/payment": {
+    "file": "res://assets/lahoue_v3/characters/customer/payment.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      1220,
+      560,
+      1332,
+      695
+    ],
+    "mask": [
+      [
+        22,
+        7
+      ],
+      [
+        73,
+        7
+      ],
+      [
+        78,
+        41
+      ],
+      [
+        101,
+        49
+      ],
+      [
+        100,
+        62
+      ],
+      [
+        75,
+        67
+      ],
+      [
+        71,
+        130
+      ],
+      [
+        24,
+        132
+      ],
+      [
+        14,
+        86
+      ],
+      [
+        12,
+        41
+      ]
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/customer_woman/sit": {
+    "file": "res://assets/lahoue_v3/characters/customer_woman/sit.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      880,
+      742,
+      992,
+      877
+    ],
+    "mask": [
+      [
+        40,
+        5
+      ],
+      [
+        88,
+        5
+      ],
+      [
+        94,
+        48
+      ],
+      [
+        101,
+        60
+      ],
+      [
+        96,
+        72
+      ],
+      [
+        75,
+        76
+      ],
+      [
+        67,
+        89
+      ],
+      [
+        48,
+        85
+      ],
+      [
+        40,
+        59
+      ]
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/customer_woman/eat": {
+    "file": "res://assets/lahoue_v3/characters/customer_woman/eat.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      1042,
+      742,
+      1154,
+      877
+    ],
+    "mask": [
+      [
+        38,
+        4
+      ],
+      [
+        84,
+        4
+      ],
+      [
+        90,
+        37
+      ],
+      [
+        99,
+        52
+      ],
+      [
+        91,
+        66
+      ],
+      [
+        76,
+        65
+      ],
+      [
+        69,
+        90
+      ],
+      [
+        39,
+        91
+      ],
+      [
+        30,
+        74
+      ],
+      [
+        30,
+        39
+      ]
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/customer_woman/payment": {
+    "file": "res://assets/lahoue_v3/characters/customer_woman/payment.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      1220,
+      742,
+      1332,
+      877
+    ],
+    "mask": [
+      [
+        22,
+        7
+      ],
+      [
+        73,
+        7
+      ],
+      [
+        78,
+        41
+      ],
+      [
+        101,
+        49
+      ],
+      [
+        100,
+        62
+      ],
+      [
+        75,
+        67
+      ],
+      [
+        71,
+        130
+      ],
+      [
+        24,
+        132
+      ],
+      [
+        14,
+        86
+      ],
+      [
+        12,
+        41
+      ]
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/vip_customer/sit": {
+    "file": "res://assets/lahoue_v3/characters/vip_customer/sit.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      880,
+      913,
+      992,
+      1045
+    ],
+    "mask": [
+      [
+        40,
+        5
+      ],
+      [
+        88,
+        5
+      ],
+      [
+        94,
+        48
+      ],
+      [
+        101,
+        60
+      ],
+      [
+        96,
+        72
+      ],
+      [
+        75,
+        76
+      ],
+      [
+        67,
+        89
+      ],
+      [
+        48,
+        85
+      ],
+      [
+        40,
+        59
+      ]
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/vip_customer/eat": {
+    "file": "res://assets/lahoue_v3/characters/vip_customer/eat.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      1042,
+      913,
+      1154,
+      1045
+    ],
+    "mask": [
+      [
+        38,
+        4
+      ],
+      [
+        84,
+        4
+      ],
+      [
+        90,
+        37
+      ],
+      [
+        99,
+        52
+      ],
+      [
+        91,
+        66
+      ],
+      [
+        76,
+        65
+      ],
+      [
+        69,
+        90
+      ],
+      [
+        39,
+        91
+      ],
+      [
+        30,
+        74
+      ],
+      [
+        30,
+        39
+      ]
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "characters/vip_customer/payment": {
+    "file": "res://assets/lahoue_v3/characters/vip_customer/payment.png",
+    "source": "characters/restaurant_simulation_character_sprite_sheet.png",
+    "crop": [
+      1220,
+      913,
+      1332,
+      1045
+    ],
+    "mask": [
+      [
+        22,
+        7
+      ],
+      [
+        73,
+        7
+      ],
+      [
+        78,
+        41
+      ],
+      [
+        101,
+        49
+      ],
+      [
+        100,
+        62
+      ],
+      [
+        75,
+        67
+      ],
+      [
+        71,
+        130
+      ],
+      [
+        24,
+        132
+      ],
+      [
+        14,
+        86
+      ],
+      [
+        12,
+        41
+      ]
+    ],
+    "canvas": [
+      150,
+      165
+    ],
+    "source_sha256": "7792e93812d0e4be0402f111db308e461169243f3c2c2bb43642b7dedce75652"
+  },
+  "restaurant/floor_material": {
+    "file": "res://assets/lahoue_v3/restaurant/floor_material.png",
+    "source": "restaurant/cozy_isometric_restaurant_asset_sheet.png",
+    "crop": [
+      112,
+      110,
+      207,
+      155
+    ],
+    "mask": null,
+    "canvas": null,
+    "source_sha256": "2650d03d8b029c94f1d6f230368b1ef378f1ff482286d1ff8509abd67d0a6242"
+  },
+  "restaurant/wall_material": {
+    "file": "res://assets/lahoue_v3/restaurant/wall_material.png",
+    "source": "restaurant/lahoue_restaurant_isometric_asset_sheet.png",
+    "crop": [
+      148,
+      639,
+      205,
+      685
+    ],
+    "mask": null,
+    "canvas": null,
+    "source_sha256": "47fcfa4912bcd92de001c966df412b74c867c3fd0329b2b58ec01cfc9e105050"
+  },
+  "restaurant/pillar": {
+    "file": "res://assets/lahoue_v3/restaurant/pillar.png",
+    "source": "restaurant/lahoue_restaurant_isometric_asset_sheet.png",
+    "crop": [
+      1083,
+      898,
+      1172,
+      1078
+    ],
+    "mask": null,
+    "canvas": null,
+    "source_sha256": "47fcfa4912bcd92de001c966df412b74c867c3fd0329b2b58ec01cfc9e105050"
+  },
+  "restaurant/railing_back": {
+    "file": "res://assets/lahoue_v3/restaurant/railing_back.png",
+    "source": "restaurant/lahoue_restaurant_isometric_asset_sheet.png",
+    "crop": [
+      292,
+      913,
+      547,
+      1078
+    ],
+    "mask": null,
+    "canvas": null,
+    "source_sha256": "47fcfa4912bcd92de001c966df412b74c867c3fd0329b2b58ec01cfc9e105050"
+  },
+  "restaurant/stair": {
+    "file": "res://assets/lahoue_v3/restaurant/stair.png",
+    "source": "restaurant/lahoue_restaurant_upgrade_levels.png",
+    "crop": [
+      940,
+      677,
+      1069,
+      909
+    ],
+    "mask": [
+      [
+        9,
+        0
+      ],
+      [
+        41,
+        14
+      ],
+      [
+        57,
+        48
+      ],
+      [
+        74,
+        81
+      ],
+      [
+        93,
+        119
+      ],
+      [
+        121,
+        167
+      ],
+      [
+        128,
+        190
+      ],
+      [
+        105,
+        224
+      ],
+      [
+        67,
+        214
+      ],
+      [
+        58,
+        172
+      ],
+      [
+        36,
+        129
+      ],
+      [
+        14,
+        80
+      ],
+      [
+        0,
+        30
+      ]
+    ],
+    "canvas": null,
+    "source_sha256": "922924af407ec3da9481a28b8a08cefe23ffc0cdc194572909e6e419a692cc23"
+  }
+}

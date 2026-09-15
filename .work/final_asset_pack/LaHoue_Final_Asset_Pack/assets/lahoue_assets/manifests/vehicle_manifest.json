@@ -1,0 +1,36 @@
+{
+  "trucks": {
+    "truck_lv1": {
+      "file": "vehicles/trucks/truck_lv1.png"
+    },
+    "truck_lv2": {
+      "file": "vehicles/trucks/truck_lv2.png"
+    },
+    "truck_lv3": {
+      "file": "vehicles/trucks/truck_lv3.png"
+    },
+    "truck_lv4": {
+      "file": "vehicles/trucks/truck_lv4.png"
+    },
+    "truck_lv5": {
+      "file": "vehicles/trucks/truck_lv5.png"
+    }
+  },
+  "helicopters": {
+    "helicopter_lv1": {
+      "file": "vehicles/helicopters/helicopter_lv1.png"
+    },
+    "helicopter_lv2": {
+      "file": "vehicles/helicopters/helicopter_lv2.png"
+    },
+    "helicopter_lv3": {
+      "file": "vehicles/helicopters/helicopter_lv3.png"
+    },
+    "helicopter_lv4": {
+      "file": "vehicles/helicopters/helicopter_lv4.png"
+    },
+    "helicopter_lv5": {
+      "file": "vehicles/helicopters/helicopter_lv5.png"
+    }
+  }
+}

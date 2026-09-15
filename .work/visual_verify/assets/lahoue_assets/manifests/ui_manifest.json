@@ -1,0 +1,598 @@
+{
+  "categories": {
+    "gameplay_icons": {
+      "achievements": {
+        "file": "ui/gameplay_icons/achievements.png"
+      },
+      "animals": {
+        "file": "ui/gameplay_icons/animals.png"
+      },
+      "aquaculture": {
+        "file": "ui/gameplay_icons/aquaculture.png"
+      },
+      "cook_recipes": {
+        "file": "ui/gameplay_icons/cook_recipes.png"
+      },
+      "exp": {
+        "file": "ui/gameplay_icons/exp.png"
+      },
+      "farm": {
+        "file": "ui/gameplay_icons/farm.png"
+      },
+      "helicopter": {
+        "file": "ui/gameplay_icons/helicopter.png"
+      },
+      "inventory": {
+        "file": "ui/gameplay_icons/inventory.png"
+      },
+      "market": {
+        "file": "ui/gameplay_icons/market.png"
+      },
+      "money_vnd": {
+        "file": "ui/gameplay_icons/money_vnd.png"
+      },
+      "premium_market": {
+        "file": "ui/gameplay_icons/premium_market.png"
+      },
+      "resort": {
+        "file": "ui/gameplay_icons/resort.png"
+      },
+      "rest_next_day": {
+        "file": "ui/gameplay_icons/rest_next_day.png"
+      },
+      "restaurant": {
+        "file": "ui/gameplay_icons/restaurant.png"
+      },
+      "shop": {
+        "file": "ui/gameplay_icons/shop.png"
+      },
+      "staff": {
+        "file": "ui/gameplay_icons/staff.png"
+      },
+      "truck": {
+        "file": "ui/gameplay_icons/truck.png"
+      },
+      "upgrade": {
+        "file": "ui/gameplay_icons/upgrade.png"
+      },
+      "vip": {
+        "file": "ui/gameplay_icons/vip.png"
+      },
+      "warehouse": {
+        "file": "ui/gameplay_icons/warehouse.png"
+      }
+    },
+    "status_action": {
+      "attention_important": {
+        "file": "ui/status_action/attention_important.png"
+      },
+      "buy": {
+        "file": "ui/status_action/buy.png"
+      },
+      "cancel_close": {
+        "file": "ui/status_action/cancel_close.png"
+      },
+      "capacity": {
+        "file": "ui/status_action/capacity.png"
+      },
+      "collect": {
+        "file": "ui/status_action/collect.png"
+      },
+      "exp_gain": {
+        "file": "ui/status_action/exp_gain.png"
+      },
+      "fast_forward": {
+        "file": "ui/status_action/fast_forward.png"
+      },
+      "in_progress": {
+        "file": "ui/status_action/in_progress.png"
+      },
+      "information": {
+        "file": "ui/status_action/information.png"
+      },
+      "level_up": {
+        "file": "ui/status_action/level_up.png"
+      },
+      "locked": {
+        "file": "ui/status_action/locked.png"
+      },
+      "money_cost": {
+        "file": "ui/status_action/money_cost.png"
+      },
+      "money_gain": {
+        "file": "ui/status_action/money_gain.png"
+      },
+      "new_unlock": {
+        "file": "ui/status_action/new_unlock.png"
+      },
+      "next_day": {
+        "file": "ui/status_action/next_day.png"
+      },
+      "ready": {
+        "file": "ui/status_action/ready.png"
+      },
+      "requirement_not_met": {
+        "file": "ui/status_action/requirement_not_met.png"
+      },
+      "salary": {
+        "file": "ui/status_action/salary.png"
+      },
+      "salary_paid": {
+        "file": "ui/status_action/salary_paid.png"
+      },
+      "save_saved": {
+        "file": "ui/status_action/save_saved.png"
+      },
+      "staff_off_duty": {
+        "file": "ui/status_action/staff_off_duty.png"
+      },
+      "storage_full": {
+        "file": "ui/status_action/storage_full.png"
+      },
+      "success_completed": {
+        "file": "ui/status_action/success_completed.png"
+      },
+      "timer": {
+        "file": "ui/status_action/timer.png"
+      },
+      "unavailable": {
+        "file": "ui/status_action/unavailable.png"
+      },
+      "unlocked": {
+        "file": "ui/status_action/unlocked.png"
+      },
+      "upgrade": {
+        "file": "ui/status_action/upgrade.png"
+      },
+      "warning": {
+        "file": "ui/status_action/warning.png"
+      }
+    },
+    "customer_indicators": {
+      "cooking_preparing_order_indicator": {
+        "file": "ui/customer_indicators/cooking_preparing_order_indicator.png"
+      },
+      "customer_waiting_too_long_warning_indicator": {
+        "file": "ui/customer_indicators/customer_waiting_too_long_warning_indicator.png"
+      },
+      "food_served_eating_indicator": {
+        "file": "ui/customer_indicators/food_served_eating_indicator.png"
+      },
+      "new_order_bubble": {
+        "file": "ui/customer_indicators/new_order_bubble.png"
+      },
+      "order_ready_indicator": {
+        "file": "ui/customer_indicators/order_ready_indicator.png"
+      },
+      "payment_collected_indicator": {
+        "file": "ui/customer_indicators/payment_collected_indicator.png"
+      },
+      "payment_ready_indicator": {
+        "file": "ui/customer_indicators/payment_ready_indicator.png"
+      },
+      "waiting_for_waiter_indicator": {
+        "file": "ui/customer_indicators/waiting_for_waiter_indicator.png"
+      }
+    },
+    "item_icons": {
+      "alaska_lobster": {
+        "file": "ui/item_icons/alaska_lobster.png"
+      },
+      "beef": {
+        "file": "ui/item_icons/beef.png"
+      },
+      "bluefin_tuna": {
+        "file": "ui/item_icons/bluefin_tuna.png"
+      },
+      "chicken_meat": {
+        "file": "ui/item_icons/chicken_meat.png"
+      },
+      "crab": {
+        "file": "ui/item_icons/crab.png"
+      },
+      "egg": {
+        "file": "ui/item_icons/egg.png"
+      },
+      "fish": {
+        "file": "ui/item_icons/fish.png"
+      },
+      "imported_cheese": {
+        "file": "ui/item_icons/imported_cheese.png"
+      },
+      "japanese_scallop": {
+        "file": "ui/item_icons/japanese_scallop.png"
+      },
+      "king_crab": {
+        "file": "ui/item_icons/king_crab.png"
+      },
+      "milk": {
+        "file": "ui/item_icons/milk.png"
+      },
+      "norwegian_salmon": {
+        "file": "ui/item_icons/norwegian_salmon.png"
+      },
+      "octopus": {
+        "file": "ui/item_icons/octopus.png"
+      },
+      "olive_oil": {
+        "file": "ui/item_icons/olive_oil.png"
+      },
+      "pork": {
+        "file": "ui/item_icons/pork.png"
+      },
+      "premium_butter": {
+        "file": "ui/item_icons/premium_butter.png"
+      },
+      "saffron": {
+        "file": "ui/item_icons/saffron.png"
+      },
+      "shrimp": {
+        "file": "ui/item_icons/shrimp.png"
+      },
+      "squid": {
+        "file": "ui/item_icons/squid.png"
+      },
+      "st25_rice": {
+        "file": "ui/item_icons/st25_rice.png"
+      },
+      "truffle": {
+        "file": "ui/item_icons/truffle.png"
+      },
+      "wagyu_beef": {
+        "file": "ui/item_icons/wagyu_beef.png"
+      }
+    },
+    "dish_icons": {
+      "dish_01_banh_mi": {
+        "file": "ui/dish_icons/dish_01_banh_mi.png"
+      },
+      "dish_02_com_trang": {
+        "file": "ui/dish_icons/dish_02_com_trang.png"
+      },
+      "dish_03_banh_mi_op_la": {
+        "file": "ui/dish_icons/dish_03_banh_mi_op_la.png"
+      },
+      "dish_04_bap_luoc": {
+        "file": "ui/dish_icons/dish_04_bap_luoc.png"
+      },
+      "dish_05_com_chien_trung": {
+        "file": "ui/dish_icons/dish_05_com_chien_trung.png"
+      },
+      "dish_06_banh_mi_ga": {
+        "file": "ui/dish_icons/dish_06_banh_mi_ga.png"
+      },
+      "dish_07_banh_mi_thit": {
+        "file": "ui/dish_icons/dish_07_banh_mi_thit.png"
+      },
+      "dish_08_xoi_bap": {
+        "file": "ui/dish_icons/dish_08_xoi_bap.png"
+      },
+      "dish_09_banh_cuon_thit": {
+        "file": "ui/dish_icons/dish_09_banh_cuon_thit.png"
+      },
+      "dish_10_ca_chien": {
+        "file": "ui/dish_icons/dish_10_ca_chien.png"
+      },
+      "dish_11_banh_gio": {
+        "file": "ui/dish_icons/dish_11_banh_gio.png"
+      },
+      "dish_12_com_ga_ca_chua": {
+        "file": "ui/dish_icons/dish_12_com_ga_ca_chua.png"
+      },
+      "dish_13_pho_ga": {
+        "file": "ui/dish_icons/dish_13_pho_ga.png"
+      },
+      "dish_14_bap_xao_trung": {
+        "file": "ui/dish_icons/dish_14_bap_xao_trung.png"
+      },
+      "dish_15_pho_bo": {
+        "file": "ui/dish_icons/dish_15_pho_bo.png"
+      },
+      "dish_16_ga_kho_sa_ot": {
+        "file": "ui/dish_icons/dish_16_ga_kho_sa_ot.png"
+      },
+      "dish_17_com_tam_suon": {
+        "file": "ui/dish_icons/dish_17_com_tam_suon.png"
+      },
+      "dish_18_com_chien_rau_cu": {
+        "file": "ui/dish_icons/dish_18_com_chien_rau_cu.png"
+      },
+      "dish_19_bo_xao_ca_chua": {
+        "file": "ui/dish_icons/dish_19_bo_xao_ca_chua.png"
+      },
+      "dish_20_khoai_tay_chien": {
+        "file": "ui/dish_icons/dish_20_khoai_tay_chien.png"
+      },
+      "dish_21_tom_chien_bot": {
+        "file": "ui/dish_icons/dish_21_tom_chien_bot.png"
+      },
+      "dish_22_bun_thit_nuong": {
+        "file": "ui/dish_icons/dish_22_bun_thit_nuong.png"
+      },
+      "dish_23_dau_hu_sot_ca": {
+        "file": "ui/dish_icons/dish_23_dau_hu_sot_ca.png"
+      },
+      "dish_24_dau_hu_nhoi_thit": {
+        "file": "ui/dish_icons/dish_24_dau_hu_nhoi_thit.png"
+      },
+      "dish_25_muc_nuong_toi": {
+        "file": "ui/dish_icons/dish_25_muc_nuong_toi.png"
+      },
+      "dish_26_bun_cha": {
+        "file": "ui/dish_icons/dish_26_bun_cha.png"
+      },
+      "dish_27_nuoc_dua": {
+        "file": "ui/dish_icons/dish_27_nuoc_dua.png"
+      },
+      "dish_28_xoi_dua": {
+        "file": "ui/dish_icons/dish_28_xoi_dua.png"
+      },
+      "dish_29_ga_nuong_sa": {
+        "file": "ui/dish_icons/dish_29_ga_nuong_sa.png"
+      },
+      "dish_30_bach_tuoc_nuong": {
+        "file": "ui/dish_icons/dish_30_bach_tuoc_nuong.png"
+      },
+      "dish_31_tra_nong": {
+        "file": "ui/dish_icons/dish_31_tra_nong.png"
+      },
+      "dish_32_tra_sua": {
+        "file": "ui/dish_icons/dish_32_tra_sua.png"
+      },
+      "dish_33_goi_ga_dau_phong": {
+        "file": "ui/dish_icons/dish_33_goi_ga_dau_phong.png"
+      },
+      "dish_34_thit_kho_nuoc_dua": {
+        "file": "ui/dish_icons/dish_34_thit_kho_nuoc_dua.png"
+      },
+      "dish_35_com_st25_wagyu": {
+        "file": "ui/dish_icons/dish_35_com_st25_wagyu.png"
+      },
+      "dish_36_tom_hum_alaska_nuong_bo": {
+        "file": "ui/dish_icons/dish_36_tom_hum_alaska_nuong_bo.png"
+      },
+      "dish_37_nuoc_mia": {
+        "file": "ui/dish_icons/dish_37_nuoc_mia.png"
+      },
+      "dish_38_cua_hoang_de_sot_bo": {
+        "file": "ui/dish_icons/dish_38_cua_hoang_de_sot_bo.png"
+      },
+      "dish_39_ca_phe_den_da": {
+        "file": "ui/dish_icons/dish_39_ca_phe_den_da.png"
+      },
+      "dish_40_ca_hoi_na_uy_ap_chao": {
+        "file": "ui/dish_icons/dish_40_ca_hoi_na_uy_ap_chao.png"
+      },
+      "dish_41_so_diep_nhat_nuong_bo": {
+        "file": "ui/dish_icons/dish_41_so_diep_nhat_nuong_bo.png"
+      },
+      "dish_42_bo_luc_lac": {
+        "file": "ui/dish_icons/dish_42_bo_luc_lac.png"
+      },
+      "dish_43_sinh_to_chuoi_sua": {
+        "file": "ui/dish_icons/dish_43_sinh_to_chuoi_sua.png"
+      },
+      "dish_44_ca_ngu_bluefin_ap_chao": {
+        "file": "ui/dish_icons/dish_44_ca_ngu_bluefin_ap_chao.png"
+      },
+      "dish_45_ca_phe_dua": {
+        "file": "ui/dish_icons/dish_45_ca_phe_dua.png"
+      },
+      "dish_46_goi_cuon_tom_thit": {
+        "file": "ui/dish_icons/dish_46_goi_cuon_tom_thit.png"
+      },
+      "dish_47_wagyu_sot_nam_truffle": {
+        "file": "ui/dish_icons/dish_47_wagyu_sot_nam_truffle.png"
+      },
+      "dish_48_ca_phe_sua_da": {
+        "file": "ui/dish_icons/dish_48_ca_phe_sua_da.png"
+      },
+      "dish_49_com_hai_san_hoang_gia": {
+        "file": "ui/dish_icons/dish_49_com_hai_san_hoang_gia.png"
+      },
+      "dish_50_lahoue_imperial_feast": {
+        "file": "ui/dish_icons/dish_50_lahoue_imperial_feast.png"
+      }
+    },
+    "planting_icons": {
+      "banana_planting_item": {
+        "file": "ui/planting_icons/banana_planting_item.png"
+      },
+      "carrot_seeds": {
+        "file": "ui/planting_icons/carrot_seeds.png"
+      },
+      "chili_seeds": {
+        "file": "ui/planting_icons/chili_seeds.png"
+      },
+      "coconut_planting_item": {
+        "file": "ui/planting_icons/coconut_planting_item.png"
+      },
+      "coffee_seeds": {
+        "file": "ui/planting_icons/coffee_seeds.png"
+      },
+      "corn_seeds": {
+        "file": "ui/planting_icons/corn_seeds.png"
+      },
+      "cucumber_seeds": {
+        "file": "ui/planting_icons/cucumber_seeds.png"
+      },
+      "garlic_seeds": {
+        "file": "ui/planting_icons/garlic_seeds.png"
+      },
+      "green_onion_seeds": {
+        "file": "ui/planting_icons/green_onion_seeds.png"
+      },
+      "lemongrass_planting_item": {
+        "file": "ui/planting_icons/lemongrass_planting_item.png"
+      },
+      "peanut_seeds": {
+        "file": "ui/planting_icons/peanut_seeds.png"
+      },
+      "potato_seeds": {
+        "file": "ui/planting_icons/potato_seeds.png"
+      },
+      "rice_seeds": {
+        "file": "ui/planting_icons/rice_seeds.png"
+      },
+      "soybean_seeds": {
+        "file": "ui/planting_icons/soybean_seeds.png"
+      },
+      "sugarcane_planting_item": {
+        "file": "ui/planting_icons/sugarcane_planting_item.png"
+      },
+      "tea_seeds": {
+        "file": "ui/planting_icons/tea_seeds.png"
+      },
+      "tomato_seeds": {
+        "file": "ui/planting_icons/tomato_seeds.png"
+      },
+      "wheat_seeds": {
+        "file": "ui/planting_icons/wheat_seeds.png"
+      }
+    },
+    "money_icons": {
+      "vnd_10000": {
+        "file": "ui/money_icons/vnd_10000.png"
+      },
+      "vnd_100000": {
+        "file": "ui/money_icons/vnd_100000.png"
+      },
+      "vnd_20000": {
+        "file": "ui/money_icons/vnd_20000.png"
+      },
+      "vnd_200000": {
+        "file": "ui/money_icons/vnd_200000.png"
+      },
+      "vnd_50000": {
+        "file": "ui/money_icons/vnd_50000.png"
+      },
+      "vnd_500000": {
+        "file": "ui/money_icons/vnd_500000.png"
+      }
+    },
+    "achievements": {
+      "achievement_badges_and_emblems_sheet": {
+        "file": "ui/achievements/achievement_badges_and_emblems_sheet.png"
+      }
+    },
+    "progression": {
+      "building_purchase_upgrade_construction_kit": {
+        "file": "ui/progression/building_purchase_upgrade_construction_kit.png",
+        "atlas_metadata": "manifests/atlases/building_purchase_upgrade_construction_kit.json"
+      },
+      "map_zone_expansion_visual_kit": {
+        "file": "ui/progression/map_zone_expansion_visual_kit.png",
+        "atlas_metadata": "manifests/atlases/map_zone_expansion_visual_kit.json"
+      },
+      "world_interaction_production_markers_sheet": {
+        "file": "ui/progression/world_interaction_production_markers_sheet.png"
+      }
+    },
+    "notifications": {
+      "chef_tools_icon": {
+        "file": "ui/notifications/chef_tools_icon.png"
+      },
+      "coin_reward_badge": {
+        "file": "ui/notifications/coin_reward_badge.png"
+      },
+      "continue_play_button": {
+        "file": "ui/notifications/continue_play_button.png"
+      },
+      "crate_reward_badge": {
+        "file": "ui/notifications/crate_reward_badge.png"
+      },
+      "crown_levelup_ribbon": {
+        "file": "ui/notifications/crown_levelup_ribbon.png"
+      },
+      "error_close_bar": {
+        "file": "ui/notifications/error_close_bar.png"
+      },
+      "glowing_bell_frame": {
+        "file": "ui/notifications/glowing_bell_frame.png"
+      },
+      "home_upgrade_icon": {
+        "file": "ui/notifications/home_upgrade_icon.png"
+      },
+      "info_ping_bar": {
+        "file": "ui/notifications/info_ping_bar.png"
+      },
+      "notification_bell_bar": {
+        "file": "ui/notifications/notification_bell_bar.png"
+      },
+      "settings_upgrade_icon": {
+        "file": "ui/notifications/settings_upgrade_icon.png"
+      },
+      "star_reward_badge": {
+        "file": "ui/notifications/star_reward_badge.png"
+      },
+      "success_check_bar": {
+        "file": "ui/notifications/success_check_bar.png"
+      },
+      "trophy_reward_badge": {
+        "file": "ui/notifications/trophy_reward_badge.png"
+      },
+      "trophy_success_ribbon": {
+        "file": "ui/notifications/trophy_success_ribbon.png"
+      },
+      "warning_alert_bar": {
+        "file": "ui/notifications/warning_alert_bar.png"
+      }
+    },
+    "day_summary": {
+      "crown_reward_medal": {
+        "file": "ui/day_summary/crown_reward_medal.png"
+      },
+      "exp_gain_bar": {
+        "file": "ui/day_summary/exp_gain_bar.png"
+      },
+      "expense_bag_bar": {
+        "file": "ui/day_summary/expense_bag_bar.png"
+      },
+      "gift_reward_frame": {
+        "file": "ui/day_summary/gift_reward_frame.png"
+      },
+      "import_market_bar": {
+        "file": "ui/day_summary/import_market_bar.png"
+      },
+      "income_bag_bar": {
+        "file": "ui/day_summary/income_bag_bar.png"
+      },
+      "money_gain_gold_bar": {
+        "file": "ui/day_summary/money_gain_gold_bar.png"
+      },
+      "money_gain_green_bar": {
+        "file": "ui/day_summary/money_gain_green_bar.png"
+      },
+      "money_loss_red_bar": {
+        "file": "ui/day_summary/money_loss_red_bar.png"
+      },
+      "service_cloche_bar": {
+        "file": "ui/day_summary/service_cloche_bar.png"
+      },
+      "shop_status_bar": {
+        "file": "ui/day_summary/shop_status_bar.png"
+      },
+      "summary_floral_frame": {
+        "file": "ui/day_summary/summary_floral_frame.png"
+      },
+      "sunrise_summary_banner": {
+        "file": "ui/day_summary/sunrise_summary_banner.png"
+      },
+      "truck_status_bar": {
+        "file": "ui/day_summary/truck_status_bar.png"
+      }
+    },
+    "tutorial": {
+      "tutorial_help_shortcut_visual_kit": {
+        "file": "ui/tutorial/tutorial_help_shortcut_visual_kit.png"
+      }
+    },
+    "frames": {
+      "frame_and_button_base_kit": {
+        "file": "ui/frames/frame_and_button_base_kit.png"
+      }
+    },
+    "buttons": {}
+  },
+  "atlas_manifest": "manifests/atlas_manifest.json"
+}

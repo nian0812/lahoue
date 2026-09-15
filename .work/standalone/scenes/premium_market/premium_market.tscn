@@ -1,0 +1,90 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/premium_market/premium_market.gd" id="1_market"]
+[ext_resource type="PackedScene" path="res://scenes/buildings/helipad.tscn" id="2_helipad"]
+[ext_resource type="Script" path="res://scripts/visual/manifest_sprite.gd" id="3_visual"]
+[ext_resource type="PackedScene" path="res://scenes/vehicles/helicopter_visual.tscn" id="4_helicopter"]
+[ext_resource type="PackedScene" path="res://scenes/world/visual/zone_ground_visual.tscn" id="5_ground"]
+[ext_resource type="PackedScene" path="res://scenes/world/visual/contact_shadow.tscn" id="6_shadow"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_market"]
+radius = 56.0
+
+[node name="premium_market" type="Node2D"]
+script = ExtResource("1_market")
+zone_id = "premium"
+local_bounds = Rect2(-70, -80, 250, 160)
+
+[node name="Ground" type="Node2D" parent="."]
+[node name="GroundLayers" type="Node2D" parent="Ground"]
+[node name="GroundVisual" parent="Ground/GroundLayers" instance=ExtResource("5_ground")]
+profile = 7
+area_rect = Rect2(-75, -85, 260, 170)
+detail_seed = 83
+[node name="Roads" type="Node2D" parent="."]
+[node name="Props" type="Node2D" parent="."]
+[node name="Buildings" type="Node2D" parent="."]
+[node name="Interactables" type="Node2D" parent="."]
+[node name="NPCMarkers" type="Node2D" parent="."]
+[node name="Paths" type="Node2D" parent="."]
+[node name="ExpansionAnchors" type="Node2D" parent="."]
+
+[node name="North" type="Marker2D" parent="ExpansionAnchors"]
+position = Vector2(55, -80)
+
+[node name="East" type="Marker2D" parent="ExpansionAnchors"]
+position = Vector2(180, 0)
+
+[node name="South" type="Marker2D" parent="ExpansionAnchors"]
+position = Vector2(55, 80)
+
+[node name="West" type="Marker2D" parent="ExpansionAnchors"]
+position = Vector2(-70, 0)
+
+[node name="VisualRoot" type="Node2D" parent="."]
+script = ExtResource("3_visual")
+semantic_id = "premium_market"
+target_rect = Rect2(-46, -32, 92, 64)
+placeholder_paths = PackedStringArray("building_body")
+
+[node name="ContactShadow" parent="." instance=ExtResource("6_shadow")]
+shadow_size = Vector2(86, 20)
+shadow_offset = Vector2(0, 27)
+opacity = 0.16
+
+[node name="building_body" type="Polygon2D" parent="VisualRoot"]
+polygon = PackedVector2Array(-46, -32, 46, -32, 46, 32, -46, 32)
+color = Color(0.24, 0.34, 0.48, 1)
+
+[node name="building_label" type="Label" parent="VisualRoot"]
+offset_left = -72.0
+offset_top = -56.0
+offset_right = 72.0
+offset_bottom = -36.0
+text = "Premium Market"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 13
+
+[node name="helipad" parent="VisualRoot" instance=ExtResource("2_helipad")]
+position = Vector2(130, 38)
+
+[node name="interaction_area" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 0
+monitoring = false
+
+[node name="collision_shape" type="CollisionShape2D" parent="interaction_area"]
+shape = SubResource("CircleShape2D_market")
+
+[node name="helipad_marker" type="Marker2D" parent="."]
+position = Vector2(130, 0)
+
+[node name="takeoff_marker" type="Marker2D" parent="."]
+position = Vector2(130, -100)
+
+[node name="outside_marker" type="Marker2D" parent="."]
+position = Vector2(130, -400)
+
+[node name="helicopter" parent="." instance=ExtResource("4_helicopter")]
+position = Vector2(130, 0)
+z_index = 0

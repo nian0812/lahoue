@@ -1,0 +1,255 @@
+{
+  "count": 50,
+  "dishes": {
+    "dish_01": {
+      "recipe_id": "dish_01",
+      "slug": "banh_mi",
+      "file": "ui/dish_icons/dish_01_banh_mi.png"
+    },
+    "dish_02": {
+      "recipe_id": "dish_02",
+      "slug": "com_trang",
+      "file": "ui/dish_icons/dish_02_com_trang.png"
+    },
+    "dish_03": {
+      "recipe_id": "dish_03",
+      "slug": "banh_mi_op_la",
+      "file": "ui/dish_icons/dish_03_banh_mi_op_la.png"
+    },
+    "dish_04": {
+      "recipe_id": "dish_04",
+      "slug": "bap_luoc",
+      "file": "ui/dish_icons/dish_04_bap_luoc.png"
+    },
+    "dish_05": {
+      "recipe_id": "dish_05",
+      "slug": "com_chien_trung",
+      "file": "ui/dish_icons/dish_05_com_chien_trung.png"
+    },
+    "dish_06": {
+      "recipe_id": "dish_06",
+      "slug": "banh_mi_ga",
+      "file": "ui/dish_icons/dish_06_banh_mi_ga.png"
+    },
+    "dish_07": {
+      "recipe_id": "dish_07",
+      "slug": "banh_mi_thit",
+      "file": "ui/dish_icons/dish_07_banh_mi_thit.png"
+    },
+    "dish_08": {
+      "recipe_id": "dish_08",
+      "slug": "xoi_bap",
+      "file": "ui/dish_icons/dish_08_xoi_bap.png"
+    },
+    "dish_09": {
+      "recipe_id": "dish_09",
+      "slug": "banh_cuon_thit",
+      "file": "ui/dish_icons/dish_09_banh_cuon_thit.png"
+    },
+    "dish_10": {
+      "recipe_id": "dish_10",
+      "slug": "ca_chien",
+      "file": "ui/dish_icons/dish_10_ca_chien.png"
+    },
+    "dish_11": {
+      "recipe_id": "dish_11",
+      "slug": "banh_gio",
+      "file": "ui/dish_icons/dish_11_banh_gio.png"
+    },
+    "dish_12": {
+      "recipe_id": "dish_12",
+      "slug": "com_ga_ca_chua",
+      "file": "ui/dish_icons/dish_12_com_ga_ca_chua.png"
+    },
+    "dish_13": {
+      "recipe_id": "dish_13",
+      "slug": "pho_ga",
+      "file": "ui/dish_icons/dish_13_pho_ga.png"
+    },
+    "dish_14": {
+      "recipe_id": "dish_14",
+      "slug": "bap_xao_trung",
+      "file": "ui/dish_icons/dish_14_bap_xao_trung.png"
+    },
+    "dish_15": {
+      "recipe_id": "dish_15",
+      "slug": "pho_bo",
+      "file": "ui/dish_icons/dish_15_pho_bo.png"
+    },
+    "dish_16": {
+      "recipe_id": "dish_16",
+      "slug": "ga_kho_sa_ot",
+      "file": "ui/dish_icons/dish_16_ga_kho_sa_ot.png"
+    },
+    "dish_17": {
+      "recipe_id": "dish_17",
+      "slug": "com_tam_suon",
+      "file": "ui/dish_icons/dish_17_com_tam_suon.png"
+    },
+    "dish_18": {
+      "recipe_id": "dish_18",
+      "slug": "com_chien_rau_cu",
+      "file": "ui/dish_icons/dish_18_com_chien_rau_cu.png"
+    },
+    "dish_19": {
+      "recipe_id": "dish_19",
+      "slug": "bo_xao_ca_chua",
+      "file": "ui/dish_icons/dish_19_bo_xao_ca_chua.png"
+    },
+    "dish_20": {
+      "recipe_id": "dish_20",
+      "slug": "khoai_tay_chien",
+      "file": "ui/dish_icons/dish_20_khoai_tay_chien.png"
+    },
+    "dish_21": {
+      "recipe_id": "dish_21",
+      "slug": "tom_chien_bot",
+      "file": "ui/dish_icons/dish_21_tom_chien_bot.png"
+    },
+    "dish_22": {
+      "recipe_id": "dish_22",
+      "slug": "bun_thit_nuong",
+      "file": "ui/dish_icons/dish_22_bun_thit_nuong.png"
+    },
+    "dish_23": {
+      "recipe_id": "dish_23",
+      "slug": "dau_hu_sot_ca",
+      "file": "ui/dish_icons/dish_23_dau_hu_sot_ca.png"
+    },
+    "dish_24": {
+      "recipe_id": "dish_24",
+      "slug": "dau_hu_nhoi_thit",
+      "file": "ui/dish_icons/dish_24_dau_hu_nhoi_thit.png"
+    },
+    "dish_25": {
+      "recipe_id": "dish_25",
+      "slug": "muc_nuong_toi",
+      "file": "ui/dish_icons/dish_25_muc_nuong_toi.png"
+    },
+    "dish_26": {
+      "recipe_id": "dish_26",
+      "slug": "bun_cha",
+      "file": "ui/dish_icons/dish_26_bun_cha.png"
+    },
+    "dish_27": {
+      "recipe_id": "dish_27",
+      "slug": "nuoc_dua",
+      "file": "ui/dish_icons/dish_27_nuoc_dua.png"
+    },
+    "dish_28": {
+      "recipe_id": "dish_28",
+      "slug": "xoi_dua",
+      "file": "ui/dish_icons/dish_28_xoi_dua.png"
+    },
+    "dish_29": {
+      "recipe_id": "dish_29",
+      "slug": "ga_nuong_sa",
+      "file": "ui/dish_icons/dish_29_ga_nuong_sa.png"
+    },
+    "dish_30": {
+      "recipe_id": "dish_30",
+      "slug": "bach_tuoc_nuong",
+      "file": "ui/dish_icons/dish_30_bach_tuoc_nuong.png"
+    },
+    "dish_31": {
+      "recipe_id": "dish_31",
+      "slug": "tra_nong",
+      "file": "ui/dish_icons/dish_31_tra_nong.png"
+    },
+    "dish_32": {
+      "recipe_id": "dish_32",
+      "slug": "tra_sua",
+      "file": "ui/dish_icons/dish_32_tra_sua.png"
+    },
+    "dish_33": {
+      "recipe_id": "dish_33",
+      "slug": "goi_ga_dau_phong",
+      "file": "ui/dish_icons/dish_33_goi_ga_dau_phong.png"
+    },
+    "dish_34": {
+      "recipe_id": "dish_34",
+      "slug": "thit_kho_nuoc_dua",
+      "file": "ui/dish_icons/dish_34_thit_kho_nuoc_dua.png"
+    },
+    "dish_35": {
+      "recipe_id": "dish_35",
+      "slug": "com_st25_wagyu",
+      "file": "ui/dish_icons/dish_35_com_st25_wagyu.png"
+    },
+    "dish_36": {
+      "recipe_id": "dish_36",
+      "slug": "tom_hum_alaska_nuong_bo",
+      "file": "ui/dish_icons/dish_36_tom_hum_alaska_nuong_bo.png"
+    },
+    "dish_37": {
+      "recipe_id": "dish_37",
+      "slug": "nuoc_mia",
+      "file": "ui/dish_icons/dish_37_nuoc_mia.png"
+    },
+    "dish_38": {
+      "recipe_id": "dish_38",
+      "slug": "cua_hoang_de_sot_bo",
+      "file": "ui/dish_icons/dish_38_cua_hoang_de_sot_bo.png"
+    },
+    "dish_39": {
+      "recipe_id": "dish_39",
+      "slug": "ca_phe_den_da",
+      "file": "ui/dish_icons/dish_39_ca_phe_den_da.png"
+    },
+    "dish_40": {
+      "recipe_id": "dish_40",
+      "slug": "ca_hoi_na_uy_ap_chao",
+      "file": "ui/dish_icons/dish_40_ca_hoi_na_uy_ap_chao.png"
+    },
+    "dish_41": {
+      "recipe_id": "dish_41",
+      "slug": "so_diep_nhat_nuong_bo",
+      "file": "ui/dish_icons/dish_41_so_diep_nhat_nuong_bo.png"
+    },
+    "dish_42": {
+      "recipe_id": "dish_42",
+      "slug": "bo_luc_lac",
+      "file": "ui/dish_icons/dish_42_bo_luc_lac.png"
+    },
+    "dish_43": {
+      "recipe_id": "dish_43",
+      "slug": "sinh_to_chuoi_sua",
+      "file": "ui/dish_icons/dish_43_sinh_to_chuoi_sua.png"
+    },
+    "dish_44": {
+      "recipe_id": "dish_44",
+      "slug": "ca_ngu_bluefin_ap_chao",
+      "file": "ui/dish_icons/dish_44_ca_ngu_bluefin_ap_chao.png"
+    },
+    "dish_45": {
+      "recipe_id": "dish_45",
+      "slug": "ca_phe_dua",
+      "file": "ui/dish_icons/dish_45_ca_phe_dua.png"
+    },
+    "dish_46": {
+      "recipe_id": "dish_46",
+      "slug": "goi_cuon_tom_thit",
+      "file": "ui/dish_icons/dish_46_goi_cuon_tom_thit.png"
+    },
+    "dish_47": {
+      "recipe_id": "dish_47",
+      "slug": "wagyu_sot_nam_truffle",
+      "file": "ui/dish_icons/dish_47_wagyu_sot_nam_truffle.png"
+    },
+    "dish_48": {
+      "recipe_id": "dish_48",
+      "slug": "ca_phe_sua_da",
+      "file": "ui/dish_icons/dish_48_ca_phe_sua_da.png"
+    },
+    "dish_49": {
+      "recipe_id": "dish_49",
+      "slug": "com_hai_san_hoang_gia",
+      "file": "ui/dish_icons/dish_49_com_hai_san_hoang_gia.png"
+    },
+    "dish_50": {
+      "recipe_id": "dish_50",
+      "slug": "lahoue_imperial_feast",
+      "file": "ui/dish_icons/dish_50_lahoue_imperial_feast.png"
+    }
+  }
+}

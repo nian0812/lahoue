@@ -1,0 +1,16 @@
+{
+  "player": {"loops": ["idle", "walk"], "directions": ["e", "se", "s", "sw", "w", "nw", "n", "ne"]},
+  "staff": {
+    "gameplay_to_loop": {"moving": "walk", "returning": "walk", "cleaning_table": "clean", "off_duty": "off_duty"},
+    "job_actions": ["cook", "serve", "payment", "clean", "harvest", "collect_animal", "collect_aquaculture"]
+  },
+  "customer": {
+    "loops": {"walking": "walk", "eating": "eat", "seated": "seated_idle", "ordering": "seated_idle", "waiting_food": "seated_idle", "leaving_not_walking": "idle"},
+    "actions": ["sit", "payment"]
+  },
+  "animal": {"loops": ["idle", "completed"], "actions": ["production", "collect"]},
+  "aquaculture": {"loops": ["empty", "idle"], "actions": ["collect"]},
+  "truck": {"states": ["ready", "outbound", "delivering", "returning"]},
+  "helicopter": {"states": ["ready", "departing", "importing", "returning", "arrived"]},
+  "restaurant": {"loops": ["idle", "cook"], "actions": ["cooking_started", "food_ready", "cooking_canceled"]}
+}

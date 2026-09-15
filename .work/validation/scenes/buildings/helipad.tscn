@@ -1,0 +1,48 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/visual/manifest_sprite.gd" id="1_visual"]
+[ext_resource type="PackedScene" path="res://scenes/world/visual/contact_shadow.tscn" id="2_shadow"]
+
+[node name="LogicRoot" type="Node2D"]
+metadata/pivot_convention = "ground_contact"
+metadata/footprint = Rect2(-48, -76, 96, 76)
+
+[node name="ContactShadow" parent="." instance=ExtResource("2_shadow")]
+shadow_size = Vector2(88, 22)
+shadow_offset = Vector2(0, -2)
+opacity = 0.14
+
+[node name="VisualRoot" type="Node2D" parent="."]
+script = ExtResource("1_visual")
+semantic_id = "helipad"
+target_rect = Rect2(-48, -76, 96, 76)
+placeholder_paths = PackedStringArray("pad", "h_left", "h_right", "h_bar")
+
+[node name="pad" type="Polygon2D" parent="VisualRoot"]
+z_index = -1
+polygon = PackedVector2Array(-48, -76, 48, -76, 48, 0, -48, 0)
+color = Color(0.28, 0.3, 0.32, 1)
+
+[node name="h_left" type="Line2D" parent="VisualRoot"]
+position = Vector2(0, -38)
+z_index = -1
+points = PackedVector2Array(-20, -22, -20, 22)
+width = 5.0
+default_color = Color(0.95, 0.87, 0.35, 1)
+
+[node name="h_right" type="Line2D" parent="VisualRoot"]
+position = Vector2(0, -38)
+z_index = -1
+points = PackedVector2Array(20, -22, 20, 22)
+width = 5.0
+default_color = Color(0.95, 0.87, 0.35, 1)
+
+[node name="h_bar" type="Line2D" parent="VisualRoot"]
+position = Vector2(0, -38)
+z_index = -1
+points = PackedVector2Array(-20, 0, 20, 0)
+width = 5.0
+default_color = Color(0.95, 0.87, 0.35, 1)
+
+[node name="LandingAnchor" type="Marker2D" parent="."]
+position = Vector2(0, -38)

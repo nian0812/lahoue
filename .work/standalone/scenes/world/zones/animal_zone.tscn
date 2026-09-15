@@ -1,0 +1,68 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/zone_root.gd" id="1_zone"]
+[ext_resource type="PackedScene" path="res://scenes/animals/animal.tscn" id="2_animal"]
+[ext_resource type="PackedScene" path="res://scenes/buildings/coop.tscn" id="3_coop"]
+[ext_resource type="PackedScene" path="res://scenes/buildings/pig_pen.tscn" id="4_pig"]
+[ext_resource type="PackedScene" path="res://scenes/buildings/cow_barn.tscn" id="5_cow"]
+[ext_resource type="PackedScene" path="res://scenes/world/visual/zone_ground_visual.tscn" id="6_ground"]
+
+[node name="ZoneRoot" type="Node2D"]
+script = ExtResource("1_zone")
+zone_id = "animal"
+local_bounds = Rect2(950, 220, 310, 430)
+
+[node name="Ground" type="Node2D" parent="."]
+[node name="GroundLayers" type="Node2D" parent="Ground"]
+[node name="GroundVisual" parent="Ground/GroundLayers" instance=ExtResource("6_ground")]
+profile = 2
+area_rect = Rect2(945, 215, 320, 440)
+detail_seed = 23
+[node name="Roads" type="Node2D" parent="."]
+[node name="Props" type="Node2D" parent="."]
+[node name="Buildings" type="Node2D" parent="."]
+[node name="Interactables" type="Node2D" parent="."]
+[node name="NPCMarkers" type="Node2D" parent="."]
+
+[node name="AnimalWorkerHome01" type="Marker2D" parent="NPCMarkers"]
+position = Vector2(980, 470)
+[node name="AnimalWorkerHome02" type="Marker2D" parent="NPCMarkers"]
+position = Vector2(980, 522)
+
+[node name="Paths" type="Node2D" parent="."]
+[node name="ExpansionAnchors" type="Node2D" parent="."]
+[node name="North" type="Marker2D" parent="ExpansionAnchors"]
+position = Vector2(1105, 220)
+[node name="East" type="Marker2D" parent="ExpansionAnchors"]
+position = Vector2(1260, 435)
+[node name="South" type="Marker2D" parent="ExpansionAnchors"]
+position = Vector2(1105, 650)
+[node name="West" type="Marker2D" parent="ExpansionAnchors"]
+position = Vector2(950, 435)
+
+[node name="chicken_01" parent="." instance=ExtResource("2_animal")]
+position = Vector2(1080, 320)
+animal_instance_id = "chicken_01"
+animal_id = "chicken"
+animal_color = Color(0.94, 0.84, 0.55, 1)
+
+[node name="cow_01" parent="." instance=ExtResource("2_animal")]
+position = Vector2(1080, 420)
+animal_instance_id = "cow_01"
+animal_id = "cow"
+animal_color = Color(0.65, 0.45, 0.35, 1)
+
+[node name="dairy_cow_01" parent="." instance=ExtResource("2_animal")]
+position = Vector2(1080, 520)
+animal_instance_id = "dairy_cow_01"
+animal_id = "dairy_cow"
+animal_color = Color(0.9, 0.9, 0.9, 1)
+
+[node name="coop" parent="." instance=ExtResource("3_coop")]
+position = Vector2(1080, 360)
+
+[node name="pig_pen" parent="." instance=ExtResource("4_pig")]
+position = Vector2(1180, 485)
+
+[node name="cow_barn" parent="." instance=ExtResource("5_cow")]
+position = Vector2(1080, 550)

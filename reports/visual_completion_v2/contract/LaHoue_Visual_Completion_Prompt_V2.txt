@@ -1,0 +1,84 @@
+LAHOUE — FINAL VISUAL COMPLETION PASS (AFTER 25/25 RUNTIME PASS)
+Godot 4.7.1
+
+The project runtime is already complete and 25/25 tests PASS. Do NOT rewrite working gameplay. Your job is to finish the remaining visual production work and preserve all passing behavior.
+
+HARD RULES
+- NO Git commands of any kind.
+- Read first: reports/final_complete_project_pass.md, reports/final_missing_assets.md, reports/animation_supplemental_assets.md.
+- Preserve gameplay IDs, save migration, progression, routes, markers, timers, collisions and all currently passing tests.
+- Do not introduce duplicate managers or unrelated refactors.
+- Use approved production artwork only. Do not import concept/poster sheets as runtime sprites.
+- Do not infer the 40 unresolved dish mappings.
+- Static/procedural/geometric fallback is TEMPORARY ONLY and must NOT count as visual completion.
+- VISUAL BLOCKER = NOT DONE. Do not report COMPLETED while a required placeholder/fallback is visible or a required production artwork file is absent.
+
+CURRENT RUNTIME BASELINE TO KEEP
+- 28 farm plots, 7x4, starter one-plot state.
+- Restaurant capacities 2/4/7/11/15, rooftop 0/0/3/6/9, fixed purchased table slots, Bar + Food Pass, manual/waiter serving.
+- Animal/aquaculture bounded movement and canonical capacities.
+- Truck Ready/Outbound/Delivering/Returning, acceleration/braking, Fast Forward/skip-day compatibility.
+- Helicopter ready/departing/importing/returning/arrived.
+- Resolution/fullscreen/settings persistence and camera fixes.
+- Lv1–55 normal progression, seven warehouse levels, tutorial, achievements, save/Continue.
+- Backspace remains debug-only and never player-facing.
+
+REQUIRED VISUAL WORK — COMPLETE ALL AVAILABLE ITEMS
+
+1. RESTAURANT / TABLES
+Use clean modular artwork with no baked customers, meals or purchased tables:
+- world/buildings/restaurant_ground_empty.png
+- world/buildings/restaurant_rooftop_empty.png
+- world/buildings/restaurant_stairs.png
+- world/buildings/restaurant_front_occlusion.png
+- world/props/dining_table_empty.png
+- dining chairs/seat parts as supplied.
+Keep fixed slots and stair landing clear. Lv1–2 single floor; Lv3–5 open-air rooftop. Food Pass is empty until a verified ready dish appears.
+
+2. TRUCK DEPOT
+Use an empty east-facing depot and foreground occlusion layer. No baked truck. Preserve the three current spawn markers (460,740), (460,780), (460,820) and the current road route.
+
+3. TRUCK ART
+For truck Lv1–5 use authored directional sprites. Minimum required screen-space E/S/W/N; prefer all eight directions if delivered. Never fake missing views by mirroring a flattened isometric pose. Keep complete cab/anchor. Use authored wheel frames or separate wheel layers/pivots when available.
+
+4. CHARACTER / STAFF / CUSTOMER ANIMATION
+Bind only real delivered frame libraries under assets/lahoue_animations/ and resources/animations/. Follow animation_supplemental_assets.md exactly for clip names, directions, FPS, looping and anchors. Missing clip keeps static fallback, but any missing REQUIRED delivered set must remain reported as a visual blocker rather than silently signed off.
+
+5. ANIMAL / AQUACULTURE ANIMATION
+Follow the exact identity/clip contract in animation_supplemental_assets.md. Keep gameplay movement bounds and production logic unchanged. No baked products/VFX in frames.
+
+6. HELICOPTER
+Use real body-without-rotor + rotor parts or coherent authored phase frames for each Lv1–5 identity. Do not slice/fabricate rotors from flattened art. Preserve shipment timing and states.
+
+7. VISUAL QA
+Run standalone captures and inspect, not only automated assertions. Required screenshots must show:
+- whole world at normal play scale,
+- Restaurant Lv1 and Lv5 with correct purchased-slot presentation and clear stairs,
+- Food Pass empty/ready/picked-up states,
+- Truck Depot with parked trucks and truck on E/S/W/N route segments,
+- representative animal/aquaculture motion,
+- helicopter parked/departing/returning,
+- camera motion without shimmer/jitter.
+
+DEFINITION OF DONE
+You may report COMPLETED only when BOTH are true:
+A) all regression tests still pass, AND
+B) final standalone screenshots contain no required geometric/procedural placeholder, no baked conflicting entity, no wrong-facing truck fallback, and no missing required production artwork for the agreed visual scope.
+
+If a required external artwork file is still absent, report BLOCKED — ARTWORK REQUIRED, list exact filenames, keep runtime PASS, and do NOT call the project complete.
+
+WORKFLOW
+1. Audit only the visual gaps against the three reports.
+2. Integrate supplied production artwork using current presentation hooks/anchors.
+3. Run focused visual tests + full regression.
+4. Capture and inspect standalone screenshots.
+5. Fix integration/scale/pivot/occlusion issues without changing gameplay.
+6. Continue until Definition of Done or a true missing-artwork blocker remains.
+
+FINAL RESPONSE ONLY
+- STATUS: COMPLETED or BLOCKED — ARTWORK REQUIRED
+- visual items finished
+- exact remaining asset filenames, if any
+- tests result
+- screenshot/capture paths
+- no long narrative

@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://csveekdfw6bv1"
+
+[deps]
+
+files=["res://reports/visual_completion_v2/project_pack_inventory.extension.translation", "res://reports/visual_completion_v2/project_pack_inventory.bytes.translation", "res://reports/visual_completion_v2/project_pack_inventory.runtime.translation", "res://reports/visual_completion_v2/project_pack_inventory.identical.translation"]
+
+source_file="res://reports/visual_completion_v2/project_pack_inventory.csv"
+dest_files=["res://reports/visual_completion_v2/project_pack_inventory.extension.translation", "res://reports/visual_completion_v2/project_pack_inventory.bytes.translation", "res://reports/visual_completion_v2/project_pack_inventory.runtime.translation", "res://reports/visual_completion_v2/project_pack_inventory.identical.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true

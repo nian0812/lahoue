@@ -1,0 +1,38 @@
+{
+  "status": "ARTWORK_REQUIRED",
+  "blocking_visual_assets": {
+    "restaurant": [
+      "world/buildings/restaurant_ground_empty.png",
+      "world/buildings/restaurant_rooftop_empty.png",
+      "world/buildings/restaurant_stairs.png",
+      "world/buildings/restaurant_front_occlusion.png"
+    ],
+    "tables": [
+      "world/props/dining_table_empty.png",
+      "world/props/dining_chair_ne.png",
+      "world/props/dining_chair_sw.png"
+    ],
+    "truck_depot": [
+      "world/buildings/truck_depot_empty_e.png",
+      "world/buildings/truck_depot_foreground_e.png"
+    ],
+    "trucks": {
+      "levels": [1,2,3,4,5],
+      "required_directions": ["e","s","w","n"],
+      "preferred_extra_directions": ["ne","se","sw","nw"],
+      "pattern": "vehicles/trucks/truck_lv{level}_{direction}.png",
+      "wheel_layers_or_frames_required": true
+    }
+  },
+  "animation_contract": {
+    "character_directions": ["e","se","s","sw","w","nw","n","ne"],
+    "locomotion_source_frames_total": 768,
+    "animal_source_frames_total": 400,
+    "aquaculture_idle_frames_total": 36,
+    "helicopter_levels": 5,
+    "no_automatic_mirroring": true,
+    "fixed_canvas_and_anchor_required": true,
+    "default_foot_anchor": [0.5,1.0]
+  },
+  "done_rule": "Do not report COMPLETED while any geometric/static placeholder remains visible for a required approved visual, or while a required production artwork file is absent. Runtime test pass alone is insufficient."
+}

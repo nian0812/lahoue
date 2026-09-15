@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/world/main_world.tscn" id="1_world"]
+[ext_resource type="Script" path="res://tests/visual_polish_capture.gd" id="2_capture"]
+
+[node name="main_world" instance=ExtResource("1_world")]
+
+[node name="visual_polish_capture" type="Node" parent="."]
+script = ExtResource("2_capture")

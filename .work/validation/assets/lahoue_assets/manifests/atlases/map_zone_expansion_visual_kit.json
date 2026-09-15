@@ -1,0 +1,186 @@
+{
+  "atlas_id": "map_zone_expansion_visual_kit",
+  "image": "ui/progression/map_zone_expansion_visual_kit.png",
+  "canvas": {
+    "width": 1254,
+    "height": 1254
+  },
+  "coordinate_system": "top_left_origin_pixels",
+  "components": [
+    {
+      "semantic_id": "farm_zone_marker",
+      "x": 0,
+      "y": 0,
+      "width": 251,
+      "height": 251
+    },
+    {
+      "semantic_id": "animal_zone_marker",
+      "x": 251,
+      "y": 0,
+      "width": 251,
+      "height": 251
+    },
+    {
+      "semantic_id": "aquaculture_zone_marker",
+      "x": 502,
+      "y": 0,
+      "width": 250,
+      "height": 251
+    },
+    {
+      "semantic_id": "restaurant_zone_marker",
+      "x": 752,
+      "y": 0,
+      "width": 251,
+      "height": 251
+    },
+    {
+      "semantic_id": "logistics_zone_marker",
+      "x": 1003,
+      "y": 0,
+      "width": 251,
+      "height": 251
+    },
+    {
+      "semantic_id": "premium_zone_marker",
+      "x": 0,
+      "y": 251,
+      "width": 251,
+      "height": 251
+    },
+    {
+      "semantic_id": "resort_zone_marker",
+      "x": 251,
+      "y": 251,
+      "width": 251,
+      "height": 251
+    },
+    {
+      "semantic_id": "remote_zone_marker",
+      "x": 502,
+      "y": 251,
+      "width": 250,
+      "height": 251
+    },
+    {
+      "semantic_id": "locked_expansion_marker",
+      "x": 752,
+      "y": 251,
+      "width": 251,
+      "height": 251
+    },
+    {
+      "semantic_id": "purchased_expansion_marker",
+      "x": 1003,
+      "y": 251,
+      "width": 251,
+      "height": 251
+    },
+    {
+      "semantic_id": "expansion_purchase_cost_marker",
+      "x": 0,
+      "y": 502,
+      "width": 251,
+      "height": 250
+    },
+    {
+      "semantic_id": "available_expansion_marker",
+      "x": 251,
+      "y": 502,
+      "width": 251,
+      "height": 250
+    },
+    {
+      "semantic_id": "expansion_warning_marker",
+      "x": 502,
+      "y": 502,
+      "width": 250,
+      "height": 250
+    },
+    {
+      "semantic_id": "construction_blocked_marker",
+      "x": 752,
+      "y": 502,
+      "width": 251,
+      "height": 250
+    },
+    {
+      "semantic_id": "empty_expansion_area",
+      "x": 1003,
+      "y": 502,
+      "width": 251,
+      "height": 250
+    },
+    {
+      "semantic_id": "small_purchased_plot",
+      "x": 0,
+      "y": 752,
+      "width": 251,
+      "height": 251
+    },
+    {
+      "semantic_id": "medium_purchased_plot",
+      "x": 251,
+      "y": 752,
+      "width": 251,
+      "height": 251
+    },
+    {
+      "semantic_id": "large_purchased_plot",
+      "x": 502,
+      "y": 752,
+      "width": 250,
+      "height": 251
+    },
+    {
+      "semantic_id": "stone_path_connection",
+      "x": 752,
+      "y": 752,
+      "width": 251,
+      "height": 251
+    },
+    {
+      "semantic_id": "road_connection",
+      "x": 1003,
+      "y": 752,
+      "width": 251,
+      "height": 251
+    },
+    {
+      "semantic_id": "wood_fence_boundary",
+      "x": 0,
+      "y": 1003,
+      "width": 251,
+      "height": 251
+    },
+    {
+      "semantic_id": "connection_entry_gate",
+      "x": 251,
+      "y": 1003,
+      "width": 251,
+      "height": 251
+    },
+    {
+      "semantic_id": "temporary_construction_boundary",
+      "x": 502,
+      "y": 1003,
+      "width": 250,
+      "height": 251
+    },
+    {
+      "semantic_id": "zone_flag_marker",
+      "x": 752,
+      "y": 1003,
+      "width": 251,
+      "height": 251
+    },
+    {
+      "semantic_id": "blank_zone_information_board",
+      "x": 1003,
+      "y": 1003,
+      "width": 251,
+      "height": 251
+    }
+  ]
+}

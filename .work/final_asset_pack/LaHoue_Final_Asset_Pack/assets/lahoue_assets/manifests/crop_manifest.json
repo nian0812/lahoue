@@ -1,0 +1,132 @@
+{
+  "crop_count": 18,
+  "png_count": 90,
+  "crops": {
+    "rice": {
+      "stage_1": "crops/rice_stage_1.png",
+      "stage_2": "crops/rice_stage_2.png",
+      "stage_3": "crops/rice_stage_3.png",
+      "stage_4": "crops/rice_stage_4.png",
+      "harvest": "crops/rice_harvest.png"
+    },
+    "wheat": {
+      "stage_1": "crops/wheat_stage_1.png",
+      "stage_2": "crops/wheat_stage_2.png",
+      "stage_3": "crops/wheat_stage_3.png",
+      "stage_4": "crops/wheat_stage_4.png",
+      "harvest": "crops/wheat_harvest.png"
+    },
+    "corn": {
+      "stage_1": "crops/corn_stage_1.png",
+      "stage_2": "crops/corn_stage_2.png",
+      "stage_3": "crops/corn_stage_3.png",
+      "stage_4": "crops/corn_stage_4.png",
+      "harvest": "crops/corn_harvest.png"
+    },
+    "cucumber": {
+      "stage_1": "crops/cucumber_stage_1.png",
+      "stage_2": "crops/cucumber_stage_2.png",
+      "stage_3": "crops/cucumber_stage_3.png",
+      "stage_4": "crops/cucumber_stage_4.png",
+      "harvest": "crops/cucumber_harvest.png"
+    },
+    "green_onion": {
+      "stage_1": "crops/green_onion_stage_1.png",
+      "stage_2": "crops/green_onion_stage_2.png",
+      "stage_3": "crops/green_onion_stage_3.png",
+      "stage_4": "crops/green_onion_stage_4.png",
+      "harvest": "crops/green_onion_harvest.png"
+    },
+    "tomato": {
+      "stage_1": "crops/tomato_stage_1.png",
+      "stage_2": "crops/tomato_stage_2.png",
+      "stage_3": "crops/tomato_stage_3.png",
+      "stage_4": "crops/tomato_stage_4.png",
+      "harvest": "crops/tomato_harvest.png"
+    },
+    "chili": {
+      "stage_1": "crops/chili_stage_1.png",
+      "stage_2": "crops/chili_stage_2.png",
+      "stage_3": "crops/chili_stage_3.png",
+      "stage_4": "crops/chili_stage_4.png",
+      "harvest": "crops/chili_harvest.png"
+    },
+    "carrot": {
+      "stage_1": "crops/carrot_stage_1.png",
+      "stage_2": "crops/carrot_stage_2.png",
+      "stage_3": "crops/carrot_stage_3.png",
+      "stage_4": "crops/carrot_stage_4.png",
+      "harvest": "crops/carrot_harvest.png"
+    },
+    "potato": {
+      "stage_1": "crops/potato_stage_1.png",
+      "stage_2": "crops/potato_stage_2.png",
+      "stage_3": "crops/potato_stage_3.png",
+      "stage_4": "crops/potato_stage_4.png",
+      "harvest": "crops/potato_harvest.png"
+    },
+    "soybean": {
+      "stage_1": "crops/soybean_stage_1.png",
+      "stage_2": "crops/soybean_stage_2.png",
+      "stage_3": "crops/soybean_stage_3.png",
+      "stage_4": "crops/soybean_stage_4.png",
+      "harvest": "crops/soybean_harvest.png"
+    },
+    "garlic": {
+      "stage_1": "crops/garlic_stage_1.png",
+      "stage_2": "crops/garlic_stage_2.png",
+      "stage_3": "crops/garlic_stage_3.png",
+      "stage_4": "crops/garlic_stage_4.png",
+      "harvest": "crops/garlic_harvest.png"
+    },
+    "coconut": {
+      "stage_1": "crops/coconut_stage_1.png",
+      "stage_2": "crops/coconut_stage_2.png",
+      "stage_3": "crops/coconut_stage_3.png",
+      "stage_4": "crops/coconut_stage_4.png",
+      "harvest": "crops/coconut_harvest.png"
+    },
+    "lemongrass": {
+      "stage_1": "crops/lemongrass_stage_1.png",
+      "stage_2": "crops/lemongrass_stage_2.png",
+      "stage_3": "crops/lemongrass_stage_3.png",
+      "stage_4": "crops/lemongrass_stage_4.png",
+      "harvest": "crops/lemongrass_harvest.png"
+    },
+    "tea": {
+      "stage_1": "crops/tea_stage_1.png",
+      "stage_2": "crops/tea_stage_2.png",
+      "stage_3": "crops/tea_stage_3.png",
+      "stage_4": "crops/tea_stage_4.png",
+      "harvest": "crops/tea_harvest.png"
+    },
+    "peanut": {
+      "stage_1": "crops/peanut_stage_1.png",
+      "stage_2": "crops/peanut_stage_2.png",
+      "stage_3": "crops/peanut_stage_3.png",
+      "stage_4": "crops/peanut_stage_4.png",
+      "harvest": "crops/peanut_harvest.png"
+    },
+    "sugarcane": {
+      "stage_1": "crops/sugarcane_stage_1.png",
+      "stage_2": "crops/sugarcane_stage_2.png",
+      "stage_3": "crops/sugarcane_stage_3.png",
+      "stage_4": "crops/sugarcane_stage_4.png",
+      "harvest": "crops/sugarcane_harvest.png"
+    },
+    "coffee": {
+      "stage_1": "crops/coffee_stage_1.png",
+      "stage_2": "crops/coffee_stage_2.png",
+      "stage_3": "crops/coffee_stage_3.png",
+      "stage_4": "crops/coffee_stage_4.png",
+      "harvest": "crops/coffee_harvest.png"
+    },
+    "banana": {
+      "stage_1": "crops/banana_stage_1.png",
+      "stage_2": "crops/banana_stage_2.png",
+      "stage_3": "crops/banana_stage_3.png",
+      "stage_4": "crops/banana_stage_4.png",
+      "harvest": "crops/banana_harvest.png"
+    }
+  }
+}

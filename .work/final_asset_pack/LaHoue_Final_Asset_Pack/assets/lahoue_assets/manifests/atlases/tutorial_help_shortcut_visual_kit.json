@@ -1,0 +1,291 @@
+{
+  "atlas_id": "tutorial_help_shortcut_visual_kit",
+  "image": "ui/tutorial/tutorial_help_shortcut_visual_kit.png",
+  "canvas": {
+    "width": 1536,
+    "height": 1024
+  },
+  "coordinate_system": "top_left_origin_pixels",
+  "components": [
+    {
+      "semantic_id": "mouse_left_click",
+      "x": 0,
+      "y": 0,
+      "width": 192,
+      "height": 205
+    },
+    {
+      "semantic_id": "mouse_right_click",
+      "x": 192,
+      "y": 0,
+      "width": 192,
+      "height": 205
+    },
+    {
+      "semantic_id": "mouse_scroll",
+      "x": 384,
+      "y": 0,
+      "width": 192,
+      "height": 205
+    },
+    {
+      "semantic_id": "mouse_rotate",
+      "x": 576,
+      "y": 0,
+      "width": 192,
+      "height": 205
+    },
+    {
+      "semantic_id": "mouse_inspect",
+      "x": 768,
+      "y": 0,
+      "width": 192,
+      "height": 205
+    },
+    {
+      "semantic_id": "mouse_confirm",
+      "x": 960,
+      "y": 0,
+      "width": 192,
+      "height": 205
+    },
+    {
+      "semantic_id": "mouse_cancel",
+      "x": 1152,
+      "y": 0,
+      "width": 192,
+      "height": 205
+    },
+    {
+      "semantic_id": "mouse_target",
+      "x": 1344,
+      "y": 0,
+      "width": 192,
+      "height": 205
+    },
+    {
+      "semantic_id": "movement_wasd",
+      "x": 0,
+      "y": 205,
+      "width": 192,
+      "height": 205
+    },
+    {
+      "semantic_id": "movement_arrows",
+      "x": 192,
+      "y": 205,
+      "width": 192,
+      "height": 205
+    },
+    {
+      "semantic_id": "run",
+      "x": 384,
+      "y": 205,
+      "width": 192,
+      "height": 205
+    },
+    {
+      "semantic_id": "settings_click",
+      "x": 576,
+      "y": 205,
+      "width": 192,
+      "height": 205
+    },
+    {
+      "semantic_id": "open_panel",
+      "x": 768,
+      "y": 205,
+      "width": 192,
+      "height": 205
+    },
+    {
+      "semantic_id": "close_panel",
+      "x": 960,
+      "y": 205,
+      "width": 192,
+      "height": 205
+    },
+    {
+      "semantic_id": "pointer_click",
+      "x": 1152,
+      "y": 205,
+      "width": 192,
+      "height": 205
+    },
+    {
+      "semantic_id": "touch_tap",
+      "x": 1344,
+      "y": 205,
+      "width": 192,
+      "height": 205
+    },
+    {
+      "semantic_id": "help_book",
+      "x": 0,
+      "y": 410,
+      "width": 192,
+      "height": 204
+    },
+    {
+      "semantic_id": "task_checklist",
+      "x": 192,
+      "y": 410,
+      "width": 192,
+      "height": 204
+    },
+    {
+      "semantic_id": "inventory_bag",
+      "x": 384,
+      "y": 410,
+      "width": 192,
+      "height": 204
+    },
+    {
+      "semantic_id": "shop_market",
+      "x": 576,
+      "y": 410,
+      "width": 192,
+      "height": 204
+    },
+    {
+      "semantic_id": "market_basket",
+      "x": 768,
+      "y": 410,
+      "width": 192,
+      "height": 204
+    },
+    {
+      "semantic_id": "help_question",
+      "x": 960,
+      "y": 410,
+      "width": 192,
+      "height": 204
+    },
+    {
+      "semantic_id": "signpost_navigation",
+      "x": 1152,
+      "y": 410,
+      "width": 192,
+      "height": 204
+    },
+    {
+      "semantic_id": "map_location",
+      "x": 1344,
+      "y": 410,
+      "width": 192,
+      "height": 204
+    },
+    {
+      "semantic_id": "confirm",
+      "x": 0,
+      "y": 614,
+      "width": 192,
+      "height": 205
+    },
+    {
+      "semantic_id": "cancel",
+      "x": 192,
+      "y": 614,
+      "width": 192,
+      "height": 205
+    },
+    {
+      "semantic_id": "refresh",
+      "x": 384,
+      "y": 614,
+      "width": 192,
+      "height": 205
+    },
+    {
+      "semantic_id": "construction",
+      "x": 576,
+      "y": 614,
+      "width": 192,
+      "height": 205
+    },
+    {
+      "semantic_id": "tools",
+      "x": 768,
+      "y": 614,
+      "width": 192,
+      "height": 205
+    },
+    {
+      "semantic_id": "settings",
+      "x": 960,
+      "y": 614,
+      "width": 192,
+      "height": 205
+    },
+    {
+      "semantic_id": "move_drag",
+      "x": 1152,
+      "y": 614,
+      "width": 192,
+      "height": 205
+    },
+    {
+      "semantic_id": "rotate",
+      "x": 1344,
+      "y": 614,
+      "width": 192,
+      "height": 205
+    },
+    {
+      "semantic_id": "attention",
+      "x": 0,
+      "y": 819,
+      "width": 192,
+      "height": 205
+    },
+    {
+      "semantic_id": "tip",
+      "x": 192,
+      "y": 819,
+      "width": 192,
+      "height": 205
+    },
+    {
+      "semantic_id": "dialogue",
+      "x": 384,
+      "y": 819,
+      "width": 192,
+      "height": 205
+    },
+    {
+      "semantic_id": "character_move_point",
+      "x": 576,
+      "y": 819,
+      "width": 192,
+      "height": 205
+    },
+    {
+      "semantic_id": "interaction_point",
+      "x": 768,
+      "y": 819,
+      "width": 192,
+      "height": 205
+    },
+    {
+      "semantic_id": "valid_ground_target",
+      "x": 960,
+      "y": 819,
+      "width": 192,
+      "height": 205
+    },
+    {
+      "semantic_id": "invalid_ground_target",
+      "x": 1152,
+      "y": 819,
+      "width": 192,
+      "height": 205
+    },
+    {
+      "semantic_id": "target_area",
+      "x": 1344,
+      "y": 819,
+      "width": 192,
+      "height": 205
+    }
+  ]
+}

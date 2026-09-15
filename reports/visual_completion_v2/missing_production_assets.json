@@ -1,0 +1,176 @@
+[
+  {
+    "missing_path": "D:/Game/LaHoue/assets/lahoue_assets/world/buildings/restaurant_ground_empty.png",
+    "runtime_element": "scenes/restaurant/restaurant.tscn (VisualRoot/ModularRestaurant)",
+    "classification": "ARTWORK REQUIRED",
+    "pack_filename_matches": 0
+  },
+  {
+    "missing_path": "D:/Game/LaHoue/assets/lahoue_assets/world/buildings/restaurant_rooftop_empty.png",
+    "runtime_element": "scenes/restaurant/restaurant.tscn (VisualRoot/ModularRestaurant)",
+    "classification": "ARTWORK REQUIRED",
+    "pack_filename_matches": 0
+  },
+  {
+    "missing_path": "D:/Game/LaHoue/assets/lahoue_assets/world/buildings/restaurant_stairs.png",
+    "runtime_element": "scenes/restaurant/restaurant.tscn (VisualRoot/ModularRestaurant)",
+    "classification": "ARTWORK REQUIRED",
+    "pack_filename_matches": 0
+  },
+  {
+    "missing_path": "D:/Game/LaHoue/assets/lahoue_assets/world/buildings/restaurant_front_occlusion.png",
+    "runtime_element": "scenes/restaurant/restaurant.tscn (VisualRoot/ModularRestaurant)",
+    "classification": "ARTWORK REQUIRED",
+    "pack_filename_matches": 0
+  },
+  {
+    "missing_path": "D:/Game/LaHoue/assets/lahoue_assets/world/props/dining_table_empty.png",
+    "runtime_element": "scenes/restaurant/restaurant_table.tscn",
+    "classification": "ARTWORK REQUIRED",
+    "pack_filename_matches": 0
+  },
+  {
+    "missing_path": "D:/Game/LaHoue/assets/lahoue_assets/world/props/dining_chair_ne.png",
+    "runtime_element": "scenes/restaurant/restaurant_table.tscn",
+    "classification": "ARTWORK REQUIRED",
+    "pack_filename_matches": 0
+  },
+  {
+    "missing_path": "D:/Game/LaHoue/assets/lahoue_assets/world/props/dining_chair_sw.png",
+    "runtime_element": "scenes/restaurant/restaurant_table.tscn",
+    "classification": "ARTWORK REQUIRED",
+    "pack_filename_matches": 0
+  },
+  {
+    "missing_path": "D:/Game/LaHoue/assets/lahoue_assets/world/buildings/truck_depot_empty_e.png",
+    "runtime_element": "scenes/buildings/truck_depot.tscn",
+    "classification": "ARTWORK REQUIRED",
+    "pack_filename_matches": 0
+  },
+  {
+    "missing_path": "D:/Game/LaHoue/assets/lahoue_assets/world/buildings/truck_depot_foreground_e.png",
+    "runtime_element": "scenes/buildings/truck_depot.tscn",
+    "classification": "ARTWORK REQUIRED",
+    "pack_filename_matches": 0
+  },
+  {
+    "missing_path": "D:/Game/LaHoue/assets/lahoue_assets/vehicles/trucks/truck_lv1_e.png",
+    "runtime_element": "scenes/vehicles/truck_visual.tscn",
+    "classification": "ARTWORK REQUIRED",
+    "pack_filename_matches": 0
+  },
+  {
+    "missing_path": "D:/Game/LaHoue/assets/lahoue_assets/vehicles/trucks/truck_lv1_s.png",
+    "runtime_element": "scenes/vehicles/truck_visual.tscn",
+    "classification": "ARTWORK REQUIRED",
+    "pack_filename_matches": 0
+  },
+  {
+    "missing_path": "D:/Game/LaHoue/assets/lahoue_assets/vehicles/trucks/truck_lv1_w.png",
+    "runtime_element": "scenes/vehicles/truck_visual.tscn",
+    "classification": "ARTWORK REQUIRED",
+    "pack_filename_matches": 0
+  },
+  {
+    "missing_path": "D:/Game/LaHoue/assets/lahoue_assets/vehicles/trucks/truck_lv1_n.png",
+    "runtime_element": "scenes/vehicles/truck_visual.tscn",
+    "classification": "ARTWORK REQUIRED",
+    "pack_filename_matches": 0
+  },
+  {
+    "missing_path": "D:/Game/LaHoue/assets/lahoue_assets/vehicles/trucks/truck_lv2_e.png",
+    "runtime_element": "scenes/vehicles/truck_visual.tscn",
+    "classification": "ARTWORK REQUIRED",
+    "pack_filename_matches": 0
+  },
+  {
+    "missing_path": "D:/Game/LaHoue/assets/lahoue_assets/vehicles/trucks/truck_lv2_s.png",
+    "runtime_element": "scenes/vehicles/truck_visual.tscn",
+    "classification": "ARTWORK REQUIRED",
+    "pack_filename_matches": 0
+  },
+  {
+    "missing_path": "D:/Game/LaHoue/assets/lahoue_assets/vehicles/trucks/truck_lv2_w.png",
+    "runtime_element": "scenes/vehicles/truck_visual.tscn",
+    "classification": "ARTWORK REQUIRED",
+    "pack_filename_matches": 0
+  },
+  {
+    "missing_path": "D:/Game/LaHoue/assets/lahoue_assets/vehicles/trucks/truck_lv2_n.png",
+    "runtime_element": "scenes/vehicles/truck_visual.tscn",
+    "classification": "ARTWORK REQUIRED",
+    "pack_filename_matches": 0
+  },
+  {
+    "missing_path": "D:/Game/LaHoue/assets/lahoue_assets/vehicles/trucks/truck_lv3_e.png",
+    "runtime_element": "scenes/vehicles/truck_visual.tscn",
+    "classification": "ARTWORK REQUIRED",
+    "pack_filename_matches": 0
+  },
+  {
+    "missing_path": "D:/Game/LaHoue/assets/lahoue_assets/vehicles/trucks/truck_lv3_s.png",
+    "runtime_element": "scenes/vehicles/truck_visual.tscn",
+    "classification": "ARTWORK REQUIRED",
+    "pack_filename_matches": 0
+  },
+  {
+    "missing_path": "D:/Game/LaHoue/assets/lahoue_assets/vehicles/trucks/truck_lv3_w.png",
+    "runtime_element": "scenes/vehicles/truck_visual.tscn",
+    "classification": "ARTWORK REQUIRED",
+    "pack_filename_matches": 0
+  },
+  {
+    "missing_path": "D:/Game/LaHoue/assets/lahoue_assets/vehicles/trucks/truck_lv3_n.png",
+    "runtime_element": "scenes/vehicles/truck_visual.tscn",
+    "classification": "ARTWORK REQUIRED",
+    "pack_filename_matches": 0
+  },
+  {
+    "missing_path": "D:/Game/LaHoue/assets/lahoue_assets/vehicles/trucks/truck_lv4_e.png",
+    "runtime_element": "scenes/vehicles/truck_visual.tscn",
+    "classification": "ARTWORK REQUIRED",
+    "pack_filename_matches": 0
+  },
+  {
+    "missing_path": "D:/Game/LaHoue/assets/lahoue_assets/vehicles/trucks/truck_lv4_s.png",
+    "runtime_element": "scenes/vehicles/truck_visual.tscn",
+    "classification": "ARTWORK REQUIRED",
+    "pack_filename_matches": 0
+  },
+  {
+    "missing_path": "D:/Game/LaHoue/assets/lahoue_assets/vehicles/trucks/truck_lv4_w.png",
+    "runtime_element": "scenes/vehicles/truck_visual.tscn",
+    "classification": "ARTWORK REQUIRED",
+    "pack_filename_matches": 0
+  },
+  {
+    "missing_path": "D:/Game/LaHoue/assets/lahoue_assets/vehicles/trucks/truck_lv4_n.png",
+    "runtime_element": "scenes/vehicles/truck_visual.tscn",
+    "classification": "ARTWORK REQUIRED",
+    "pack_filename_matches": 0
+  },
+  {
+    "missing_path": "D:/Game/LaHoue/assets/lahoue_assets/vehicles/trucks/truck_lv5_e.png",
+    "runtime_element": "scenes/vehicles/truck_visual.tscn",
+    "classification": "ARTWORK REQUIRED",
+    "pack_filename_matches": 0
+  },
+  {
+    "missing_path": "D:/Game/LaHoue/assets/lahoue_assets/vehicles/trucks/truck_lv5_s.png",
+    "runtime_element": "scenes/vehicles/truck_visual.tscn",
+    "classification": "ARTWORK REQUIRED",
+    "pack_filename_matches": 0
+  },
+  {
+    "missing_path": "D:/Game/LaHoue/assets/lahoue_assets/vehicles/trucks/truck_lv5_w.png",
+    "runtime_element": "scenes/vehicles/truck_visual.tscn",
+    "classification": "ARTWORK REQUIRED",
+    "pack_filename_matches": 0
+  },
+  {
+    "missing_path": "D:/Game/LaHoue/assets/lahoue_assets/vehicles/trucks/truck_lv5_n.png",
+    "runtime_element": "scenes/vehicles/truck_visual.tscn",
+    "classification": "ARTWORK REQUIRED",
+    "pack_filename_matches": 0
+  }
+]

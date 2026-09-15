@@ -1,0 +1,105 @@
+{
+  "checks": {
+    "characters_8_of_8": {
+      "passed": true
+    },
+    "farm_animals_5_of_5": {
+      "passed": true
+    },
+    "aquaculture_5_of_5": {
+      "passed": true
+    },
+    "crop_families_18": {
+      "passed": true
+    },
+    "crop_pngs_90": {
+      "passed": true
+    },
+    "every_crop_has_4_stages_plus_harvest": {
+      "passed": true
+    },
+    "dish_icons_50_of_50": {
+      "passed": true
+    },
+    "dish_filenames_match_canonical_ids": {
+      "passed": true,
+      "detail": {
+        "missing": [],
+        "extra": []
+      }
+    },
+    "dish_48_correct": {
+      "passed": true
+    },
+    "dish_49_correct": {
+      "passed": true
+    },
+    "dish_50_correct": {
+      "passed": true
+    },
+    "trucks_5_levels": {
+      "passed": true
+    },
+    "helicopters_5_levels": {
+      "passed": true
+    },
+    "restaurant_present": {
+      "passed": true
+    },
+    "pig_present": {
+      "passed": true
+    },
+    "building_purchase_upgrade_construction_kit_one_authoritative_copy": {
+      "passed": true,
+      "detail": [
+        "ui/progression/building_purchase_upgrade_construction_kit.png"
+      ]
+    },
+    "map_zone_expansion_visual_kit_one_authoritative_copy": {
+      "passed": true,
+      "detail": [
+        "ui/progression/map_zone_expansion_visual_kit.png"
+      ]
+    },
+    "aquaculture_not_in_animals": {
+      "passed": true
+    },
+    "all_remaining_atlas_kit_sheet_have_metadata": {
+      "passed": true,
+      "detail": {
+        "without_metadata": [],
+        "metadata_without_image": []
+      }
+    },
+    "no_missing_manifest_paths": {
+      "passed": true,
+      "detail": []
+    },
+    "no_duplicate_canonical_ids": {
+      "passed": true,
+      "detail": []
+    },
+    "aquaculture_pond_real_transparency": {
+      "passed": true
+    },
+    "outdoor_dining_atlas_real_transparency": {
+      "passed": true
+    },
+    "lemongrass_stage_2_and_stage_3_hashes_different": {
+      "passed": true,
+      "detail": {
+        "stage_2_sha256": "0768b121acdc63fca5b6b3f406795cf93bd0e2bd375db226b559f29e69ba68d8",
+        "stage_3_sha256": "ac69fd9a16138ca71e7c4cbefe569b1c0213f9617d9ab61eb07ef365631e9fdb"
+      }
+    },
+    "aquaculture_pond_no_baked_ui_or_truck_depot": {
+      "passed": true
+    },
+    "outdoor_dining_atlas_no_baked_title_or_dark_background": {
+      "passed": true
+    }
+  },
+  "errors": [],
+  "duplicate_image_hash_groups": [],
+  "passed": true
+}

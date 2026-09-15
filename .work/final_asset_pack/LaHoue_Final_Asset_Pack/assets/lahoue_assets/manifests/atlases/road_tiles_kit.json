@@ -1,0 +1,81 @@
+{
+  "atlas_id": "road_tiles_kit",
+  "image": "world/environment/road_tiles_kit.png",
+  "canvas": {
+    "width": 1536,
+    "height": 1024
+  },
+  "coordinate_system": "top_left_origin_pixels",
+  "components": [
+    {
+      "x": 16,
+      "y": 16,
+      "width": 462,
+      "height": 328,
+      "semantic_id": "dirt_road_straight"
+    },
+    {
+      "x": 374,
+      "y": 14,
+      "width": 478,
+      "height": 338,
+      "semantic_id": "gravel_road_straight"
+    },
+    {
+      "x": 746,
+      "y": 10,
+      "width": 469,
+      "height": 339,
+      "semantic_id": "paved_road_straight"
+    },
+    {
+      "x": 1116,
+      "y": 66,
+      "width": 402,
+      "height": 293,
+      "semantic_id": "paved_road_corner"
+    },
+    {
+      "x": 18,
+      "y": 366,
+      "width": 502,
+      "height": 289,
+      "semantic_id": "paved_road_t_junction"
+    },
+    {
+      "x": 522,
+      "y": 348,
+      "width": 473,
+      "height": 336,
+      "semantic_id": "paved_road_cross"
+    },
+    {
+      "x": 1000,
+      "y": 379,
+      "width": 300,
+      "height": 276,
+      "semantic_id": "dirt_path_straight"
+    },
+    {
+      "x": 1224,
+      "y": 386,
+      "width": 298,
+      "height": 286,
+      "semantic_id": "stone_path_straight"
+    },
+    {
+      "x": 75,
+      "y": 668,
+      "width": 612,
+      "height": 345,
+      "semantic_id": "farm_gate_road_tile"
+    },
+    {
+      "x": 755,
+      "y": 675,
+      "width": 667,
+      "height": 338,
+      "semantic_id": "paved_transition_tile"
+    }
+  ]
+}

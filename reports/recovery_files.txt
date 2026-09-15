@@ -1,0 +1,60 @@
+Recovery continuation: 22 source, scene, test and tool files. Existing earlier edits preserved.
+D:\Game\LaHoue\scripts\world\main_world.gd
+D:\Game\LaHoue\scripts\player\player.gd
+D:\Game\LaHoue\scripts\ui\pause_menu.gd
+D:\Game\LaHoue\scripts\ui\restaurant_panel.gd
+D:\Game\LaHoue\scripts\restaurant\restaurant.gd
+D:\Game\LaHoue\scripts\restaurant\customer.gd
+D:\Game\LaHoue\scripts\visual\lahoue_asset_catalog.gd
+D:\Game\LaHoue\scripts\visual\animation_state_observer.gd
+D:\Game\LaHoue\scripts\visual\restaurant_presentation.gd
+D:\Game\LaHoue\scripts\visual\zone_ground_visual.gd
+D:\Game\LaHoue\scripts\visual\ground_blend.gdshader
+D:\Game\LaHoue\scripts\visual\route_surface_visual.gd
+D:\Game\LaHoue\scenes\restaurant\restaurant.tscn
+D:\Game\LaHoue\scenes\restaurant\restaurant_table.tscn
+D:\Game\LaHoue\scenes\world\zones\logistics_zone.tscn
+D:\Game\LaHoue\tests\recovery_runtime_test.gd
+D:\Game\LaHoue\tests\recovery_runtime_test.tscn
+D:\Game\LaHoue\tests\animation_foundation_test.gd
+D:\Game\LaHoue\tests\inventory_economy_test.gd
+D:\Game\LaHoue\tests\visual_completion_capture.gd
+D:\Game\LaHoue\tools\extract_v3_runtime_layers.py
+D:\Game\LaHoue\tools\run_visual_capture.ps1
+
+V3 runtime assets: 18 character pose PNGs, 5 architectural PNGs, manifest and Godot import metadata:
+D:\Game\LaHoue\assets\lahoue_v3\characters\player\sit.png
+D:\Game\LaHoue\assets\lahoue_v3\characters\player\eat.png
+D:\Game\LaHoue\assets\lahoue_v3\characters\player\payment.png
+D:\Game\LaHoue\assets\lahoue_v3\characters\waiter\sit.png
+D:\Game\LaHoue\assets\lahoue_v3\characters\waiter\eat.png
+D:\Game\LaHoue\assets\lahoue_v3\characters\waiter\payment.png
+D:\Game\LaHoue\assets\lahoue_v3\characters\chef\sit.png
+D:\Game\LaHoue\assets\lahoue_v3\characters\chef\eat.png
+D:\Game\LaHoue\assets\lahoue_v3\characters\chef\payment.png
+D:\Game\LaHoue\assets\lahoue_v3\characters\customer\sit.png
+D:\Game\LaHoue\assets\lahoue_v3\characters\customer\eat.png
+D:\Game\LaHoue\assets\lahoue_v3\characters\customer\payment.png
+D:\Game\LaHoue\assets\lahoue_v3\characters\customer_woman\sit.png
+D:\Game\LaHoue\assets\lahoue_v3\characters\customer_woman\eat.png
+D:\Game\LaHoue\assets\lahoue_v3\characters\customer_woman\payment.png
+D:\Game\LaHoue\assets\lahoue_v3\characters\vip_customer\sit.png
+D:\Game\LaHoue\assets\lahoue_v3\characters\vip_customer\eat.png
+D:\Game\LaHoue\assets\lahoue_v3\characters\vip_customer\payment.png
+D:\Game\LaHoue\assets\lahoue_v3\restaurant\floor_material.png
+D:\Game\LaHoue\assets\lahoue_v3\restaurant\wall_material.png
+D:\Game\LaHoue\assets\lahoue_v3\restaurant\pillar.png
+D:\Game\LaHoue\assets\lahoue_v3\restaurant\railing_back.png
+D:\Game\LaHoue\assets\lahoue_v3\restaurant\stair.png
+D:\Game\LaHoue\assets\lahoue_v3\manifest.json
+
+Verification runner and artifacts:
+D:\Game\LaHoue\.work\run_tests.ps1
+D:\Game\LaHoue\reports\final_regression.txt
+D:\Game\LaHoue\reports\visual_completion_v3\captures\ (25 screenshots and runtime_texture_evidence.json)
+
+Normal save and backup restored from validated pre-debug progression; forced debug snapshots preserved separately:
+C:\Users\Admin\AppData\Roaming\Godot\app_userdata\LaHoue\savegame.json
+C:\Users\Admin\AppData\Roaming\Godot\app_userdata\LaHoue\savegame.backup.json
+D:\Game\LaHoue\.work\recovery_isolated_debug_profile.json
+D:\Game\LaHoue\.work\recovery_isolated_debug_backup.json

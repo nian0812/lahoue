@@ -1,0 +1,1361 @@
+{
+  "package": "LaHoue Final Asset Pack",
+  "version": "2026-09-13",
+  "engine": "Godot 4.7.1",
+  "purpose": "Final visual integration pack. Production assets are under assets/lahoue_assets. Approved concept sheets are references only and must not be imported directly as gameplay sprites.",
+  "production_file_count": 160,
+  "production_files": [
+    {
+      "path": "assets/lahoue_assets/animals/beef_cow.png",
+      "bytes": 471198,
+      "width": 748,
+      "height": 502,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "e89d6ba32db83f5c7a34759e5441280385753f7de87fcf03a1ed93e3d74bef48"
+    },
+    {
+      "path": "assets/lahoue_assets/animals/dairy_cow.png",
+      "bytes": 424270,
+      "width": 707,
+      "height": 487,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "3c83cf2a9270dddffb0dd724df63deda9745327fa57ca1316b77a0b37ad99d08"
+    },
+    {
+      "path": "assets/lahoue_assets/animals/layer_chicken.png",
+      "bytes": 153039,
+      "width": 301,
+      "height": 369,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "2427c7160d91cba02f6e2df77b467b8936163f1f88a7d74b1de237fa40be6bea"
+    },
+    {
+      "path": "assets/lahoue_assets/animals/meat_chicken.png",
+      "bytes": 183127,
+      "width": 344,
+      "height": 377,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "18b52899a772186f5181a8fe25531e8372f5db8be986465a1dceaa5ea8e1e771"
+    },
+    {
+      "path": "assets/lahoue_assets/animals/pig.png",
+      "bytes": 293698,
+      "width": 514,
+      "height": 390,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "cf26e6b95701b003859a4cc6426c5bf91455fafc7dc94edfd66143bbf60f0dd9"
+    },
+    {
+      "path": "assets/lahoue_assets/aquaculture/crab.png",
+      "bytes": 351689,
+      "width": 610,
+      "height": 388,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "f35402dbbbce245f5dce85ea00019454906587490e1433b28d37219b266addbd"
+    },
+    {
+      "path": "assets/lahoue_assets/aquaculture/fish.png",
+      "bytes": 409386,
+      "width": 715,
+      "height": 398,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "0d5c6aaed9dcc24668066ef3e9f9527b8853a1f0985c6de5df325a2741551aa9"
+    },
+    {
+      "path": "assets/lahoue_assets/aquaculture/octopus.png",
+      "bytes": 470691,
+      "width": 557,
+      "height": 519,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "7b5a945f5b31a6b730ce2c6385c2260395eaea25bb5c61d2cb21bfe91b925c52"
+    },
+    {
+      "path": "assets/lahoue_assets/aquaculture/shrimp.png",
+      "bytes": 295172,
+      "width": 775,
+      "height": 347,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "d5455fab1cc9295b95dae28ebb317bf93f971b0261d06936ccb096aecf78e965"
+    },
+    {
+      "path": "assets/lahoue_assets/aquaculture/squid.png",
+      "bytes": 296693,
+      "width": 589,
+      "height": 505,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "1bdb0cceab6d1a4ba7c46f05e41e186b45b88e1d63c334c0d409ee57695c6324"
+    },
+    {
+      "path": "assets/lahoue_assets/characters/animal_worker.png",
+      "bytes": 1074853,
+      "width": 1086,
+      "height": 1448,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "8fbf9e17c5df07348632b9f947f9327e5fb03573727f1743a3fd3a8667d6e1bb"
+    },
+    {
+      "path": "assets/lahoue_assets/characters/aquaculture_worker.png",
+      "bytes": 1031604,
+      "width": 1086,
+      "height": 1448,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "0f0c1762fe33c1b4f215c5ec98d65b715f5f2b439e2ff778be45e451a556c7ac"
+    },
+    {
+      "path": "assets/lahoue_assets/characters/chef.png",
+      "bytes": 959546,
+      "width": 1086,
+      "height": 1448,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "195aa557606f6ea890a4d6a2a95511db2dab17e1ed4e4cb652f02e569a890155"
+    },
+    {
+      "path": "assets/lahoue_assets/characters/customer.png",
+      "bytes": 1779362,
+      "width": 1024,
+      "height": 1536,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "ec6a1bc47347e8c967daa765f86efbc12663bd265e35cfd259df82c3df21fd41"
+    },
+    {
+      "path": "assets/lahoue_assets/characters/farm_worker.png",
+      "bytes": 1051909,
+      "width": 1086,
+      "height": 1448,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "e257df29c73575f1d471aa51272c4d47f3a3f17a5e4d8b9e075ac98835e6da34"
+    },
+    {
+      "path": "assets/lahoue_assets/characters/player.png",
+      "bytes": 962185,
+      "width": 1086,
+      "height": 1448,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "df3765fd8cea33be9e09745c7b20e3ad9a67f56a4dcb3c558800f9542e304966"
+    },
+    {
+      "path": "assets/lahoue_assets/characters/vip_customer.png",
+      "bytes": 1754020,
+      "width": 1024,
+      "height": 1536,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "b6a3b57bbffda1dd11ed01a29868b3c4462b72f634fbba69a1be1f7556f238f6"
+    },
+    {
+      "path": "assets/lahoue_assets/characters/waiter.png",
+      "bytes": 1612611,
+      "width": 1024,
+      "height": 1536,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "8ee1d273d6b22dc441ff8bd0292b6d8849b47fd3cdd8eabd20e906ad55524665"
+    },
+    {
+      "path": "assets/lahoue_assets/manifests/animal_manifest.json",
+      "bytes": 520,
+      "sha256": "d11239b6f1067044991216385a0cdde4f6d1e9f64ae3a9a2ac4d028932cc6d21"
+    },
+    {
+      "path": "assets/lahoue_assets/manifests/aquaculture_manifest.json",
+      "bytes": 546,
+      "sha256": "a2770372cea3556bdab00f99afa4b816cfd84b9aa0d4141ebcb9aa02efe94733"
+    },
+    {
+      "path": "assets/lahoue_assets/manifests/artwork_integrity_fix_report.json",
+      "bytes": 1069,
+      "sha256": "440a8075d20d01c0efaeb2e4358620a4836eafc692a48ae0f6dfa734739a9011"
+    },
+    {
+      "path": "assets/lahoue_assets/manifests/asset_manifest.json",
+      "bytes": 2612,
+      "sha256": "2c02c869938cc5943d662112a90e385de0a701fa9dc3cfb3340c4b5e7d9df381"
+    },
+    {
+      "path": "assets/lahoue_assets/manifests/atlas_manifest.json",
+      "bytes": 1246,
+      "sha256": "bae61e98b4905109a8c09fa2c4dd1d948d350235d1a2501d988ca954f201640a"
+    },
+    {
+      "path": "assets/lahoue_assets/manifests/atlases/achievement_badges_and_emblems_sheet.json",
+      "bytes": 3627,
+      "sha256": "ec13c8dcad76eaa0035376f95ce951e865be0d4328544df2cee228d4f980aac8"
+    },
+    {
+      "path": "assets/lahoue_assets/manifests/atlases/building_purchase_upgrade_construction_kit.json",
+      "bytes": 2936,
+      "sha256": "c3c20d2cd28d9fc476624ba13d866a17e141838c471c4790dab2e67bd617837d"
+    },
+    {
+      "path": "assets/lahoue_assets/manifests/atlases/directional_signs_kit.json",
+      "bytes": 1416,
+      "sha256": "783cb72b9f2e18b2fab328e7c2d2e54c2c2086530fd9b369419f617acf5d4c67"
+    },
+    {
+      "path": "assets/lahoue_assets/manifests/atlases/farm_warehouse_utility_props_atlas.json",
+      "bytes": 2686,
+      "sha256": "f8bfb359effec3e8cf6bb1b69f0bd42286743070a7e6a48f250cde2e00096412"
+    },
+    {
+      "path": "assets/lahoue_assets/manifests/atlases/frame_and_button_base_kit.json",
+      "bytes": 4930,
+      "sha256": "17aafc05bb8591c39346cf1d2d93717319db00995fb4d0fbbd24bceff704ec0a"
+    },
+    {
+      "path": "assets/lahoue_assets/manifests/atlases/logistics_props_atlas.json",
+      "bytes": 4025,
+      "sha256": "a4c7724e86e0148c63913773995ae747ba4a3fbc4f037e8474cb3778d5f09bbe"
+    },
+    {
+      "path": "assets/lahoue_assets/manifests/atlases/map_zone_expansion_visual_kit.json",
+      "bytes": 3523,
+      "sha256": "dbc97e5b2b80c7511606a3045cb8a9242cb553007ba99f83e53f0812a93798c1"
+    },
+    {
+      "path": "assets/lahoue_assets/manifests/atlases/natural_props_atlas.json",
+      "bytes": 1710,
+      "sha256": "7aac4b65a9e4d51d9fe5d6b1ac1a75fca3f9759a6e72a6d90e2b67fd46d2d0a4"
+    },
+    {
+      "path": "assets/lahoue_assets/manifests/atlases/outdoor_dining_set_atlas.json",
+      "bytes": 841,
+      "sha256": "80c09ded401e644538efe84eb8e3b86c4afafe15e855e300a9a3ccb309e4265a"
+    },
+    {
+      "path": "assets/lahoue_assets/manifests/atlases/restaurant_kitchen_cooking_station_module_set.json",
+      "bytes": 2161,
+      "sha256": "4d55f13c6202cbd41246f7f18b7dd88c879d025e6e1bbe8b26b72be120f5c4a8"
+    },
+    {
+      "path": "assets/lahoue_assets/manifests/atlases/road_tiles_kit.json",
+      "bytes": 1497,
+      "sha256": "d6c6267554d08ecd07c01686b438696edce18f567b521494215d9ec056121e40"
+    },
+    {
+      "path": "assets/lahoue_assets/manifests/atlases/tutorial_help_shortcut_visual_kit.json",
+      "bytes": 5096,
+      "sha256": "039d2da808360eadd8e6735fcb73043e9282cddd853171b0d73778a2e07ef7dd"
+    },
+    {
+      "path": "assets/lahoue_assets/manifests/atlases/world_interaction_production_markers_sheet.json",
+      "bytes": 4266,
+      "sha256": "fcbf47913aa57b240389fe52ba0c1e6bdd7bf985d23fa9dd91b3e5f75a6ec9be"
+    },
+    {
+      "path": "assets/lahoue_assets/manifests/character_manifest.json",
+      "bytes": 586,
+      "sha256": "c299cbe5ac683c461bb91615e4d9686a6e106cd4d4140e2a95184fb522a3d93f"
+    },
+    {
+      "path": "assets/lahoue_assets/manifests/crop_manifest.json",
+      "bytes": 4546,
+      "sha256": "31e819d435528cada570f62bb2f916707a89d44605e57e3f909a3735ca5f2f42"
+    },
+    {
+      "path": "assets/lahoue_assets/manifests/dish_manifest.json",
+      "bytes": 7093,
+      "sha256": "d5dc0964d7ff77e4bc96a344499fbb9021cd54e2d8f502454b7e8a8fb13491e3"
+    },
+    {
+      "path": "assets/lahoue_assets/manifests/ui_manifest.json",
+      "bytes": 17800,
+      "sha256": "ff68036f3280b87b935e3d25cebf20c1d0ad328409c079cb09b397254a2b2fd1"
+    },
+    {
+      "path": "assets/lahoue_assets/manifests/validation_report.json",
+      "bytes": 2417,
+      "sha256": "c886a9ef8e7c4b21ef257fd8abc4f6969e659fe8608c72f88c7c794a9988b6ac"
+    },
+    {
+      "path": "assets/lahoue_assets/manifests/vehicle_manifest.json",
+      "bytes": 838,
+      "sha256": "ce3a7973d8d685e1e02b017ee2563756cae8369393c591a99503816853b3029f"
+    },
+    {
+      "path": "assets/lahoue_assets/manifests/world_manifest.json",
+      "bytes": 2092,
+      "sha256": "112f342d899eba3dbdb1960ec2392bed6ec76a4d9dc4cef42e24f8115cdd65ee"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/customer_indicators/cooking_preparing_order_indicator.png",
+      "bytes": 82086,
+      "width": 175,
+      "height": 272,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "a8c44eebcdb0a7a278f1c660d26da791828bab9da19e9b060e852a7e4aa72404"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/customer_indicators/customer_waiting_too_long_warning_indicator.png",
+      "bytes": 64344,
+      "width": 175,
+      "height": 257,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "b4f7625a873fedb4487ea58f26683b42bc3e9d822fb4e19db05cabb297a22c73"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/customer_indicators/food_served_eating_indicator.png",
+      "bytes": 65619,
+      "width": 175,
+      "height": 206,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "b0fa4dedaeabf008776173545f9ded14731d8d12070d0103628ec85d26682aea"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/customer_indicators/new_order_bubble.png",
+      "bytes": 73486,
+      "width": 175,
+      "height": 241,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "13ae328c5a90d1270f0908c7a21656ba02169de624f0468a6534e07cae98552b"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/customer_indicators/order_ready_indicator.png",
+      "bytes": 73876,
+      "width": 173,
+      "height": 225,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "17fb306e505a9f97449e87641f029fb41c732fbc0a8f1c386fdc9c77719793c3"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/customer_indicators/payment_collected_indicator.png",
+      "bytes": 61823,
+      "width": 175,
+      "height": 213,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "c927f4513d502df7a0442c02ef4d197422bed93a45f835ea69e509cf94789375"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/customer_indicators/payment_ready_indicator.png",
+      "bytes": 73408,
+      "width": 175,
+      "height": 260,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "84d879094cfd48c8ed94a9220eb8c73252d907acdbcc665006187d329c74ede5"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/customer_indicators/waiting_for_waiter_indicator.png",
+      "bytes": 54007,
+      "width": 175,
+      "height": 227,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "756ccf1f353cc3ad921d8fdfbdab46b29fa8564ab69084f082bdca5778e41b59"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_01_banh_mi.png",
+      "bytes": 157339,
+      "width": 289,
+      "height": 250,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "010063db7451fc5017183b16e2f9d4ce7c8a0772e87baa39f520fc0f518b8a6a"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_02_com_trang.png",
+      "bytes": 172273,
+      "width": 289,
+      "height": 265,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "6faea1b92ec1887754070c4ba0293f15623d3f241ea26d80d7d12bbb0dabd835"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_03_banh_mi_op_la.png",
+      "bytes": 180483,
+      "width": 289,
+      "height": 277,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "ba28647d5f453f46315b07bd5d3d422b3376fd126debc7cb95545871ca359668"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_04_bap_luoc.png",
+      "bytes": 174586,
+      "width": 289,
+      "height": 283,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "39d925afc5d1d8713536e22185c27504886991ef1c1fd206f7b1f536c6c7f250"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_05_com_chien_trung.png",
+      "bytes": 193253,
+      "width": 290,
+      "height": 282,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "fa9f76524e3023f6f9f9061eca85d84783c1cf5eb81f1aa6c012e3031015b273"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_06_banh_mi_ga.png",
+      "bytes": 186168,
+      "width": 289,
+      "height": 275,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "2a85f5fc5560ee4e1f4a47628805dbc57f40af9ed17e544d978ee683b28c2f05"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_07_banh_mi_thit.png",
+      "bytes": 188315,
+      "width": 289,
+      "height": 273,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "bac15d05e53e0bade43ae4b4d7d539c90add9c2969348fbc9d1d01ba8322e7ef"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_08_xoi_bap.png",
+      "bytes": 181685,
+      "width": 289,
+      "height": 271,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "e68cf33eeac7e4304a7781b85f084f1153a4712a13b2f1aea4bd5cc351d8b817"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_09_banh_cuon_thit.png",
+      "bytes": 181936,
+      "width": 289,
+      "height": 259,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "0c6846b180c8ff56e93e4c357442d1becd2f7a52eac326d87a801e04b0c058c2"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_10_ca_chien.png",
+      "bytes": 213421,
+      "width": 290,
+      "height": 289,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "716a15f1af9fa36eeaa8f02ecb3e0b1357d15e0d175ea130712e1706951da33a"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_11_banh_gio.png",
+      "bytes": 164313,
+      "width": 305,
+      "height": 290,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "fa5e8ef751a4b39c0ace4451bb8040ec7bd90c5bbc518cf75bf96408cb78a8d8"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_12_com_ga_ca_chua.png",
+      "bytes": 174737,
+      "width": 306,
+      "height": 273,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "ddf0034d4a645cbae57581ced323ea6ca5cdd9f967887e32ec9501189568e4c7"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_13_pho_ga.png",
+      "bytes": 184197,
+      "width": 306,
+      "height": 287,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "877044fd55633942b7a2efd24b9124dd2b1a8be2a2b7a73f76b937f9b3dd381e"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_14_bap_xao_trung.png",
+      "bytes": 166625,
+      "width": 306,
+      "height": 270,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "50404cc6cf865e4a508b4401b53a63414496e0ccf4e475ea97ab02f598a904b8"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_15_pho_bo.png",
+      "bytes": 185419,
+      "width": 306,
+      "height": 286,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "5222ca9297cc531935da31b036d6d94786cf3aeedc39a7018832238d8e2c39a9"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_16_ga_kho_sa_ot.png",
+      "bytes": 172922,
+      "width": 305,
+      "height": 282,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "4e2e59fbdbb4d38d85cfa9e7537ccd9280badcbce2372663a9a76b4a0f9726e6"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_17_com_tam_suon.png",
+      "bytes": 186076,
+      "width": 306,
+      "height": 279,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "1851ba72492895aafeb1256cf1b9640b97f2aa95fc4ab3c312a1deb175a88b2a"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_18_com_chien_rau_cu.png",
+      "bytes": 168899,
+      "width": 306,
+      "height": 280,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "75e542dc1088e54ba86d02a69618f195ba497e3a3001243f801d13fe601c9e4f"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_19_bo_xao_ca_chua.png",
+      "bytes": 163019,
+      "width": 306,
+      "height": 251,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "4e8dc3b39b5004aca4f529a182a2e7da47cbe479b2591d24874f1dcd7e2aa395"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_20_khoai_tay_chien.png",
+      "bytes": 158468,
+      "width": 306,
+      "height": 290,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "2b8fcf903b6a89627d0ce6af6c3daee269a77768728017fedf67af0420c039db"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_21_tom_chien_bot.png",
+      "bytes": 262705,
+      "width": 379,
+      "height": 337,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "ed3e78798fbc688504a84446ba8269d3e438c9c37fedaf1178f74d4086975070"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_22_bun_thit_nuong.png",
+      "bytes": 264405,
+      "width": 383,
+      "height": 317,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "da479449d6c77e4504749fa086234d3d097c845b79c2d9016d768b7dc1c42986"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_23_dau_hu_sot_ca.png",
+      "bytes": 201803,
+      "width": 357,
+      "height": 265,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "c820dca2b6ba3622f61e4e866c6b8e2ea565fe59976bad7e361f103836682403"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_24_dau_hu_nhoi_thit.png",
+      "bytes": 225175,
+      "width": 379,
+      "height": 262,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "039db4ea0830beef43ce41521cb1ea1ddba28c4f539ffd791d475976f2a6914b"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_25_muc_nuong_toi.png",
+      "bytes": 265257,
+      "width": 408,
+      "height": 294,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "87c0e42f8a5d42e0605110e7b9788bab1c310bc0eb447ea77033813d462e4c02"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_26_bun_cha.png",
+      "bytes": 312659,
+      "width": 425,
+      "height": 326,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "130efd6817511aa2f6f727cd0c18c98e6f5ee26b0b4bc3c9fff56891d01bc8fe"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_27_nuoc_dua.png",
+      "bytes": 219747,
+      "width": 314,
+      "height": 349,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "273faab130ab9eb9a2bbd81f00b921ccea0e764beab318f90ec520eadfb74f6c"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_28_xoi_dua.png",
+      "bytes": 233809,
+      "width": 376,
+      "height": 286,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "6c2e5ceb0c34edd98284e1b0e9979e4edd66d75909257b523886e25fe133d46e"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_29_ga_nuong_sa.png",
+      "bytes": 299817,
+      "width": 438,
+      "height": 305,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "c9a40befa430b972065fdb663ae22a5f0360cb058253a81632657a88ada91306"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_30_bach_tuoc_nuong.png",
+      "bytes": 274360,
+      "width": 420,
+      "height": 286,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "99ffed4fab84f838bb82f8f8e23ec4eb3968a492c1310cdb4130886b9314dc5a"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_31_tra_nong.png",
+      "bytes": 292593,
+      "width": 382,
+      "height": 308,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "028c624a9476ee03bb8a0b37278ae712763bedd2347e9debe54750e290fa2c94"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_32_tra_sua.png",
+      "bytes": 134879,
+      "width": 205,
+      "height": 312,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "3a6ceede7105866b7ee879f7463ff485c57bce3e134663ccf725a8f333f0ae6a"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_33_goi_ga_dau_phong.png",
+      "bytes": 283109,
+      "width": 356,
+      "height": 282,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "95bc55ef87b712bf7594bce21290550ca13ef2e11d0998f130816ffdfb8b37b2"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_34_thit_kho_nuoc_dua.png",
+      "bytes": 237401,
+      "width": 359,
+      "height": 241,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "8e019249e2b9baaf56854f72b443d6e5075f647337e4850c532997ac0258a441"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_35_com_st25_wagyu.png",
+      "bytes": 232306,
+      "width": 373,
+      "height": 222,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "a4116b09c0babb7541ecbd30782cfa3e334eec39cd79ece86a17483809fdcc56"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_36_tom_hum_alaska_nuong_bo.png",
+      "bytes": 265489,
+      "width": 392,
+      "height": 242,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "eab667339f7217e79a46716978b5aeb8a42b7caa94b2ada0383a30d9f756cf35"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_37_nuoc_mia.png",
+      "bytes": 128648,
+      "width": 190,
+      "height": 291,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "3ec5b00ef9564eae71839ab1aa1b47bf1534a5aa27e72d750e26282a1eec1bcb"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_38_cua_hoang_de_sot_bo.png",
+      "bytes": 270126,
+      "width": 404,
+      "height": 248,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "9fad7d5a5054f6934a7a90bf990085d74e311c16dac0c985128c021ec69aa5be"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_39_ca_phe_den_da.png",
+      "bytes": 155590,
+      "width": 231,
+      "height": 260,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "891ac23a93d47909ff3d970871a9f2f5f98b043a7c5082815c13d654dbd7b685"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_40_ca_hoi_na_uy_ap_chao.png",
+      "bytes": 228300,
+      "width": 356,
+      "height": 232,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "9af3cab7ba28b5a5be1d4134141b7f66e4f2c8a42f9fb76cb9b23918281bfcb3"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_41_so_diep_nhat_nuong_bo.png",
+      "bytes": 247225,
+      "width": 391,
+      "height": 249,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "4cf4e0ddf92d6fc4bd68d037b5806c8165e281a595c785570b9cff15a0600af2"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_42_bo_luc_lac.png",
+      "bytes": 267885,
+      "width": 406,
+      "height": 242,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "60d49cfbaf2bfa84e20a9e8010c7d3496dca9e67adf949712bf27d9756d0b7f6"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_43_sinh_to_chuoi_sua.png",
+      "bytes": 154029,
+      "width": 238,
+      "height": 303,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "7f994774e4b8443492f7e5cf663edf3d49c7ba49d792acf0828aebb338c4b8c5"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_44_ca_ngu_bluefin_ap_chao.png",
+      "bytes": 244440,
+      "width": 391,
+      "height": 240,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "2bb73d41cadecb8ccfbd27be6488f89eb3d3214c8c87b28943599182b6530afe"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_45_ca_phe_dua.png",
+      "bytes": 176905,
+      "width": 305,
+      "height": 254,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "b7f147668fe947ea57a70f40806ef95b1322e5ea9f0e5aede30c873ee2bf2ecf"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_46_goi_cuon_tom_thit.png",
+      "bytes": 230578,
+      "width": 402,
+      "height": 223,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "9947adb6b8d5c7b5641712ca784af4e9a07b4c479d3c07758f970d8a59494637"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_47_wagyu_sot_nam_truffle.png",
+      "bytes": 221218,
+      "width": 367,
+      "height": 232,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "a12b1ecc28439004e32204db4ff0cdd21aa0fde3c611b0023149205a91a1857b"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_48_ca_phe_sua_da.png",
+      "bytes": 150647,
+      "width": 280,
+      "height": 237,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "2a3eef542fef987540f404e01540d73cb176a8f9d3226d2df5f40434bf6f1438"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_49_com_hai_san_hoang_gia.png",
+      "bytes": 2438662,
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "e4b39cc8c8a4cd6f422a260b021d5945a775b3f0f1271a0564a60eb5241faebc"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/dish_icons/dish_50_lahoue_imperial_feast.png",
+      "bytes": 523370,
+      "width": 684,
+      "height": 297,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "4f5791491535ce02459ee80932b2322072005f7cd5bd6c5c8b8de71d72ae28df"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/status_action/attention_important.png",
+      "bytes": 92157,
+      "width": 236,
+      "height": 248,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "2dda8f8bce2d180de2553ca66644dfbaa5381fb60e30f3ddc1b83cce9c6e7606"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/status_action/buy.png",
+      "bytes": 120823,
+      "width": 280,
+      "height": 263,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "95800418571fdf2015b77ce15be6adb617f97b80336a9e679825eeb6f548330d"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/status_action/cancel_close.png",
+      "bytes": 70169,
+      "width": 229,
+      "height": 232,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "c628b62e93d914fe942fa98440c19da99716450ac3552f70c749b9ff0ebb8608"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/status_action/capacity.png",
+      "bytes": 119272,
+      "width": 272,
+      "height": 260,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "822d68373dea27286c6ae0d34037f461769477f0cceec4c35bb5493ad4ac8c20"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/status_action/collect.png",
+      "bytes": 84532,
+      "width": 270,
+      "height": 192,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "ee3e3f2a5c481ddd5bd5e51b3305c318e992c2ef62bb00a45858bd653776a875"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/status_action/exp_gain.png",
+      "bytes": 86176,
+      "width": 222,
+      "height": 266,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "3ebabe10a80cb2fba51aa427472bc61396133a5b915b30f00307c1fc519b91a2"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/status_action/fast_forward.png",
+      "bytes": 69327,
+      "width": 238,
+      "height": 203,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "90fe8ee9ad6efe2d2f2a64e632b9c1c0a7400ddbed9bfced8ff8e4574e1a6e86"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/status_action/in_progress.png",
+      "bytes": 93842,
+      "width": 258,
+      "height": 252,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "804284ea1bd6d5b5288357730ddd8005f6e64b80952aa51bd58fd011cf9d3ab6"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/status_action/information.png",
+      "bytes": 62938,
+      "width": 239,
+      "height": 232,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "a42f23a76fda0e1fdbe16f7355bb2182a399fb7f7dd50fcb7ab533778302e9a3"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/status_action/level_up.png",
+      "bytes": 89758,
+      "width": 239,
+      "height": 248,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "393cac6f006e078e7e769c6110e68a5a678d8c8625c9dead231db79d84424e09"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/status_action/locked.png",
+      "bytes": 104332,
+      "width": 224,
+      "height": 272,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "3784f181b2004724e40d27bdc09d375b9a9a442deaa18bd8d6a094c2186db75d"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/status_action/money_cost.png",
+      "bytes": 76885,
+      "width": 226,
+      "height": 260,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "e71ed103e199d1a61e377b8a902584cc61044ffe2a731b215bc8a80a2403d670"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/status_action/money_gain.png",
+      "bytes": 97939,
+      "width": 240,
+      "height": 266,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "64eb5a7c117e6826857b1d298e497532d730cc8490bd156ca7cfb1005b7a8ea0"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/status_action/new_unlock.png",
+      "bytes": 100010,
+      "width": 240,
+      "height": 251,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "47f3088856100099533b25f6c62fd6c1e53cddf55a8b8b250e9204b621e147b6"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/status_action/next_day.png",
+      "bytes": 96698,
+      "width": 239,
+      "height": 246,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "87a2bf6788eee7a9456f3c1a2a2f3453df07359ff5c98120a8639bd4551be7cb"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/status_action/ready.png",
+      "bytes": 115676,
+      "width": 257,
+      "height": 257,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "f67ba32bcbc049df02c9f21720ae060552f667067214c90750efb9240d00a9b8"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/status_action/requirement_not_met.png",
+      "bytes": 88751,
+      "width": 239,
+      "height": 249,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "e2dbc0904d8f385755ac608a5374d7cbaa76b23dbc8a619d45fa5c2a155a7d93"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/status_action/salary.png",
+      "bytes": 109842,
+      "width": 249,
+      "height": 277,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "62ce51c359ab4179bd67df0b420f854c8cbd36c38b7e3aeb096fb3a363b2d54c"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/status_action/salary_paid.png",
+      "bytes": 126878,
+      "width": 292,
+      "height": 285,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "546812cf3cf68b414b4169599384c0d9b6432d3b2287fdb0f8703b5e6fe0ef9a"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/status_action/save_saved.png",
+      "bytes": 79325,
+      "width": 240,
+      "height": 243,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "f3f4d2805cace6ad97692cca9a198cc065962d8628ab26134c717c8fe8426189"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/status_action/staff_off_duty.png",
+      "bytes": 125357,
+      "width": 318,
+      "height": 256,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "1f32a8ddb91963d18ae32d85cfe186aa313786f6a9de8ef2a730547fbdbddb5c"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/status_action/storage_full.png",
+      "bytes": 120349,
+      "width": 273,
+      "height": 260,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "1df25c9545d692a21d96e69d9313440473497d41885127a7263ca1ccd3e60a99"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/status_action/success_completed.png",
+      "bytes": 116960,
+      "width": 239,
+      "height": 266,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "cdd53cf9a8796a0567daa988e1ad7a2fec218a73917214933c5b467e7c9eed36"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/status_action/timer.png",
+      "bytes": 87427,
+      "width": 224,
+      "height": 249,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "a03716c72f00774bb19d77a22947795dd3cb3af93e1ead49e1e008d70b0c7447"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/status_action/unavailable.png",
+      "bytes": 98102,
+      "width": 258,
+      "height": 257,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "a1b7e923fa6d2f2c22663ac9d4685edeef88ebf54e63a63936ec121fbb80a482"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/status_action/unlocked.png",
+      "bytes": 106950,
+      "width": 224,
+      "height": 294,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "3d1322af7954df9d9ffd67a7b5caf96f7b8e91c80edcf230b8bebad852685f50"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/status_action/upgrade.png",
+      "bytes": 115342,
+      "width": 258,
+      "height": 255,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "09a81d2061b2ae92233a79345a66df3a7845af46c8688135200b65f3767add8a"
+    },
+    {
+      "path": "assets/lahoue_assets/ui/status_action/warning.png",
+      "bytes": 100777,
+      "width": 281,
+      "height": 251,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "aa4061d582ac11609c9a608d7969026b3f3600ba99f1e15bed2a2486a2c0b0ac"
+    },
+    {
+      "path": "assets/lahoue_assets/vehicles/helicopters/helicopter_lv1.png",
+      "bytes": 2299772,
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "f969ada9db2a11060aea97ace16fea156bdf37de37787b11cb9bc200ba0ff6f9"
+    },
+    {
+      "path": "assets/lahoue_assets/vehicles/helicopters/helicopter_lv2.png",
+      "bytes": 1331022,
+      "width": 1800,
+      "height": 1200,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "f683db4c4cd00dcb7a3a9c31fc5ab694e5f6ff20b907e6a878f1ef24653d1429"
+    },
+    {
+      "path": "assets/lahoue_assets/vehicles/helicopters/helicopter_lv3.png",
+      "bytes": 1546313,
+      "width": 1800,
+      "height": 1200,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "c48af2551f2e29cbeabc76529af840caba649ee22e20c2885f62e15a4abe705e"
+    },
+    {
+      "path": "assets/lahoue_assets/vehicles/helicopters/helicopter_lv4.png",
+      "bytes": 1716738,
+      "width": 1800,
+      "height": 1200,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "dc5f92fd8b618df0dee19ce53087e37d1a3f1772486c7c68ced7ef2456b28e8d"
+    },
+    {
+      "path": "assets/lahoue_assets/vehicles/helicopters/helicopter_lv5.png",
+      "bytes": 1863386,
+      "width": 1800,
+      "height": 1200,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "407f4350ccedb1e652e98bb65a6d5c41693f4334dae275b468d2baa047056c4f"
+    },
+    {
+      "path": "assets/lahoue_assets/vehicles/trucks/truck_lv1.png",
+      "bytes": 2833746,
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "0a32690910c1ca403dea4f4bdcd4d95b6a79bf5dc405e5618b44e0555e5261bd"
+    },
+    {
+      "path": "assets/lahoue_assets/vehicles/trucks/truck_lv2.png",
+      "bytes": 269584,
+      "width": 512,
+      "height": 341,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "dfecd2e9dfa8a36c0710a1c521669eb8ffcf8556e09a25fa7af2ea3a0400a986"
+    },
+    {
+      "path": "assets/lahoue_assets/vehicles/trucks/truck_lv3.png",
+      "bytes": 349251,
+      "width": 523,
+      "height": 407,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "831cc37ae17e5ee92f6c67c59d5031edbaad28f7ce01f1c5bcc0d9d8019d70d8"
+    },
+    {
+      "path": "assets/lahoue_assets/vehicles/trucks/truck_lv4.png",
+      "bytes": 411475,
+      "width": 523,
+      "height": 455,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "f2b7e80d0945b804fec1f7cd9bb5053e8c645f1496b60d8ce559c6c5b30e8081"
+    },
+    {
+      "path": "assets/lahoue_assets/vehicles/trucks/truck_lv5.png",
+      "bytes": 439743,
+      "width": 515,
+      "height": 520,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "4afb141abb35dd8c7665f7d75ae6f5ef069bfca72cc1920a95c7d2d3efc0a459"
+    },
+    {
+      "path": "assets/lahoue_assets/world/buildings/aquaculture_pond.png",
+      "bytes": 2753157,
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "544048b77e954494412c777664894d0e0ce32c4ddfecf63528f6a304517094c7"
+    },
+    {
+      "path": "assets/lahoue_assets/world/buildings/chicken_coop.png",
+      "bytes": 2592509,
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "873c21ebbc20fbe0bd16e24d93690493a36cdfbc12f29461354710a6160b5182"
+    },
+    {
+      "path": "assets/lahoue_assets/world/buildings/cow_barn.png",
+      "bytes": 3015906,
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "01cc5931a9d7e44bdf64f446d7338d76a800c9a56911ca055074242da2c24c23"
+    },
+    {
+      "path": "assets/lahoue_assets/world/buildings/helipad.png",
+      "bytes": 2931721,
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "00ccf7f9426b768e09899251736f066dafacea77af74b600b55bedb60fe90c69"
+    },
+    {
+      "path": "assets/lahoue_assets/world/buildings/market.png",
+      "bytes": 2930811,
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "153b8de175f96503802a1d0efaf47d7f56e94f724e434cd88d2c114497e1ad4c"
+    },
+    {
+      "path": "assets/lahoue_assets/world/buildings/pig_pen.png",
+      "bytes": 2165295,
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "aaf209b34529f54e752a97b17ce5ebce347f164fd91ce1c54869627aea040690"
+    },
+    {
+      "path": "assets/lahoue_assets/world/buildings/premium_market.png",
+      "bytes": 2930910,
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "53acb24c93444a4fd491b2511398733c8cca1541c30cc25a80ead5529b94f1e2"
+    },
+    {
+      "path": "assets/lahoue_assets/world/buildings/resort.png",
+      "bytes": 3099868,
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "08cd77156bec9af578f26e42d5eed98efbdba8bd39a65d2a060f07a463a3b375"
+    },
+    {
+      "path": "assets/lahoue_assets/world/buildings/restaurant.png",
+      "bytes": 2845803,
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "b7b402a30f0a81a277c6756b894cb83b1013eb82c087a858260cb953b1aff199"
+    },
+    {
+      "path": "assets/lahoue_assets/world/buildings/truck_depot.png",
+      "bytes": 2156335,
+      "width": 1448,
+      "height": 1086,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "11d5908dfb078b3461e1982e631b7b6e5092c679deca5a08d63ecb9b6aa0afb0"
+    },
+    {
+      "path": "assets/lahoue_assets/world/buildings/vip_area.png",
+      "bytes": 3059272,
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "f51d5cd2790d2955acc075dfa8e11c74896353a7ce7beefa707524477590a617"
+    },
+    {
+      "path": "assets/lahoue_assets/world/buildings/warehouse.png",
+      "bytes": 2815628,
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "2dd3bdee5d01c128024faaf5ffbb871af7a6c530b1245ca95407a09cd6d46a3c"
+    },
+    {
+      "path": "assets/lahoue_assets/world/environment/farm_fence_gate.png",
+      "bytes": 1607287,
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "f99458679c44616d60ffaf8272eb49a78a61ac751684a0c2365c0a40dbf3c6ec"
+    },
+    {
+      "path": "assets/lahoue_assets/world/environment/road_tiles_kit.png",
+      "bytes": 3119804,
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "d059fbb32b7146a9c4dea0c2621765db2ad2a142bdee715b397d6f0aa419e338"
+    },
+    {
+      "path": "assets/lahoue_assets/world/farm_plots/empty_farm_plot.png",
+      "bytes": 233379,
+      "width": 380,
+      "height": 340,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "b068df6cfa9a29cb9937f63b1b1a0eeba0ec279c9105e39fc3685e419c0e11dd"
+    },
+    {
+      "path": "assets/lahoue_assets/world/props/directional_signs_kit.png",
+      "bytes": 2639291,
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "6a6947d83b8129c661d43a6b4871885aa5c4d022aa835f5bc8d9548014a5a7fd"
+    },
+    {
+      "path": "assets/lahoue_assets/world/props/farm_warehouse_utility_props_atlas.png",
+      "bytes": 2128609,
+      "width": 1448,
+      "height": 1086,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "80c7a72310a2d16d5e1c12c6f97e6a86fa2a77d1544e7bf9fd262b17ea34bf87"
+    },
+    {
+      "path": "assets/lahoue_assets/world/props/logistics_props_atlas.png",
+      "bytes": 2797365,
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "cbf104ffd52a4a30554aadefd5c1402a3f7b0935844f0c9af75051d1d3744d8c"
+    },
+    {
+      "path": "assets/lahoue_assets/world/props/natural_props_atlas.png",
+      "bytes": 2976410,
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "dafae0cbd63b210133321dbc571ce25c1669756a9411b9e889b455fd4c224f6b"
+    },
+    {
+      "path": "assets/lahoue_assets/world/props/outdoor_dining_set_atlas.png",
+      "bytes": 8525642,
+      "width": 5135,
+      "height": 1282,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "56e046537d7404382d2a28ad213fd9eaa81e94e7b9cb4cc06560d95448f89a0d"
+    },
+    {
+      "path": "assets/lahoue_assets/world/props/restaurant_kitchen_cooking_station_module_set.png",
+      "bytes": 2267262,
+      "width": 1448,
+      "height": 1086,
+      "mode": "RGBA",
+      "has_alpha": true,
+      "sha256": "d803152a255e71debbcbf2dd7f7df97a4b8064906e846b68d8fa7d3923ecc4ea"
+    }
+  ],
+  "approved_references": [
+    "restaurant_lv1_lv5_approved_reference.png",
+    "chicken_coop_lv1_lv5_approved_reference.png",
+    "cow_barn_lv1_lv5_approved_reference.png",
+    "pig_pen_lv1_lv5_approved_reference.png",
+    "aquaculture_lv1_lv5_approved_reference.png",
+    "truck_depot_orientation_reference.png",
+    "truck_lv1_lv5_direction_reference.png",
+    "helicopter_lv1_lv5_parts_reference.png",
+    "farm_ground_terrain_reference.png",
+    "character_staff_animation_pose_reference.png"
+  ]
+}

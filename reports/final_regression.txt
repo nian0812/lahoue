@@ -1,0 +1,27 @@
+﻿achievement_gameplay_test: PASS
+achievement_test: PASS
+animals_foundation_test: PASS
+animation_foundation_test: PASS
+aquaculture_foundation_test: PASS
+cooking_test: PASS
+customer_order_test: PASS
+farming_foundation_test: PASS
+final_scope_test: PASS
+inventory_economy_test: PASS
+modular_ground_visual_test: PASS
+modular_world_test: PASS
+premium_market_helicopter_test: PASS
+premium_recipes_test: PASS
+progression_full_loop_test: PASS
+recovery_runtime_test: PASS
+restaurant_foundation_test: PASS
+save_manager_test: PASS
+staff_resource_workers_test: PASS
+staff_roles_test: PASS
+staff_test: PASS
+static_asset_integration_test: PASS
+tutorial_onboarding_test: PASS
+ui_smoke_test: PASS
+upgrade_level_test: PASS
+visual_polish_runtime_test: PASS
+FULL_SUITE: 26/26 PASS

@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/visual/manifest_sprite.gd" id="1_visual"]
+[ext_resource type="PackedScene" path="res://scenes/world/visual/contact_shadow.tscn" id="2_shadow"]
+
+[node name="LogicRoot" type="Node2D"]
+metadata/pivot_convention = "ground_contact"
+metadata/footprint = Rect2(-70, -160, 140, 160)
+
+[node name="ContactShadow" parent="." instance=ExtResource("2_shadow")]
+shadow_size = Vector2(124, 30)
+shadow_offset = Vector2(0, -3)
+opacity = 0.18
+
+[node name="VisualRoot" type="Node2D" parent="."]
+script = ExtResource("1_visual")
+semantic_id = "cow_barn"
+target_rect = Rect2(-70, -160, 140, 160)
+placeholder_paths = PackedStringArray("body")
+
+[node name="body" type="Polygon2D" parent="VisualRoot"]
+polygon = PackedVector2Array(-50, -160, 50, -160, 70, 0, -70, 0)
+color = Color(0.3, 0.2, 0.1, 1)
+
+[node name="SpawnAnchor" type="Marker2D" parent="."]
+position = Vector2(0, -80)

@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/hub_building.gd" id="1_building"]
+[ext_resource type="Script" path="res://scripts/visual/manifest_sprite.gd" id="2_visual"]
+[ext_resource type="PackedScene" path="res://scenes/world/visual/contact_shadow.tscn" id="3_shadow"]
+
+[node name="LogicRoot" type="Node2D"]
+script = ExtResource("1_building")
+metadata/pivot_convention = "ground_contact"
+metadata/footprint_convention = "width_height_from_foot"
+
+[node name="ContactShadow" parent="." instance=ExtResource("3_shadow")]
+shadow_size = Vector2(68, 18)
+shadow_offset = Vector2(0, -2)
+opacity = 0.15
+
+[node name="VisualRoot" type="Node2D" parent="."]
+script = ExtResource("2_visual")
+target_rect = Rect2(0, 0, 0, 0)
+placeholder_paths = PackedStringArray("body")
